@@ -1,0 +1,166 @@
+p, h1, h2, h3, h4, h5 {
+  margin: 0;
+}
+// 最大宽度
+@max-width: 1200px;
+@min-width: 960px;
+// title 高度
+@title-height: 64px;
+@tab-height: 54px;
+
+// 统一圆角
+@g-radius: 3px;
+// 统一间距
+@g-margin: 7.5px;
+@g-padding: 7.5px;
+@side-width: 20px;
+// 统一字体选中色1-1
+@g-main-color: #004fc4;
+.g-main-color {
+  color: @g-main-color
+}
+//@g-active-color: #09A67A;
+@g-active-color: @g-main-color;
+@g-h1-line: rgba(5, 105, 204, 0.1);
+@g-bg-blue: rgba(5, 105, 204, 0.05);
+@g-hover-blue: rgba(5, 105, 204, 0.03);
+@g-bg-grey: #f7f8fa;
+
+// 内容最大宽度 - kenegn
+@content-max-width: 880px;
+@content-min-width: 570px;
+
+// 侧边 sidebar 宽度
+@sidebar-width: @max-width - @content-max-width - @g-margin * 2;
+
+// 标准、常规、次级
+@font-color-first: #282f38;
+@font-color-second: #606a78;
+@font-color-third: #939aa3;
+@font-color-four: #b4b7bb;
+@font-shallow-color: #dedede;
+
+// 字体大小
+@font-fifth: 12px;
+@font-fourth: 14px;
+@font-third: 16px;
+@font-second: 18px;
+@font-first: 20px;
+
+// 四级边框 深 -> 浅
+@border-1-color: #DCDFE6;
+@border-2-color: #E4E7ED;
+@border-3-color: #EBEEF5;
+@border-4-color: #F2F6FC;
+@border-5-color: #f2f2f2;
+
+@test-border: #ad1b0f;
+
+.g-disabled, .g-sub-title, .g-sub-color {
+  color: #b4b7bb;
+}
+
+.g-display-flex {
+  display: flex;
+}
+
+.g-flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+.g-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.g-margin-top {
+  margin-top: @g-margin * 2;
+}
+
+
+.g-avatar-border {
+  border: 1px solid @border-5-color;
+}
+
+
+.g-content-container {
+  width: @content-max-width;
+  height: 100%;
+  background-color: #fff;
+  border-radius: @g-radius;
+}
+
+.g-content-container-shuck {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+.g-hover {
+  cursor: pointer;
+  &:hover {
+    color: @g-active-color !important;
+  }
+}
+
+.g-bg-hover {
+  cursor: pointer;
+  &:hover {
+    color: @g-active-color !important;
+    background-color: @g-bg-blue !important;
+  }
+}
+
+.g-active {
+  font-weight: 500;
+  color: @g-active-color !important;
+}
+.g-selected {
+  color: @g-active-color !important;
+}
+.g-active-tag {
+  color: #fff !important;
+  background-color: @g-main-color !important;
+}
+
+.g-bm-border {
+  border-bottom: 1px solid @border-5-color;
+}
+
+.g-hidden-line1 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@g-hidden-line: {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.g-hidden-line2 {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+
+.g-tag {
+  color: @font-color-third;
+  border-radius: @g-radius;
+  margin-right: @g-margin;
+  padding: 3px 12px;
+  font-size: @font-fifth;
+  background-color: @g-bg-blue;
+}
+@media screen and (max-width: 1000px) {
+  .g-margin-top {
+    margin-top: @g-margin;
+  }
+}

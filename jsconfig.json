@@ -1,0 +1,9 @@
+ {
+    "include": [
+      "./pages/**/*",
+      "./components/**/*",
+      "./lib/**/*",
+      "./middleware/**/*",
+      "./plugins/**/*"
+    ]
+  }
