@@ -2,7 +2,7 @@
   <div class="page-layout-container">
     <div v-if="showHeadByRouter" class="common-header-box" :class="{'transition-head': hideHead}">
       <GHeader />
-      <Category v-if="showTag" />
+      <GMenu />
     </div>
     <Tags v-show="showTag" />
     <div class="child-container">
@@ -38,7 +38,7 @@ import globalConfig from '../global'
 import EventBus from '../lib/event-bus'
 import { setWxShare } from '../lib/wx-share'
 import Tags from './index/components/tags'
-import Category from './index/components/category'
+// import Category from './index/components/category'
 
 const tagsWhite = ['/faq', '/article']
 const hideHeadReg = [/\/wiki\/.*\/?$/, /\/draft\/editor\/.*\/?$/]
@@ -46,7 +46,7 @@ const hideHeadReg = [/\/wiki\/.*\/?$/, /\/draft\/editor\/.*\/?$/]
 export default {
   name: 'Home',
   components: {
-    Category,
+    // Category,
     Tags,
     BackTop,
     Button
@@ -134,7 +134,7 @@ export default {
       cookieUtils.clearToken()
     }
     window.addEventListener('scroll', this.scrollThrottle)
-    this.wxOauth()
+    // this.wxOauth()
   },
   destroyed () {
     window.removeEventListener('scroll', this.scrollThrottle)
@@ -233,9 +233,8 @@ export default {
     display: flex;
     height: 100%;
     width: 100%;
-    max-width: @max-width;
+    // max-width: @max-width;
     justify-content: space-between;
-    margin: 0;
     transition: all 0.2s;
 
     .ant-back-top {

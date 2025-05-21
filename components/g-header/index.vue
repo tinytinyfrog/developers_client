@@ -3,87 +3,55 @@
     <div class="g-header-box">
       <div class="header-left">
         <div class="header-left-nav">
-          <img class="logo" src="~/assets/images/header/logo200.png" alt="" @click="$router.push('/')">
-          <div class="g-header-route">
-            <n-link
-              v-for="(item, index) in navBars"
-              :key="index + 1"
-              :to="item.path"
-              :class="{'g-active': activeIndex === index}"
-              :target="item.target ? '_blank' : ''"
-              @click.native="item.target ? '' : activeIndex = index"
-            >
-              {{ item.name }}
-            </n-link>
-          </div>
+          <img class="logo" src="~/assets/images/header/logo.png" alt="" @click="$router.push('/')">
+          <a-divider type="vertical" class="a-divider" />
+          <img class="intro-logo" src="~/assets/images/header/intro.png" alt="">
+          <InputSearch v-model="searchVal" placeholder="请输入关键字进行搜索" style="width: 320px" class="search" @search="onSearch" />
         </div>
-        <span class="search-container">
+        <!-- <span class="search-container">
           <InputSearch v-model="searchVal" placeholder="请输入关键字" style="width: 280px" @search="onSearch" />
-        </span>
+        </span> -->
       </div>
       <div class="header-right">
-        <span class="header-right-nav">
-          <Button v-auth="{url: '/draft/editor/new?t=article'}" type="primary" icon="edit">写文章</Button>
-        </span>
-        <span class="header-right-nav">
-          <Button v-auth="{url: '/draft/editor/new?t=qa'}" type="primary" icon="edit" ghost>提问题</Button>
-        </span>
-        <span v-if="!userInfo" class="header-right-nav">
-          <Button type="dashed" @click="goToLogin">登录</Button>
-        </span>
-        <template v-if="userInfo">
-          <Popover v-if="msgCount > 0" placement="bottomRight">
-            <template slot="content">
-              <Button type="link" @click="onReadAll">
-                全部已读
-              </Button>
-            </template>
-            <span class="header-right-nav" @click="$utils.openNewWindow(`/user/${userInfo.id}?tab=message`)">
-              <Badge :count="msgCount">
-                <Icon type="bell" class="message-notice" />
-              </Badge>
-            </span>
-          </Popover>
-          <span v-else class="header-right-nav" @click="$utils.openNewWindow(`/user/${userInfo.id}?tab=message`)">
-            <Badge :count="msgCount">
-              <Icon type="bell" class="message-notice" />
-            </Badge>
-          </span>
-          <span v-if="userInfo" class="header-right-nav">
-            <Popover v-model="showInfoItem" placement="bottomRight" trigger="hover">
-              <template slot="content">
-                <p
-                  v-for="(item, index) in userMenu"
-                  :key="index"
-                  class="g-hover"
-                  :style="popoverItemStyle"
-                  @click="handleSetting(item)"
-                >
-                  <Icon :type="item.icon" />
-                  <span class="user-into-item">&nbsp;{{ item.label }}</span>
-                </p>
-              </template>
-              <Avatar class="user-header g-avatar-border" icon="user" :src="userInfo.avatar" alt="" />
-            </Popover>
-          </span>
-        </template>
+        <img src="~/assets/images/header/comment.png" class="comment">
+        <div class="msg">
+          欢迎来到交付中心门户
+        </div>
+        <Avatar class="a-avatar">
+          L
+        </Avatar>
+        <div>
+          <a-dropdown>
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+              Leon <a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <a href="javascript:;">个人中心</a>
+              </a-menu-item>
+              <a-menu-item>
+                <span style="color:red">退出系统</span>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </div>
       </div>
     </div>
   </header>
 </template>
 
 <script>
-import { Button, Popover, Icon, Badge, Input, Avatar } from 'ant-design-vue'
+import { Input, Avatar } from 'ant-design-vue'
 import EventBus from '@/lib/event-bus'
 import cookieUtils from '@/lib/cookie-utils'
 const InputSearch = Input.Search
 export default {
   name: 'GHeader',
   components: {
-    Button,
-    Popover,
-    Icon,
-    Badge,
+    // Button,
+    // Popover,
+    // Icon,
+    // Badge,
     Avatar,
     InputSearch
   },
@@ -265,10 +233,11 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: @max-width;
-      min-width: @max-width;
-      margin: 0 auto;
+      // max-width: @max-width;
+      // min-width: @max-width;
+      // margin: 0 auto;
       height: @title-height;
+      padding: 10px 17px;
       .header-left {
         display: flex;
         align-items: center;
@@ -288,18 +257,48 @@ export default {
           margin-right: 30px;
         }
       }
+      .a-divider {
+        background:rgb(128, 154, 255);
+        height: 38px;
+        margin: 0 16px;
+      }
       .logo {
-        height: 40px;
-        width: 40px;
+        height: 50px;
+        width: 120px;
         color: @g-main-color;
         font-size: @font-first;
         vertical-align: middle;
-        margin-right: 10px;
         cursor: pointer;
+      }
+      .intro-logo {
+        height: 50px;
+        width: 196px;
+        color: @g-main-color;
+        font-size: @font-first;
+        vertical-align: middle;
+        cursor: pointer;
+      }
+      .search{
+        margin-left: 80px;
       }
       .header-right {
         display: flex;
         align-items: center;
+        column-gap:16px;
+        .comment {
+          width:16px;
+          height: 16px;
+        }
+        .msg {
+          color: rgb(41, 41, 41);
+          font-family: PingFang SC;
+          font-size: 14px;
+          font-weight: 400;
+        }
+        .a-avatar {
+          background-color:#0060FF;
+          color:#fff
+        }
         .header-right-nav {
           padding: 0 10px;
           font-size: @font-fourth;

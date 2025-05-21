@@ -1,22 +1,15 @@
 <template>
   <div class="page-home-container">
-    <div class="home-content">
-      <HomeTitle v-if="userInfo" :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
-      <div v-infinite-scroll="onInfiniteScroll" class="home-list-box">
-        <template v-for="(item, index) in contentList">
-          <ArticleItem v-if="item.category === 'ARTICLE'" :key="index" :article="item" />
-          <QuestionItem v-if="item.category === 'FAQ'" :key="index" :question="item" />
-        </template>
-      </div>
-      <g-empty :list="contentList" :finished="finished" :loading="loading" />
-    </div>
-    <CommonSlider>
+    <!-- <div class="home-content">
+      hahah
+    </div> -->
+    <!-- <CommonSlider>
       <slider-sign-in />
       <slider-list :slider-data="noticeData" />
       <slider-my-faq />
       <slider-honor-list :honor="honor" />
       <slider-tags />
-    </CommonSlider>
+    </CommonSlider> -->
   </div>
 </template>
 
@@ -24,32 +17,32 @@
 /**
  * 首页
  * */
-import CommonSlider from '@/pages/components/common-slider'
-import SliderList from '@/pages/components/slider-list'
-import SliderMyFaq from '@/pages/components/slider-my-achievement'
-import SliderSignIn from '@/pages/components/slider-sign-in'
-import SliderTags from '@/pages/components/slider-tags'
-import SliderHonorList from '@/pages/components/slider-honor-list'
+// import CommonSlider from '@/pages/components/common-slider'
+// import SliderList from '@/pages/components/slider-list'
+// import SliderMyFaq from '@/pages/components/slider-my-achievement'
+// import SliderSignIn from '@/pages/components/slider-sign-in'
+// import SliderTags from '@/pages/components/slider-tags'
+// import SliderHonorList from '@/pages/components/slider-honor-list'
+// import HomeTitle from './components/home-title.vue'
+// import ArticleItem from './components/article-item.vue'
+// import QuestionItem from './components/question-item.vue'
 import EventBus from '@/lib/event-bus'
-import HomeTitle from './components/home-title.vue'
-import ArticleItem from './components/article-item.vue'
-import QuestionItem from './components/question-item.vue'
 
 export default {
   name: 'PageHome',
   components: {
-    HomeTitle,
-    ArticleItem,
-    CommonSlider,
-    QuestionItem,
-    SliderMyFaq,
-    SliderSignIn,
-    SliderTags,
-    SliderList,
-    SliderHonorList
+    // HomeTitle,
+    // ArticleItem,
+    // CommonSlider,
+    // QuestionItem,
+    // SliderMyFaq,
+    // SliderSignIn,
+    // SliderTags,
+    // SliderList,
+    // SliderHonorList
   },
   asyncData ({ redirect }) {
-    redirect('/article')
+    redirect('/home')
     // const { q } = route.query
     // const userInfo = store.state.user.userInfo
     // const data = {
