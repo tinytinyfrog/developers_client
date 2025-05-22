@@ -1,22 +1,24 @@
 <template>
   <div class="g-card">
-    <div class="title">
-      <div class="title-left">
-        <slot name="title">
-          <div class="block" />
-          <div class="default">
-            {{ title }}
-          </div>
-        </slot>
+    <slot name="header">
+      <div class="title">
+        <div class="title-left">
+          <slot name="title">
+            <div class="block" />
+            <div class="default">
+              {{ title }}
+            </div>
+          </slot>
+        </div>
+        <div class="title-right">
+          <slot name="extra">
+            <div class="more">
+              更多 ><div />
+            </div>
+          </slot>
+        </div>
       </div>
-      <div class="title-right">
-        <slot name="extra">
-          <div class="more">
-            更多 ><div />
-          </div>
-        </slot>
-      </div>
-    </div>
+    </slot>
     <div>
       <slot>
         默认内容

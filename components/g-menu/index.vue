@@ -2,12 +2,12 @@
   <div class="menu-container">
     <template v-for="(item,index) of userMenu">
       <a-dropdown v-if="Array.isArray(item.child) && item.child.length > 0" :key="index">
-        <div class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index)}">
+        <div class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index,item.path)}">
           <img :src="item.icon" class="img">  {{ item.label }}
         </div>
         <a-menu slot="overlay">
           <a-menu-item v-for="(k,v) of item.child" :key="v">
-            <a href="javascript:;">{{ k.label }}</a>
+            <a @click="() => {handleGoTo(v.path)}">{{ k.label }}</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -67,13 +67,14 @@ export default {
         {
           label: '首页',
           child: [],
+          path: '/home',
           icon: require('@/assets/images/menu/home.png')
         },
         {
           label: '知识库',
           child: [{
             label: '流程规范库',
-            path: '/a'
+            path: '/article'
           }, {
             label: '敏捷',
             path: 'b'
@@ -141,8 +142,12 @@ export default {
     EventBus.$off('G_UPDATE_MSG_COUNT', this.getMessageCount)
   },
   methods: {
-    handleClick (index) {
+    handleClick (index, path) {
       this.activeIndex = index
+      if (path) this.$router.push(path)
+    },
+    handleGoTo (path) {
+      this.$router.push(path)
     }
   }
 }
