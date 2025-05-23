@@ -67,6 +67,7 @@ export default {
     { src: '~/plugins/exposure-directive', ssr: false },
     '~/plugins/filters.js',
     '~/plugins/antd-ui.js',
+    '~/plugins/element-ui.js',
     '~/plugins/dompurify-html.js',
     '~/plugins/global-config',
     '~/plugins/api.js'

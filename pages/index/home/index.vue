@@ -231,8 +231,9 @@
               <a-carousel>
                 <div class="expert-list">
                   <div v-for="(item,index) of expertList" :key="index" class="expert-item">
-                    <div>
+                    <div class="expert-img">
                       <img class="img" :src="item.icon">
+                      <img class="medal" src="~/assets/images/home/medal.png">
                     </div>
                     <div class="text">
                       <div class="name">
@@ -299,16 +300,103 @@
         </g-card>
       </div>
       <div class="item">
-        <g-card class="full-card" title="优秀团队" />
+        <g-card class="full-card" title="优秀团队">
+          <template>
+            <div class="team">
+              <el-carousel type="card" height="445px" style="width:840px">
+                <el-carousel-item v-for="item in teamList" :key="item">
+                  <div class="team-item">
+                    <img :src="item.icon">
+                    <div class="team-project">
+                      {{ item.project }}
+                    </div>
+                    <div class="team-text">
+                      {{ item.text }}
+                    </div>
+                  </div>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </template>
+        </g-card>
       </div>
       <div class="item">
-        <g-card class="half-card" title="贡献达人" />
-        <g-card class="half-card" title="数据统计" />
+        <g-card class="half-card" title="贡献达人">
+          <template>
+            <div class="talent">
+              <a-carousel>
+                <div class="talent-list">
+                  <div v-for="(item,index) of expertList" :key="index" class="talent-item">
+                    <div>
+                      <img class="img" :src="item.icon">
+                    </div>
+                    <div class="text">
+                      <div class="name">
+                        {{ item.name }}
+                      </div>
+                      <div class="info">
+                        工号：{{ item.number }}
+                      </div>
+                      <div class="info">
+                        部门：{{ item.dept }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="talent-list">
+                  <div v-for="(item,index) of expertList" :key="index" class="talent-item">
+                    <div>
+                      <img class="img" :src="item.icon">
+                    </div>
+                    <div>
+                      <div class="name">
+                        {{ item.name }}
+                      </div>
+                      <div class="info">
+                        工号：{{ item.number }}
+                      </div>
+                      <div class="info">
+                        部门：{{ item.dept }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a-carousel>
+            </div>
+          </template>
+        </g-card>
+        <g-card class="half-card" title="数据统计">
+          <template>
+            <div class="statistics">
+              <div v-for="(item,index) of statisticList" :key="index">
+                <div class="statistics-item">
+                  <div v-for="(k,v) of item.child" :key="v" class="statistics-card">
+                    <div class="statistics-card-left">
+                      <div class="img-inner-wrap">
+                        <img :src="k.icon">
+                      </div>
+                    </div>
+                    <div class="statistics-card-right">
+                      <div class="statistics-card-title">
+                        {{ k.label }}
+                      </div>
+                      <div class="statistics-card-count">
+                        {{ k.count }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="statistics-item-bg" />
+              </div>
+            </div>
+          </template>
+        </g-card>
       </div>
     </div>
   </div>
 </template>
 <script>
+
 const hotImg = require('@/assets/images/home/hot.png')
 const newImg = require('@/assets/images/home/new.png')
 const recommonImg = require('@/assets/images/home/recommond.png')
@@ -327,8 +415,23 @@ const cert2Img = require('@/assets/images/home/cert2.png')
 const cert3Img = require('@/assets/images/home/cert3.png')
 const user1Img = require('@/assets/images/home/user1.png')
 const user2Img = require('@/assets/images/home/user2.png')
+const memberImg = require('@/assets/images/home/member.png')
+const viewImg = require('@/assets/images/home/view.png')
+const dayImg = require('@/assets/images/home/today.png')
+const postImg = require('@/assets/images/home/post.png')
+const devloperImg = require('@/assets/images/home/devlopment.png')
+const infoImg = require('@/assets/images/home/info.png')
+const wikiImg = require('@/assets/images/home/wiki.png')
+const team1Img = require('@/assets/images/home/team1.png')
+const team2Img = require('@/assets/images/home/team2.png')
+const team3Img = require('@/assets/images/home/team3.png')
+const team4Img = require('@/assets/images/home/team4.png')
+const team5Img = require('@/assets/images/home/team5.png')
 export default {
   name: 'PageHome',
+  components: {
+
+  },
   data () {
     const activeIndex = 0
     const tabList = [{
@@ -615,6 +718,87 @@ export default {
       dept: '交付部',
       icon: user2Img
     }]
+
+    const statisticList = [
+      {
+        child: [
+          {
+            label: '成员数',
+            count: '3980',
+            icon: memberImg
+          },
+          {
+            label: '总访问量',
+            count: '3980',
+            icon: viewImg
+          },
+          {
+            label: '当日访问量',
+            count: '3980',
+            icon: dayImg
+          }
+        ]
+      },
+      {
+        child: [
+          {
+            label: '帖子数',
+            count: '2080',
+            icon: postImg
+          },
+          {
+            label: '开发平台&通用框架',
+            count: '36',
+            icon: devloperImg
+          }
+
+        ]
+      },
+      {
+        child: [
+          {
+            label: '咨询广场',
+            count: '782',
+            icon: infoImg
+          },
+          {
+            label: '知识库',
+            count: '990',
+            icon: wikiImg
+          }
+
+        ]
+      }
+    ]
+
+    const teamList = [
+      {
+        project: '河北高速项目',
+        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
+        icon: team1Img
+      },
+      {
+        project: '湖南高速项目',
+        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
+        icon: team2Img
+      },
+      {
+        project: '北京联通项目',
+        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
+        icon: team3Img
+      },
+      {
+        project: '联通法务项目',
+        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
+        icon: team4Img
+      },
+      {
+        project: 'rpa',
+        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
+        icon: team5Img
+      }
+    ]
+
     return {
       aiList,
       tabList,
@@ -626,7 +810,9 @@ export default {
       monthList,
       salonList,
       hornorList,
-      expertList
+      expertList,
+      statisticList,
+      teamList
     }
   },
   methods: {
@@ -997,6 +1183,60 @@ export default {
       background: rgba(255, 255, 255, 0.6);
       padding: 16px;
       column-gap:20px;
+       .expert-img {
+         position: relative;
+            .img {
+            width: 70px;
+            height: 70px;
+            border-radius: 70px;
+            object-fit: cover;
+          }
+          .medal{
+            width: 60px;
+            height: 30px;
+            position: absolute;
+            bottom: 4px;
+            right: 5px;
+          }
+
+       }
+
+       .name {
+        color: rgb(40, 40, 40);
+        font-size: 18px;
+        font-weight: 400;
+       }
+       .info {
+        color: rgb(89, 89, 89);
+        font-size: 14px;
+        font-weight: 400;
+        margin-top: 4px;
+       }
+     }
+    }
+  }
+
+  .talent {
+    padding: 16px 22px;
+    width: 100%;
+    padding-bottom: 32px;
+    .talent-list {
+      background-image: url('~/assets/images/home/talent-bg.png');
+      height: 300px;
+      display: flex !important;
+      flex-wrap: wrap;
+      column-gap:14px;
+      padding: 26px 16px;
+      row-gap: 14px;
+     .talent-item {
+      width: calc((100% - (14px * 2)) / 3);
+      display: flex;
+      border: 1px solid rgb(255, 255, 255);
+      border-radius: 8px;
+      box-shadow: 0px 4px 24px 0px rgba(0, 159, 255, 0.12);
+      background: rgba(255, 255, 255, 0.6);
+      padding: 16px;
+      column-gap:20px;
        .img {
          width: 70px;
          height: 70px;
@@ -1015,6 +1255,104 @@ export default {
         margin-top: 4px;
        }
      }
+    }
+  }
+  .statistics {
+    margin: 10px 24px;
+    padding: 16px 32px;
+   margin-bottom:30px;
+    height: 308px;
+    background-image: url('~/assets/images/home/statistics-bg.png');
+    .statistics-item {
+      display: flex;
+      column-gap: 10px;
+      height: 60px;
+      .statistics-card {
+        display: flex;
+        width: calc((100% - (10px * 2)) / 3);
+        column-gap: 18px;
+        .statistics-card-left {
+            height: 60px;
+            width:60px;
+            border-radius: 4px;
+            background: rgb(213, 237, 254);
+            padding: 14px;
+           .img-inner-wrap {
+            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            background: rgb(0, 112, 255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .img {
+              width: 16px;
+              height: 12px;
+            }
+           }
+
+        }
+        .statistics-card-right {
+            .statistics-card-title {
+              color: rgb(40, 40, 40);
+              font-family: PingFang SC;
+              font-size: 14px;
+              font-weight: 400;
+            }
+            .statistics-card-count {
+              color: rgb(40, 40, 40);
+              font-family: PingFang SC;
+              font-size: 28px;
+              font-weight: 400;
+            }
+
+        }
+        .statistics-card-left {
+
+        }
+      }
+    }
+    .statistics-item-bg {
+      height: 28px;
+      width: 100%;
+      margin-bottom: 14px;
+      background-image: url('~/assets/images/home/statistics-item-bg.png');
+    }
+  }
+  .team {
+    margin: 0px 38px 38px 38px;
+    height: 535px;
+    background-image: url('@/assets/images/home/team-bg.png');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .team-item {
+      width:100%;
+      height: 445px;
+      border: 1px solid rgb(206, 223, 244);
+      border-radius: 4px;
+      box-shadow: 0px 4px 32px 0px rgba(87, 130, 183, 0.2);
+      background: rgb(255, 255, 255);
+      padding: 18px;
+        img {
+          width: 100%;
+          height: 278px;
+        }
+        .team-project {
+          color: rgb(40, 40, 40);
+          font-size: 18px;
+          font-weight: 400;
+          margin: 8px 0 8px 0px;
+        }
+        .team-text {
+          color: rgb(40, 40, 40);
+          font-size: 14px;
+          font-weight: 400;
+          display: -webkit-box;
+          overflow: hidden; /* 隐藏溢出的内容 */
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
+        }
     }
   }
  }
@@ -1045,5 +1383,47 @@ export default {
   background: rgb(0, 112, 255);
   height: 6px;
 }
+
+::v-deep .el-carousel__arrow--left {
+  display: block !important;
+  background: #fff;
+  border: 1px solid rgb(170, 218, 255);
+box-shadow: 0px 4px 24px 0px rgba(0, 159, 255, 0.24);
+background: rgb(255, 255, 255);
+}
+
+::v-deep .el-carousel__arrow--left i {
+  color:black !important
+}
+
+::v-deep .el-carousel__arrow--right {
+  display: block !important;
+  background: #fff;
+  border: 1px solid rgb(170, 218, 255);
+box-shadow: 0px 4px 24px 0px rgba(0, 159, 255, 0.24);
+background: rgb(255, 255, 255);
+}
+
+::v-deep .el-carousel__arrow--right i {
+  color:black !important
+}
+
+::v-deep .el-carousel__indicators--outside {
+  display: none;
+}
+
+// .el-carousel__item .team-item {
+//     font-size: 14px;
+//     line-height: 200px;
+//     margin: 0;
+//   }
+
+//   .el-carousel__item:nth-child(2n) {
+//     background-color: #99a9bf;
+//   }
+
+//   .el-carousel__item:nth-child(2n+1) {
+//     background-color: #d3dce6;
+//   }
 
 </style>
