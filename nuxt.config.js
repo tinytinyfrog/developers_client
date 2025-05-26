@@ -66,8 +66,8 @@ export default {
     { src: '~/plugins/vue-cropper', ssr: false },
     { src: '~/plugins/exposure-directive', ssr: false },
     '~/plugins/filters.js',
-    '~/plugins/antd-ui.js',
     '~/plugins/element-ui.js',
+    '~/plugins/antd-ui.js',
     '~/plugins/dompurify-html.js',
     '~/plugins/global-config',
     '~/plugins/api.js'

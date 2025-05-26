@@ -2,16 +2,16 @@
   <div class="menu-container">
     <template v-for="(item,index) of userMenu">
       <a-dropdown v-if="Array.isArray(item.child) && item.child.length > 0" :key="index">
-        <div class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index,item.path)}">
+        <div class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index)}">
           <img :src="item.icon" class="img">  {{ item.label }}
         </div>
         <a-menu slot="overlay">
           <a-menu-item v-for="(k,v) of item.child" :key="v">
-            <a @click="() => {handleGoTo(v.path)}">{{ k.label }}</a>
+            <a @click="() => {handleGoTo(item,k)}">{{ k.label }}</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-      <div v-else :key="index" class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index)}">
+      <div v-else :key="index" class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index,item)}">
         <img :src="item.icon" class="img">  {{ item.label }}
       </div>
     </template>
@@ -72,20 +72,14 @@ export default {
         },
         {
           label: '知识库',
-          child: [{
-            label: '流程规范库',
-            path: '/article'
-          }, {
-            label: '敏捷',
-            path: 'b'
-          }],
+          path: '/wiki',
           icon: require('@/assets/images/menu/wiki.png')
         },
         {
           label: '互动论坛',
           child: [{
             label: '流程规范库',
-            path: '/a'
+            path: '/article'
           }, {
             label: '敏捷',
             path: 'b'
@@ -123,16 +117,32 @@ export default {
       this.userInfo = userInfo
     },
     '$route' (to) {
+      console.log('coiming')
       let hasNav = false
       let navIndex = 0
-      this.navBars.forEach((item, index) => {
-        if (to.path === item.path) {
+      // this.navBars.forEach((item, index) => {
+      //   if (to.path === item.path) {
+      //     hasNav = true
+      //     navIndex = index
+      //   }
+      // })
+      for (let i = 0; i < this.userMenu.length; i++) {
+        if (this.userMenu[i]?.path && this.userMenu[i].path === to.path) {
           hasNav = true
-          navIndex = index
+          navIndex = i
+        } else if (this.userMenu[i]?.child && this.userMenu[i].child.length > 0) {
+          const paths = this.userMenu[i].child.map(i => i.path)
+          if (paths?.length > 0 && paths.includes(to.path)) {
+            hasNav = true
+            navIndex = i
+          }
         }
-      })
+      }
       this.activeIndex = hasNav ? navIndex : -1
     }
+  },
+  beforeMount () {
+    this.fetchWikiList()
   },
   mounted () {
     // this.getMessageCount()
@@ -144,10 +154,27 @@ export default {
   methods: {
     handleClick (index, path) {
       this.activeIndex = index
+      console.log(path, 'path')
       if (path) this.$router.push(path)
     },
-    handleGoTo (path) {
-      this.$router.push(path)
+    handleGoTo (item, menu) {
+      this.$router.push(`${item.path}/${menu.path}`)
+    },
+    fetchWikiList () {
+      this.$api.getWikiList({
+        pageNo: 1,
+        pageSize: 100,
+        filter: { categoryId: '' }
+      }).then((res) => {
+        console.log(res, 'res')
+        if (res?.length > 0)
+          this.userMenu[1].child = res.map((i) => {
+            return {
+              label: i.name,
+              path: i.id
+            }
+          })
+      })
     }
   }
 }

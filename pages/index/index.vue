@@ -1,7 +1,9 @@
 <template>
   <div class="page-home-container">
     <!-- <div class="home-content">
-      hahah
+      <nuxt-link to="/home">
+        hhha
+      </nuxt-link>
     </div> -->
     <!-- <CommonSlider>
       <slider-sign-in />

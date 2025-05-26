@@ -7,15 +7,15 @@
       </div>
       <g-empty :list="articleList" :finished="finished" :loading="loading" />
     </div>
-    <CommonSlider>
+    <!-- <CommonSlider>
       <slider-sign-in />
       <SliderBanner />
       <slider-my-achievement :my-achievement="myAchievement" />
       <slider-list :slider-data="noticeData" />
       <slider-honor-list :honor="honor" />
       <SliderRecommend :recommend="randomArticle" />
-      <!-- <slider-tags /> -->
-    </CommonSlider>
+      <slider-tags />
+    </CommonSlider> -->
   </div>
 </template>
 
@@ -23,14 +23,14 @@
 /**
  * 首页
  * */
-import CommonSlider from '@/pages/components/common-slider'
-import SliderSignIn from '@/pages/components/slider-sign-in'
-import SliderList from '@/pages/components/slider-list'
-import SliderMyAchievement from '@/pages/components/slider-my-achievement'
-import SliderRecommend from '@/pages/components/slider-recommend'
+// import CommonSlider from '@/pages/components/common-slider'
+// import SliderSignIn from '@/pages/components/slider-sign-in'
+// import SliderList from '@/pages/components/slider-list'
+// import SliderMyAchievement from '@/pages/components/slider-my-achievement'
+// import SliderRecommend from '@/pages/components/slider-recommend'
+// import SliderHonorList from '@/pages/components/slider-honor-list'
+// import SliderBanner from '@/pages/components/slider-banner'
 import EventBus from '@/lib/event-bus'
-import SliderHonorList from '@/pages/components/slider-honor-list'
-import SliderBanner from '@/pages/components/slider-banner'
 import HomeTitle from '../components/home-title.vue'
 import ArticleItem from '../components/article-item.vue'
 
@@ -38,14 +38,14 @@ export default {
   name: 'PageHome',
   components: {
     HomeTitle,
-    ArticleItem,
-    CommonSlider,
-    SliderList,
-    SliderSignIn,
-    SliderRecommend,
-    SliderMyAchievement,
-    SliderHonorList,
-    SliderBanner
+    ArticleItem
+    // CommonSlider,
+    // SliderList,
+    // SliderSignIn,
+    // SliderRecommend,
+    // SliderMyAchievement,
+    // SliderHonorList,
+    // SliderBanner
   },
   async asyncData ({ $api, store, route }) {
     const { category, tagId, q } = route.query

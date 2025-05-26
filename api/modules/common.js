@@ -30,6 +30,11 @@ const commonApi = ($axios) => {
       return $axios.post('/rest/config/query-available', types).then((res) => {
         return _get(res, 'data', null)
       })
+    },
+    oauth2LoginCallback (data) {
+      return $axios.post('/rest/user/paas/oauth-back', data).then((res) => {
+        return _get(res, 'data', null)
+      })
     }
   }
 }

@@ -9,7 +9,7 @@
       <nuxt-child />
       <BackTop />
     </div>
-    <div v-if="miniUrl" class="wx-open-btn">
+    <!-- <div v-if="miniUrl" class="wx-open-btn">
       <wx-open-launch-weapp
         v-if="isWeChat"
         id="launch-btn"
@@ -25,12 +25,12 @@
       </Button>
     </div>
     <GWxOauth :show.sync="showLogin" @email-login="emailLogin = true" />
-    <GLogin :show.sync="emailLogin" @qrcode-login="showLogin = true" />
+    <GLogin :show.sync="emailLogin" @qrcode-login="showLogin = true" /> -->
   </div>
 </template>
 
 <script>
-import { BackTop, Button } from 'ant-design-vue'
+import { BackTop } from 'ant-design-vue'
 import cookieUtils from '@/lib/cookie-utils'
 import throttle from 'lodash/throttle'
 import SHA1 from 'crypto-js/sha1'
@@ -41,15 +41,16 @@ import Tags from './index/components/tags'
 // import Category from './index/components/category'
 
 const tagsWhite = ['/faq', '/article']
-const hideHeadReg = [/\/wiki\/.*\/?$/, /\/draft\/editor\/.*\/?$/]
+/// \/wiki\/.*\/?$/,
+const hideHeadReg = [/\/auth/, /\/draft\/editor\/.*\/?$/] // 白名单
 
 export default {
   name: 'Home',
   components: {
     // Category,
     Tags,
-    BackTop,
-    Button
+    BackTop
+    // Button
   },
   async asyncData (ctx) {
     const {
@@ -120,7 +121,7 @@ export default {
   watch: {
     $route: {
       handler (newRoute) {
-        // this.showHeadByRouter = hideHeadReg.some(reg => !reg.test(newRoute.path))
+        this.showHeadByRouter = hideHeadReg.some(reg => !reg.test(newRoute.path))
         this.showTag = tagsWhite.includes(newRoute.path)
         if (location.href !== '/article') {
           this.miniPath = `pages/new-web-view/index.html?scene=${this.scene}&url=${location.href}`

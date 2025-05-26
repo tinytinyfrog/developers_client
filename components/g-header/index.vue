@@ -14,41 +14,48 @@
       </div>
       <div class="header-right">
         <img src="~/assets/images/header/comment.png" class="comment">
-        <div class="msg">
-          欢迎来到交付中心门户
-        </div>
-        <Avatar class="a-avatar">
-          L
-        </Avatar>
-        <div>
-          <a-dropdown>
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              Leon <a-icon type="down" />
-            </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a href="javascript:;">个人中心</a>
-              </a-menu-item>
-              <a-menu-item>
-                <span style="color:red">退出系统</span>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </div>
+        <template v-if="userInfo">
+          <div class="msg">
+            欢迎来到交付中心门户
+          </div>
+          <Avatar class="a-avatar">
+            {{ userInfo.nickname[0] }}
+          </Avatar>
+          <div>
+            <a-dropdown>
+              <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+                {{ userInfo.nickname }} <a-icon type="down" />
+              </a>
+              <a-menu slot="overlay">
+                <a-menu-item>
+                  <a href="javascript:;">个人中心</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <span style="color:red" @click="logout">退出系统</span>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </div>
+        </template>
+        <template v-else>
+          <Button @click="handleLogin">
+            登录
+          </Button>
+        </template>
       </div>
     </div>
   </header>
 </template>
 
 <script>
-import { Input, Avatar } from 'ant-design-vue'
+import { Input, Avatar, Button } from 'ant-design-vue'
 import EventBus from '@/lib/event-bus'
 import cookieUtils from '@/lib/cookie-utils'
 const InputSearch = Input.Search
 export default {
   name: 'GHeader',
   components: {
-    // Button,
+    Button,
     // Popover,
     // Icon,
     // Badge,
@@ -178,6 +185,7 @@ export default {
       }
     },
     logout () {
+      console.log('coming')
       this.$confirm({
         title: '确认需要退出吗？',
         content: '要不再溜达溜达~',
@@ -185,6 +193,7 @@ export default {
         cancelText: '取消',
         onCancel: () => {},
         onOk: async () => {
+          console.log('coming')
           this.$api.logout({
             token: cookieUtils.getToken()
           })
@@ -215,6 +224,9 @@ export default {
         return
       }
       this.$utils.openNewWindow(`/search/${this.searchVal}`)
+    },
+    handleLogin () {
+      location.href = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=http://192.168.213.165:4000/auth&response_type=code'
     }
   }
 }
