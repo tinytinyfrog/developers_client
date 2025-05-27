@@ -41,7 +41,7 @@ import Tags from './index/components/tags'
 // import Category from './index/components/category'
 
 const tagsWhite = ['/faq', '/article']
-/// \/wiki\/.*\/?$/,
+/// /\/wiki\/.*\/?$/,
 const hideHeadReg = [/\/auth/, /\/draft\/editor\/.*\/?$/] // 白名单
 
 export default {

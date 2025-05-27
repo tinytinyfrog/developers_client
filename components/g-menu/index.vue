@@ -2,12 +2,12 @@
   <div class="menu-container">
     <template v-for="(item,index) of userMenu">
       <a-dropdown v-if="Array.isArray(item.child) && item.child.length > 0" :key="index">
-        <div class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index)}">
+        <div class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index,item,true)}">
           <img :src="item.icon" class="img">  {{ item.label }}
         </div>
-        <a-menu slot="overlay">
-          <a-menu-item v-for="(k,v) of item.child" :key="v">
-            <a @click="() => {handleGoTo(item,k)}">{{ k.label }}</a>
+        <a-menu slot="overlay" :selected-keys="[current]" @click="hanleMenuClick">
+          <a-menu-item v-for="(k) of item.child" :key="k.path">
+            <a @click="() => {handleGoTo(index,item,k)}">{{ k.label }}</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -41,6 +41,7 @@ export default {
       }
     ]
     let activeIndex = 0
+    const current = ''
     for (let i = 0; i < navBars.length; i++) {
       if (this.$route.path.includes(navBars[i].path)) {
         activeIndex = i
@@ -63,6 +64,7 @@ export default {
         fontSize: '15px',
         marginBottom: 0
       },
+      current,
       userMenu: [
         {
           label: '首页',
@@ -132,6 +134,11 @@ export default {
           navIndex = i
         } else if (this.userMenu[i]?.child && this.userMenu[i].child.length > 0) {
           const paths = this.userMenu[i].child.map(i => i.path)
+          if (this.userMenu[i].path === '/wiki' && (/\/wiki\/.*\/?$/).test(to.path)) {
+            hasNav = true
+            navIndex = i
+            return
+          }
           if (paths?.length > 0 && paths.includes(to.path)) {
             hasNav = true
             navIndex = i
@@ -152,13 +159,23 @@ export default {
     EventBus.$off('G_UPDATE_MSG_COUNT', this.getMessageCount)
   },
   methods: {
-    handleClick (index, path) {
+    handleClick (index, item, hasChild) {
       this.activeIndex = index
-      console.log(path, 'path')
-      if (path) this.$router.push(path)
+      if (index !== 1) {
+        this.current = ''
+      }
+      if (item.path && hasChild) {
+        this.$router.push(item.child[0].path)
+        return
+      }
+      if (item.path) this.$router.push(item.path)
     },
-    handleGoTo (item, menu) {
-      this.$router.push(`${item.path}/${menu.path}`)
+    handleGoTo (index, item, menu) {
+      this.activeIndex = index
+      this.$router.push(`${menu.path}`)
+    },
+    hanleMenuClick (e) {
+      this.current = e.key
     },
     fetchWikiList () {
       this.$api.getWikiList({
@@ -171,9 +188,10 @@ export default {
           this.userMenu[1].child = res.map((i) => {
             return {
               label: i.name,
-              path: i.id
+              path: this.userMenu[1].path + '/' + i.id
             }
           })
+        this.current = this.userMenu[1].child[0].path
       })
     }
   }

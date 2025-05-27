@@ -1,7 +1,7 @@
 <template>
   <a-affix :offset-top="0" class="wiki-menu-entry" :class="{'menu-affix-block': showMobileMenu }" @touchmove.stop.prevent="() => {}">
     <div ref="wikiMenu" class="wiki-detail-menu" :class="{'hide-menu': !showMobileMenu}">
-      <a-affix v-if="wikiInfo" :target="() => this.$refs.wikiMenu">
+      <!-- <a-affix v-if="wikiInfo" :target="() => this.$refs.wikiMenu">
         <div class="base-menu-info">
           <div ref="wikiInfo" class="wiki-info">
             <span class="g-flex-align-center">
@@ -33,7 +33,7 @@
             </a-popover>
           </div>
         </div>
-      </a-affix>
+      </a-affix> -->
       <draggable
         v-model="wikiMenu"
         :disabled="!canEdit"
@@ -142,6 +142,17 @@ export default {
     },
     menuList (list) {
       this.wikiMenu = list
+      console.log(list.length, 'ddd')
+      if (list?.length > 0) {
+        console.log(`/wiki/${this.$route.params.id}/${list[0]?.postsId}`)
+        this.$router.push(`/wiki/${this.$route.params.id}/${list[0]?.postsId}`)
+      }
+    }
+  },
+  mounted () {
+    if (this.menuList?.length > 0) {
+      console.log(`/wiki/${this.$route.params.id}/${this.menuList[0]?.postsId}`)
+      this.$router.push(`/wiki/${this.$route.params.id}/${this.menuList[0]?.postsId}`)
     }
   },
   methods: {
