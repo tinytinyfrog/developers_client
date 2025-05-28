@@ -29,6 +29,13 @@ const articleApi = ($axios) => {
     //     return _get(res, 'data.data', [])
     //   })
     // },
+    getPostList (params) {
+      return $axios.post('/rest/posts/list', {
+        ...params
+      }).then((res) => {
+        return _get(res, 'data.data.list', [])
+      })
+    },
     getNoticeList (pageSize = 5, pageNo = 1) {
       return $axios.post('/rest/posts/list', {
         filter: {

@@ -1,5 +1,10 @@
 <template>
   <div class="page-article-container g-margin-top">
+    <div class="tag-list">
+      <div v-for="(item,index) of tagList" :key="index" class="tag-item" :class="[tagIndex === index ?'active-tag':'']" @click="e => handleGoto(item)">
+        {{ item.name }}
+      </div>
+    </div>
     <div class="article-content">
       <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
       <div v-infinite-scroll="loadData" class="home-list-box">
@@ -48,14 +53,14 @@ export default {
     // SliderBanner
   },
   async asyncData ({ $api, store, route }) {
-    const { category, tagId, q } = route.query
-    let tagIds = tagId ? [tagId] : []
-    if (category && !tagId) {
-      const tags = store.state.tag.tags
-      tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
-    }
+    const { tagId } = route.query
+    const tagIds = tagId ? [tagId] : []
+    // if (category && !tagId) {
+    //   const tags = store.state.tag.tags
+    //   tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
+    // }
     const data = {
-      q,
+      // q,
       finished: false,
       pageNo: 1,
       pageSize: 20,
@@ -76,7 +81,8 @@ export default {
       filter: {
         category: 'ARTICLE',
         tagIds
-      }
+      },
+      tagList: []
     }
     await Promise.all([
       $api.getTopicList({
@@ -103,6 +109,9 @@ export default {
       }),
       $api.getNoticeList().then((list) => {
         data.noticeData.list = list
+      }),
+      $api.getTagsByRef().then((list) => {
+        data.tagList = list
       })
     ])
     return data
@@ -111,6 +120,7 @@ export default {
     return {
       loading: false,
       currentTagIndex: 0,
+      tagIndex: -1,
       titleTags: Object.freeze([
         {
           title: '最新',
@@ -136,6 +146,7 @@ export default {
   },
   watch: {
     currentTagIndex (nVal, oVal) {
+      console.log(nVal, oVal)
       if (nVal === oVal) { return }
       const filter = this.titleTags[nVal]
       this.filter.sortByViews = null
@@ -146,6 +157,20 @@ export default {
       }
       this.clearStatus()
       this.loadData()
+    },
+    '$route' (to) {
+      const { tagId } = to.query
+      this.filter.tagIds = [tagId]
+      this.filter.sortByViews = null
+      this.filter.official = null
+      this.filter.marrow = null
+
+      this.clearStatus()
+      this.loadData()
+      if (this.tagList.length > 0) {
+        this.tagIndex = this.tagList.findIndex(item => item.id === Number(tagId))
+        console.log('tagIndex', this.tagList, typeof tagId, this.tagIndex)
+      }
     }
   },
   mounted () {
@@ -157,11 +182,18 @@ export default {
       this.clearStatus()
       this.loadData()
     })
+    if (this.tagList.length > 0) {
+      this.tagIndex = this.tagList.findIndex(item => item.id === Number(this.$route.query.tagId))
+      console.log('tagIndex', this.tagList, this.$route.tagId, this.tagIndex)
+    }
   },
   beforeDestroy () {
     EventBus.$off('G_Tags')
   },
   methods: {
+    handleGoto (item) {
+      this.$router.push(`/article?tagId=${item.id}`)
+    },
     clearStatus () {
       this.pageNo = 1
       this.finished = false
@@ -194,8 +226,32 @@ export default {
   display: flex;
   width: 100%;
   height: 100%;
-  justify-content: space-between;
+  justify-content: center;
   min-height: 100vh;
+  column-gap: 4%;
+  .tag-list {
+    background: #fff;
+    border-radius: 8px;
+    width:200px;
+    padding:  16px 0px;
+    margin-bottom: 20px;
+    height:calc(100vh - 184px);
+    .tag-item {
+      padding: 8px 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 400;
+      color:rgba(0, 0, 0, 0.8)
+    }
+    .tag-item:hover{
+      color:#0070ff
+    }
+    .active-tag {
+      color: #0070ff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
   .article-content {
     width: @content-max-width;
     height: 100%;

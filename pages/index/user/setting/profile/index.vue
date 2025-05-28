@@ -1,5 +1,5 @@
 <template>
-  <div class="page-my-profile-container g-margin-top">
+  <div class="page-my-profile-container">
     <div class="content">
       <Tabs tab-position="left">
         <TabPane key="1" tab="基础信息" class="tabs-content" force-render>

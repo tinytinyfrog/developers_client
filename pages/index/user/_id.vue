@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userInfo" v-infinite-scroll="handleInfiniteScroll" class="page-user-container g-margin-top">
+  <div v-if="userInfo" v-infinite-scroll="handleInfiniteScroll" class="page-user-container">
     <div class="page-user-info">
       <UserInfoBg />
       <div class="user-info-content">
@@ -500,7 +500,7 @@ export default {
   .page-user-dynamic {
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: space-around;
     border-radius: @g-radius;
   }
   .dynamic-content {

@@ -35,6 +35,26 @@ const commonApi = ($axios) => {
       return $axios.post('/rest/user/paas/oauth-back', data).then((res) => {
         return _get(res, 'data', null)
       })
+    },
+    getStatistics () {
+      return $axios.post('/rest/accredit/website-statistics', {}).then((res) => {
+        return _get(res, 'data.data', '')
+      })
+    },
+    getUserStatistics (params) {
+      return $axios.post('/rest/accredit/post-user-statistics', params).then((res) => {
+        return _get(res, 'data.data.list', '')
+      })
+    },
+    getHonorList (params) {
+      return $axios.post('/rest/config/query-honors', params).then((res) => {
+        return _get(res, 'data.data', '')
+      })
+    },
+    getBannerLists (params) {
+      return $axios.post('/rest/config/page', params).then((res) => {
+        return _get(res, 'data.data', '')
+      })
     }
   }
 }

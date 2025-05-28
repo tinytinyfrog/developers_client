@@ -12,7 +12,7 @@
         </div>
         <div class="title-right">
           <slot name="extra">
-            <div class="more">
+            <div v-if="!hideMore" class="more" @click="goTo">
               更多 ><div />
             </div>
           </slot>
@@ -33,8 +33,17 @@ export default {
     title: {
       type: String,
       default: '默认标题'
-    }
+    },
+    goTo: {
+      type: Function,
+      default: () => {
 
+      }
+    },
+    hideMore: {
+      type: Boolean,
+      default: false
+    }
   }
 }
 </script>

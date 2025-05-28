@@ -143,17 +143,20 @@ export default {
     menuList (list) {
       this.wikiMenu = list
       console.log(list.length, 'ddd')
-      if (list?.length > 0) {
-        console.log(`/wiki/${this.$route.params.id}/${list[0]?.postsId}`)
-        this.$router.push(`/wiki/${this.$route.params.id}/${list[0]?.postsId}`)
-      }
+      // if (list?.length > 0 && (/\/wiki\/.*\/?$/).test(this.$route.path)) {
+      //   console.log(`/wiki/${this.$route.params.id}/${list[0]?.postsId}`, 'coming')
+      //   this.$router.push(`/wiki/${this.$route.params.id}/${list[0]?.postsId}`)
+      // }
     }
   },
   mounted () {
-    if (this.menuList?.length > 0) {
-      console.log(`/wiki/${this.$route.params.id}/${this.menuList[0]?.postsId}`)
-      this.$router.push(`/wiki/${this.$route.params.id}/${this.menuList[0]?.postsId}`)
-    }
+    // if (this.menuList?.length > 0) {
+    //   if ((/\/wiki\/.*\/?$/).test(this.$route.path)) {
+    //     console.log(`/wiki/${this.$route.params.id}/${this.menuList[0]?.postsId}`, 'coming')
+    //     // console.log(`/wiki/${this.$route.params.id}/${this.menuList[0]?.postsId}`)
+    //     this.$router.push(`/wiki/${this.$route.params.id}/${this.menuList[0]?.postsId}`)
+    //   }
+    // }
   },
   methods: {
     openWikiDetail () {

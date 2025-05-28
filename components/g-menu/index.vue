@@ -40,13 +40,13 @@ export default {
         path: '/wiki'
       }
     ]
-    let activeIndex = 0
+    const activeIndex = -1
     const current = ''
-    for (let i = 0; i < navBars.length; i++) {
-      if (this.$route.path.includes(navBars[i].path)) {
-        activeIndex = i
-      }
-    }
+    // for (let i = 0; i < navBars.length; i++) {
+    //   if (this.$route.path.includes(navBars[i].path)) {
+    //     activeIndex = i
+    //   }
+    // }
     const userInfo = this.$store.state.user.userInfo
     const { q = '' } = this.$route.query
     return {
@@ -79,13 +79,8 @@ export default {
         },
         {
           label: '互动论坛',
-          child: [{
-            label: '流程规范库',
-            path: '/article'
-          }, {
-            label: '敏捷',
-            path: 'b'
-          }],
+          path: '/article',
+          child: [],
           icon: require('@/assets/images/menu/forum.png')
         },
         {
@@ -119,7 +114,7 @@ export default {
       this.userInfo = userInfo
     },
     '$route' (to) {
-      console.log('coiming')
+      console.log('coimings')
       let hasNav = false
       let navIndex = 0
       // this.navBars.forEach((item, index) => {
@@ -128,6 +123,9 @@ export default {
       //     navIndex = index
       //   }
       // })
+      if (to.path === '/article') {
+        this.current = to.path + '?tagId=' + to.query.tagId
+      }
       for (let i = 0; i < this.userMenu.length; i++) {
         if (this.userMenu[i]?.path && this.userMenu[i].path === to.path) {
           hasNav = true
@@ -137,9 +135,10 @@ export default {
           if (this.userMenu[i].path === '/wiki' && (/\/wiki\/.*\/?$/).test(to.path)) {
             hasNav = true
             navIndex = i
-            return
-          }
-          if (paths?.length > 0 && paths.includes(to.path)) {
+          } else if (this.userMenu[i].path === '/article' && (/\/article\/.*\/?$/).test(to.path)) {
+            hasNav = true
+            navIndex = i
+          } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
             hasNav = true
             navIndex = i
           }
@@ -150,10 +149,14 @@ export default {
   },
   beforeMount () {
     this.fetchWikiList()
+    this.fetchTagList()
   },
   mounted () {
     // this.getMessageCount()
     EventBus.$on('G_UPDATE_MSG_COUNT', this.getMessageCount)
+    if (this.$route.path === '/article') {
+      this.current = this.$route.path + '?tagId=' + this.$route.query.tagId
+    }
   },
   beforeDestroy () {
     EventBus.$off('G_UPDATE_MSG_COUNT', this.getMessageCount)
@@ -183,7 +186,6 @@ export default {
         pageSize: 100,
         filter: { categoryId: '' }
       }).then((res) => {
-        console.log(res, 'res')
         if (res?.length > 0)
           this.userMenu[1].child = res.map((i) => {
             return {
@@ -192,6 +194,35 @@ export default {
             }
           })
         this.current = this.userMenu[1].child[0].path
+        if (this.userMenu.length > 0) {
+          for (let i = 0; i < this.userMenu.length; i++) {
+            console.log('hahah', this.userMenu)
+            if (this.userMenu[i]?.path && this.userMenu[i].path === this.$route.path) {
+              this.activeIndex = i
+            } else if (this.userMenu[i]?.child && this.userMenu[i].child.length > 0) {
+              const paths = this.userMenu[i].child.map(i => i.path)
+              if (this.userMenu[i].path === '/wiki' && (/\/wiki\/.*\/?$/).test(this.$route.path)) {
+                this.activeIndex = i
+              } else if (this.userMenu[i].path === '/article' && (/\/article\/.*\/?$/).test(this.$route.path)) {
+                this.activeIndex = i
+                this.current = this.$route.path
+              } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
+                this.activeIndex = i
+              }
+            }
+          }
+        }
+      })
+    },
+    fetchTagList () {
+      this.$api.getTagsByRef().then((res) => {
+        if (res?.length > 0)
+          this.userMenu[2].child = res.map((i) => {
+            return {
+              label: i.name,
+              path: `${this.userMenu[2].path}?tagId=${i.id}`
+            }
+          })
       })
     }
   }

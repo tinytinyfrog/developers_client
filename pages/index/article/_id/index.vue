@@ -163,7 +163,7 @@ export default {
     display: flex;
     width: 100%;
     height: 100%;
-    justify-content: space-between;
+    justify-content: space-around;
     border-radius: @g-radius;
     box-sizing: border-box;
     min-height: 100vh;

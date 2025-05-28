@@ -28,7 +28,7 @@
               </a>
               <a-menu slot="overlay">
                 <a-menu-item>
-                  <a href="javascript:;">个人中心</a>
+                  <a href="javascript:;" @click="handleGoto">个人中心</a>
                 </a-menu-item>
                 <a-menu-item>
                   <span style="color:red" @click="logout">退出系统</span>
@@ -227,6 +227,9 @@ export default {
     },
     handleLogin () {
       location.href = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
+    },
+    handleGoto () {
+      this.$router.push('/user')
     }
   }
 }

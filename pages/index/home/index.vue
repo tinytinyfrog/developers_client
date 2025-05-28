@@ -24,7 +24,7 @@
                 </div>
               </div>
               <div class="header-right">
-                <div class="more">
+                <div class="more" @click="e => handleGoto(`/article`)">
                   更多 >
                   <div />
                 </div>
@@ -33,28 +33,29 @@
           </template>
           <template>
             <div class="info-content">
-              <div v-for="(item,index) of infoList" :key="index" class="info-item">
+              <div v-for="(item,index) of postList" :key="index" class="info-item" @click="e => handleGoto(`/article/${item.id}`)">
                 <div class="item-left">
                   <div style="width:14px">
-                    <img v-if="item.flag" :src="item.flag" class="img">
+                    <!-- <img v-if="item.flag" :src="item.flag" class="img"> -->
+                    <img :src="item.icon" class="img">
                   </div>
                   <div class="tag">
                     <a-tag color="blue">
-                      {{ item.label }}
+                      {{ item.categoryDesc }}
                     </a-tag>
                   </div>
-                  <div class="content" :title="item.content">
-                    {{ item.content }}
+                  <div class="content" :title="item.title + item.introduction">
+                    {{ item.title }}
                   </div>
                 </div>
                 <div class="item-right">
-                  <a-avatar style="width:14px;height:14px" />
+                  <a-avatar class="item-avatar" :src="item.authorAvatar || defaultImg" />
                   <div class="name">
-                    {{ item.name }}
+                    {{ item.authorNickname }}
                   </div>
                   <div class="divier" />
                   <div>
-                    {{ item.time }}
+                    {{ item.createAtString }}
                   </div>
                 </div>
               </div>
@@ -65,15 +66,15 @@
           <template>
             <div class="info-content">
               <div class="block">
-                <div class="block-item">
+                <div v-if="aiList[0]" class="block-item" @click="e => handleGoto(`/article/${aiList[0].id}`)">
                   <div>
                     <img class="img" src="~/assets/images/home/bg1.png">
                   </div>
                   <div class="content">
-                    铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就
+                    {{ aiList[0] && aiList[0].introduction }}
                   </div>
                 </div>
-                <div class="block-item">
+                <div v-if="aiList[1]" class="block-item" @click="e => handleGoto(`/article/${aiList[1].id}`)">
                   <div>
                     <img class="img" src="~/assets/images/home/bg2.png">
                   </div>
@@ -82,24 +83,26 @@
                   </div>
                 </div>
               </div>
-              <div v-for="(item,index) of aiList" :key="index" class="info-item">
-                <div class="full-item">
-                  <div class="tag">
-                    <a-tag color="blue">
-                      {{ item.label }}
-                    </a-tag>
-                  </div>
-                  <div class="content" :title="item.content">
-                    {{ item.content }}
+              <template v-if="aiList.length > 2">
+                <div v-for="(item,index) of aiList.filter((item,index) => index > 1)" :key="index" class="info-item" @click="e => handleGoto(`/article/${item.id}`)">
+                  <div class="full-item">
+                    <div class="tag">
+                      <a-tag color="blue">
+                        {{ item.categoryDesc }}
+                      </a-tag>
+                    </div>
+                    <div class="content" :title="item.content">
+                      {{ item.introduction }}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </template>
             </div>
           </template>
         </g-card>
       </div>
       <div class="item">
-        <g-card class="full-card" title="知识地图">
+        <g-card class="full-card" title="知识地图" hide-more>
           <template>
             <div class="map">
               <div v-for="(item,index) of mapList" :key="index" class="map-item">
@@ -113,52 +116,52 @@
         </g-card>
       </div>
       <div class="item">
-        <g-card class="half-card" title="事故复盘">
+        <g-card class="half-card" title="事故复盘" :go-to="e => handleGoto(`/wiki/1052942`)">
           <template>
             <div class="info-content">
-              <div v-for="(item,index) of reviewList" :key="index" class="info-item">
+              <div v-for="(item,index) of reviewList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/1052942/${item.postsId}`)">
                 <div class="item-left">
                   <div class="review-icon">
                     <img src="~/assets/images/home/warning.png" class="img">
                   </div>
-                  <div class="content-warning" :title="item.content">
-                    {{ item.content }}
+                  <div class="content-warning" :title="item.postsTitle">
+                    {{ item.postsTitle }}
                   </div>
                 </div>
                 <div class="item-right">
-                  <a-avatar style="width:14px;height:14px" />
+                  <a-avatar style="width:20px;height:20px" :src="item.authorAvatar ||defaultImg" />
                   <div class="name">
-                    {{ item.name }}
+                    {{ item.authorNickname || '-' }}
                   </div>
                   <div class="divier" />
                   <div>
-                    {{ item.time }}
+                    {{ item. createAtString }}
                   </div>
                 </div>
               </div>
             </div>
           </template>
         </g-card>
-        <g-card class="half-card" title="优秀案例">
+        <g-card class="half-card" title="优秀案例" :go-to="e => handleGoto(`/wiki/1052949`)">
           <template>
             <div class="info-content">
-              <div v-for="(item,index) of caseList" :key="index" class="info-item">
+              <div v-for="(item,index) of caseList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/1052949/${item.postsId}`)">
                 <div class="item-left">
                   <div class="case-icon">
                     <img src="~/assets/images/home/like.png" class="img">
                   </div>
-                  <div class="content" :title="item.content">
-                    {{ item.content }}
+                  <div class="content" :title="item.postsTitle">
+                    {{ item.postsTitle }}
                   </div>
                 </div>
                 <div class="item-right">
-                  <a-avatar style="width:14px;height:14px" />
+                  <a-avatar style="width:20px;height:20px" :src="item.authorAvatar ||defaultImg" />
                   <div class="name">
-                    {{ item.name }}
+                    {{ item.authorNickname || '-' }}
                   </div>
                   <div class="divier" />
                   <div>
-                    {{ item.time }}
+                    {{ item.createAtString }}
                   </div>
                 </div>
               </div>
@@ -229,7 +232,26 @@
           <template>
             <div class="expert">
               <a-carousel>
-                <div class="expert-list">
+                <div v-for="(item,index) of expertList" :key="index" class="expert-list">
+                  <div v-for="(k,i) of item.child" :key="i" class="expert-item">
+                    <div class="expert-img">
+                      <img class="img" :src="k.imageUrl">
+                      <img class="medal" src="~/assets/images/home/medal.png">
+                    </div>
+                    <div class="text">
+                      <div class="name">
+                        {{ k.honorsOwner || '-' }}
+                      </div>
+                      <div class="info">
+                        工号：{{ k.userCode || '-' }}
+                      </div>
+                      <div class="info">
+                        部门：{{ k.honorsDept|| '-' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="expert-list">
                   <div v-for="(item,index) of expertList" :key="index" class="expert-item">
                     <div class="expert-img">
                       <img class="img" :src="item.icon">
@@ -247,8 +269,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="expert-list">
+                </div> -->
+                <!-- <div class="expert-list">
                   <div v-for="(item,index) of expertList" :key="index" class="expert-item">
                     <div>
                       <img class="img" :src="item.icon">
@@ -265,7 +287,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </a-carousel>
             </div>
           </template>
@@ -274,23 +296,13 @@
           <template>
             <div class="hornor">
               <a-carousel>
-                <div class="hornor-list">
-                  <div v-for="(item,index) of hornorList" :key="index" class="hornor-item">
+                <div v-for="(item,index) of hornorList" :key="index" class="hornor-list">
+                  <div v-for="(k,i) of item.child" :key="i" class="hornor-item">
                     <div>
-                      <img class="img" :src="item.icon">
+                      <img class="img" :src="k.imageUrl">
                     </div>
                     <div class="text">
-                      {{ item.text }}
-                    </div>
-                  </div>
-                </div>
-                <div class="hornor-list">
-                  <div v-for="(item,index) of hornorList" :key="index" class="hornor-item">
-                    <div>
-                      <img class="img" :src="item.icon">
-                    </div>
-                    <div class="text">
-                      {{ item.text }}
+                      {{ k.title }}
                     </div>
                   </div>
                 </div>
@@ -325,25 +337,25 @@
           <template>
             <div class="talent">
               <a-carousel>
-                <div class="talent-list">
-                  <div v-for="(item,index) of expertList" :key="index" class="talent-item">
+                <div v-for="(item,index) of talentList" :key="index" class="talent-list">
+                  <div v-for="(k,i) of item.child" :key="i" class="talent-item">
                     <div>
-                      <img class="img" :src="item.icon">
+                      <img class="img" :src="k.avatar">
                     </div>
                     <div class="text">
-                      <div class="name">
-                        {{ item.name }}
+                      <div class="name" :title=" k.nickname || '-' ">
+                        {{ k.nickname || '-' }}
                       </div>
                       <div class="info">
-                        工号：{{ item.number }}
+                        工号：{{ k.userCode || '-' }}
                       </div>
                       <div class="info">
-                        部门：{{ item.dept }}
+                        部门：{{ k.deptName|| '-' }}
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="talent-list">
+                <!-- <div class="talent-list">
                   <div v-for="(item,index) of expertList" :key="index" class="talent-item">
                     <div>
                       <img class="img" :src="item.icon">
@@ -360,12 +372,12 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </a-carousel>
             </div>
           </template>
         </g-card>
-        <g-card class="half-card" title="数据统计">
+        <g-card class="half-card" title="数据统计" hide-more>
           <template>
             <div class="statistics">
               <div v-for="(item,index) of statisticList" :key="index">
@@ -413,8 +425,8 @@ const salon3Img = require('@/assets/images/home/salon3.png')
 const cert1Img = require('@/assets/images/home/cert1.png')
 const cert2Img = require('@/assets/images/home/cert2.png')
 const cert3Img = require('@/assets/images/home/cert3.png')
-const user1Img = require('@/assets/images/home/user1.png')
-const user2Img = require('@/assets/images/home/user2.png')
+// const user1Img = require('@/assets/images/home/user1.png')
+// const user2Img = require('@/assets/images/home/user2.png')
 const memberImg = require('@/assets/images/home/member.png')
 const viewImg = require('@/assets/images/home/view.png')
 const dayImg = require('@/assets/images/home/today.png')
@@ -427,6 +439,7 @@ const team2Img = require('@/assets/images/home/team2.png')
 const team3Img = require('@/assets/images/home/team3.png')
 const team4Img = require('@/assets/images/home/team4.png')
 const team5Img = require('@/assets/images/home/team5.png')
+const defaultImg = require('@/assets/images/home/default-user.png')
 export default {
   name: 'PageHome',
   components: {
@@ -446,182 +459,17 @@ export default {
       label: '推荐',
       icon: recommonImg
     }]
-    const infoList = [
-      {
-        label: '项目管理',
-        content: '年度重磅，拓维云2021 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: newImg
-      },
-      {
-        label: '项目管理',
-        content: '年度重磅，拓维云2021 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: hotImg
-      },
-      {
-        label: '项目管理',
-        content: '年度重磅，拓维云2021 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: recommonImg
-      }, {
-        label: '项目管理',
-        content: '年度重磅，拓维云2021 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      },
-      {
-        label: '项目管理',
-        content: '年度重磅，拓维云2021 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      },
-      {
-        label: '项目管理',
-        content: '年度重磅，拓维云2021 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      }, {
-        label: '项目管理',
-        content: '年度重磅，拓维云2021 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      },
-      {
-        label: '项目管理',
-        content: '年度重磅，拓维云2021 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      }
+    const postList = [
+
     ]
     const reviewList = [
-      {
-        label: '项目管理',
-        content: 'xx系统升级故障，应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: newImg
-      },
-      {
-        label: '项目管理',
-        content: 'xx系统升级故障， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: hotImg
-      },
-      {
-        label: '项目管理',
-        content: 'xx系统升级故障， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: recommonImg
-      }, {
-        label: '项目管理',
-        content: 'xx系统升级故障， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      },
-      {
-        label: '项目管理',
-        content: 'xx系统升级故障， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      }
+
     ]
     const caseList = [
-      {
-        label: '项目管理',
-        content: '智慧法务系统，应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: newImg
-      },
-      {
-        label: '项目管理',
-        content: '智慧法务系统，七大领域400 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: hotImg
-      },
-      {
-        label: '项目管理',
-        content: '智慧法务系统， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: recommonImg
-      }, {
-        label: '项目管理',
-        content: '智慧法务系统， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      },
-      {
-        label: 'AI',
-        content: '智慧法务系统， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      }
     ]
     const aiList = [
-      {
-        label: '项目管理',
-        content: '智慧法务系统，应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: newImg
-      },
-      {
-        label: '项目管理',
-        content: '智慧法务系统，七大领域400 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: hotImg
-      },
-      {
-        label: 'AI',
-        content: '智慧法务系统， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40',
-        flag: recommonImg
-      }, {
-        label: 'AI',
-        content: '智慧法务系统， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      },
-      {
-        label: 'AI',
-        content: '智慧法务系统， 应用构建技术实践精选，七大领域400 页➕内容可选',
-        avatar: '',
-        name: '张三丰',
-        time: '2024-02-21 19:30:40'
-      }
     ]
+    const wikiList = []
     const mapList = [
       {
         label: '项目管理领域',
@@ -686,91 +534,11 @@ export default {
         icon: cert3Img
       }
     ]
-    const expertList = [{
-      name: '郑学长',
-      number: '24883',
-      dept: '交付部',
-      icon: user1Img
-    },
-    {
-      name: '郑学长',
-      number: '24883',
-      dept: '交付部',
-      icon: user2Img
-    }, {
-      name: '郑学长',
-      number: '24883',
-      dept: '交付部',
-      icon: user1Img
-    }, {
-      name: '郑学长',
-      number: '24883',
-      dept: '交付部',
-      icon: user2Img
-    }, {
-      name: '郑学长',
-      number: '24883',
-      dept: '交付部',
-      icon: user1Img
-    }, {
-      name: '郑学长',
-      number: '24883',
-      dept: '交付部',
-      icon: user2Img
-    }]
-
+    const talentList = []
     const statisticList = [
-      {
-        child: [
-          {
-            label: '成员数',
-            count: '3980',
-            icon: memberImg
-          },
-          {
-            label: '总访问量',
-            count: '3980',
-            icon: viewImg
-          },
-          {
-            label: '当日访问量',
-            count: '3980',
-            icon: dayImg
-          }
-        ]
-      },
-      {
-        child: [
-          {
-            label: '帖子数',
-            count: '2080',
-            icon: postImg
-          },
-          {
-            label: '开发平台&通用框架',
-            count: '36',
-            icon: devloperImg
-          }
 
-        ]
-      },
-      {
-        child: [
-          {
-            label: '咨询广场',
-            count: '782',
-            icon: infoImg
-          },
-          {
-            label: '知识库',
-            count: '990',
-            icon: wikiImg
-          }
-
-        ]
-      }
     ]
-
+    const expertList = []
     const teamList = [
       {
         project: '河北高速项目',
@@ -798,12 +566,12 @@ export default {
         icon: team5Img
       }
     ]
-
     return {
       aiList,
+      wikiList,
+      postList,
       tabList,
       activeIndex,
-      infoList,
       reviewList,
       caseList,
       mapList,
@@ -811,13 +579,206 @@ export default {
       salonList,
       hornorList,
       expertList,
+      talentList,
       statisticList,
-      teamList
+      teamList,
+      defaultImg
     }
+  },
+  watch: {
+    activeIndex (val) {
+      if (typeof val === 'number') {
+        this.fetchPostList()
+      }
+    }
+  },
+  beforeMount () {
+    this.fetchPostList()
+    this.fetchAiPostList()
+    this.fetchWikiList()
+    this.fetchCaseList()
+    this.fetchReviewList()
+    this.fetchStatistics()
+    this.fetchUserStatistics()
+    this.fetchHonorList()
+    this.fetchHonorWallperList()
+    this.fetchBannerList()
   },
   methods: {
     handleClick (index) {
       this.activeIndex = index
+    },
+    handleGoto (path) {
+      this.$router.push(path)
+    },
+    fetchUserStatistics () {
+      const params = {
+        pageSize: 12,
+        pageNo: 1,
+        filter: {
+          countMonth: '2025-05'
+        }
+      }
+      this.$api.getUserStatistics(params).then((res) => {
+        console.log(res, 'getuser')
+        if (res.length <= 6) {
+          this.talentList = [{
+            child: res
+          }]
+        } else {
+          this.talentList = [{
+            child: res.splice(0, 6)
+          }, {
+            child: res.splice(0, 6)
+          }]
+        }
+      })
+    },
+    fetchHonorList () {
+      const params = {
+        honorsType: '1'
+      }
+      this.$api.getHonorList(params).then((res) => {
+        console.log(res, 'honor')
+        if (res.length <= 6) {
+          this.expertList = [{
+            child: res
+          }]
+        } else {
+          this.expertList = [{
+            child: res.splice(0, 6)
+          }, {
+            child: res.splice(0, 6)
+          }]
+        }
+      })
+    },
+    fetchHonorWallperList () {
+      const params = {
+        honorsType: '2'
+      }
+      this.$api.getHonorList(params).then((res) => {
+        if (res.length <= 3) {
+          this.hornorList = [{
+            child: res
+          }]
+        } else {
+          this.hornorList = [{
+            child: res.splice(0, 3)
+          }, {
+            child: res.splice(0, 3)
+          }]
+        }
+      })
+    },
+    fetchPostList () {
+      const params = {
+        pageSize: 8, pageNo: 1, filter: { category: 'ARTICLE', tagIds: [], sortByViews: this.activeIndex === 1 ? true : null, official: this.activeIndex === 2 ? true : null, marrow: null }
+      }
+      this.$api.getPostList(params).then((res) => {
+        if (res?.length > 0) {
+          res = res.map((i) => {
+            return { ...i, icon: this.activeIndex === 0 ? newImg : this.activeIndex === 1 ? hotImg : recommonImg }
+          })
+          this.postList = res
+        }
+      })
+    },
+    fetchAiPostList () {
+      const params = {
+        pageSize: 8, pageNo: 1, filter: { category: 'ARTICLE', tagIds: [1042840] }
+      }
+      this.$api.getPostList(params).then((res) => {
+        if (res?.length > 0) {
+          this.aiList = res
+          console.log(this.aiList, 'ailist')
+        }
+      })
+    },
+    fetchWikiList () {
+      this.$api.getWikiList({
+        pageNo: 1,
+        pageSize: 100,
+        filter: { categoryId: '' }
+      }).then((res) => {
+        if (res?.length > 0)
+          this.wikiList = res
+      })
+    },
+    fetchCaseList () {
+      this.$api.getWikiNodeListInfoById(1052949).then((res) => {
+        if (res?.nodeList.length > 0)
+          this.caseList = res.nodeList
+      })
+    },
+    fetchReviewList () {
+      this.$api.getWikiNodeListInfoById(1052942).then((res) => {
+        if (res?.nodeList.length > 0)
+          this.reviewList = res.nodeList
+      })
+    },
+    fetchStatistics () {
+      this.$api.getStatistics().then((res) => {
+        if (res) {
+          console.log('getStatistics', res)
+          this.statisticList = [{
+            child: [
+              {
+                label: '成员数',
+                count: res?.userCount || 0,
+                icon: memberImg
+              },
+              {
+                label: '总访问量',
+                count: res?.totalViews || 0,
+                icon: viewImg
+              },
+              {
+                label: '当日访问量',
+                count: res?.todayViews || 0,
+                icon: dayImg
+              }
+            ]
+          },
+          {
+            child: [
+              {
+                label: '帖子数',
+                count: res?.articleCount || 0,
+                icon: postImg
+              },
+              {
+                label: '开发平台&通用框架',
+                count: res?.platformOpsPostCount || 0,
+                icon: devloperImg
+              }
+
+            ]
+          },
+          {
+            child: [
+              {
+                label: '咨询广场',
+                count: res?.newsCount || 0,
+                icon: infoImg
+              },
+              {
+                label: '知识库',
+                count: res?.wikiCount || 0,
+                icon: wikiImg
+              }
+
+            ]
+          }]
+          // this.statisticList = res
+        }
+      })
+    },
+    fetchBannerList () {
+      const params = { pageSize: 10, pageNo: 1, filter: { state: null, name: null, type: 'HOME_CAROUSEL' } }
+      this.$api.getBannerLists(params).then((res) => {
+        console.log(res, 'banner')
+      })
     }
   }
 }
@@ -936,6 +897,7 @@ export default {
     }
     .info-content {
         padding: 22px 20px;
+        height: 542px;
         .block {
           display: flex;
           column-gap: 20px;
@@ -951,7 +913,7 @@ export default {
               width: 118px;
               height: 118px;
             }
-            margin-bottom: 27px;
+            margin-bottom: 28px;
             .content {
               flex: 1;
               color: rgb(40, 40, 40);
@@ -961,6 +923,7 @@ export default {
               overflow: hidden; /* 隐藏溢出的内容 */
               -webkit-line-clamp: 5;
               -webkit-box-orient: vertical;
+              height: 108px;
             }
           }
         }
@@ -970,6 +933,7 @@ export default {
             justify-content: space-between;
             padding: 18px 12px;
             border-bottom: 1px solid rgb(226, 232, 246);
+            cursor: pointer;
             .full-item {
                 display:flex;
                 column-gap: 8px;
@@ -979,8 +943,9 @@ export default {
             .item-left {
                 display:flex;
                 column-gap: 8px;
-                width: 62%;
+                flex:1;
                 align-items:center;
+                width: 0;
                 .review-icon {
                   width:24px;
                   height:24px;
@@ -1032,8 +997,13 @@ export default {
                 display:flex;
                 column-gap: 8px;
                 align-items:center;
+                min-width: 38%;
+                .item-avatar {
+                  width: 24px;
+                  height: 24px;
+                }
                 .name {
-                    width:46px;
+                    width:60px;
                     white-space: nowrap; /* 防止文本换行 */
                     overflow: hidden; /* 隐藏溢出的内容 */
                     text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
@@ -1183,6 +1153,7 @@ export default {
       background: rgba(255, 255, 255, 0.6);
       padding: 16px;
       column-gap:20px;
+      height: 116px;
        .expert-img {
          position: relative;
             .img {
@@ -1205,6 +1176,10 @@ export default {
         color: rgb(40, 40, 40);
         font-size: 18px;
         font-weight: 400;
+        width:60px;
+                    white-space: nowrap; /* 防止文本换行 */
+                    overflow: hidden; /* 隐藏溢出的内容 */
+                    text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
        }
        .info {
         color: rgb(89, 89, 89);
@@ -1247,6 +1222,10 @@ export default {
         color: rgb(40, 40, 40);
         font-size: 18px;
         font-weight: 400;
+        width:80px;
+                    white-space: nowrap; /* 防止文本换行 */
+                    overflow: hidden; /* 隐藏溢出的内容 */
+                    text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
        }
        .info {
         color: rgb(89, 89, 89);

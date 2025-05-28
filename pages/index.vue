@@ -26,6 +26,7 @@
     </div>
     <GWxOauth :show.sync="showLogin" @email-login="emailLogin = true" />
     <GLogin :show.sync="emailLogin" @qrcode-login="showLogin = true" /> -->
+    <GFooter />
   </div>
 </template>
 

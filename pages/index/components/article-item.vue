@@ -114,7 +114,8 @@ export default {
       this.$utils.openNewWindow(`/tag/${id}?name=${encodeURIComponent(name)}`)
     },
     onNative (url) {
-      this.$utils.openNewWindow(url, this.article.title)
+      this.$router.push(url)
+      // this.$utils.openNewWindow(url, this.article.title)
     }
   }
 }
