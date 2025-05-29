@@ -33,32 +33,37 @@
           </template>
           <template>
             <div class="info-content">
-              <div v-for="(item,index) of postList" :key="index" class="info-item" @click="e => handleGoto(`/article/${item.id}`)">
-                <div class="item-left">
-                  <div style="width:14px">
-                    <!-- <img v-if="item.flag" :src="item.flag" class="img"> -->
-                    <img :src="item.icon" class="img">
+              <template v-if="postList.length > 0">
+                <div v-for="(item,index) of postList" :key="index" class="info-item" @click="e => handleGoto(`/article/${item.id}`)">
+                  <div class="item-left">
+                    <div style="width:14px">
+                      <!-- <img v-if="item.flag" :src="item.flag" class="img"> -->
+                      <img :src="item.icon" class="img">
+                    </div>
+                    <div class="tag">
+                      <a-tag color="blue">
+                        {{ item.categoryDesc }}
+                      </a-tag>
+                    </div>
+                    <div class="content" :title="item.title + item.introduction">
+                      {{ item.title }}
+                    </div>
                   </div>
-                  <div class="tag">
-                    <a-tag color="blue">
-                      {{ item.categoryDesc }}
-                    </a-tag>
-                  </div>
-                  <div class="content" :title="item.title + item.introduction">
-                    {{ item.title }}
+                  <div class="item-right">
+                    <a-avatar class="item-avatar" :src="item.authorAvatar || defaultImg" />
+                    <div class="name">
+                      {{ item.authorNickname }}
+                    </div>
+                    <div class="divier" />
+                    <div>
+                      {{ item.createAtString }}
+                    </div>
                   </div>
                 </div>
-                <div class="item-right">
-                  <a-avatar class="item-avatar" :src="item.authorAvatar || defaultImg" />
-                  <div class="name">
-                    {{ item.authorNickname }}
-                  </div>
-                  <div class="divier" />
-                  <div>
-                    {{ item.createAtString }}
-                  </div>
-                </div>
-              </div>
+              </template>
+              <template v-else>
+                <a-empty />
+              </template>
             </div>
           </template>
         </g-card>
@@ -104,13 +109,20 @@
       <div class="item">
         <g-card class="full-card" title="知识地图" hide-more>
           <template>
-            <div class="map">
-              <div v-for="(item,index) of mapList" :key="index" class="map-item">
-                <img class="img" :src="item.icon">
-                <div class="map-title">
-                  {{ item.label }}
+            <div v-if="mapList.length > 0" class="map">
+              <a-carousel>
+                <div v-for="(item,index) of mapList" :key="index" class="map-list">
+                  <div v-for="(k,i) of item.child" :key="i" class="map-item">
+                    <img class="img" :src="k.headImg">
+                    <div class="map-title">
+                      {{ k.name }}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </a-carousel>
+            </div>
+            <div v-else>
+              <a-empty />
             </div>
           </template>
         </g-card>
@@ -230,7 +242,7 @@
       <div class="item">
         <g-card class="half-card" title="专家墙">
           <template>
-            <div class="expert">
+            <div v-if="expertList.length > 0" class="expert">
               <a-carousel>
                 <div v-for="(item,index) of expertList" :key="index" class="expert-list">
                   <div v-for="(k,i) of item.child" :key="i" class="expert-item">
@@ -251,50 +263,16 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="expert-list">
-                  <div v-for="(item,index) of expertList" :key="index" class="expert-item">
-                    <div class="expert-img">
-                      <img class="img" :src="item.icon">
-                      <img class="medal" src="~/assets/images/home/medal.png">
-                    </div>
-                    <div class="text">
-                      <div class="name">
-                        {{ item.name }}
-                      </div>
-                      <div class="info">
-                        工号：{{ item.number }}
-                      </div>
-                      <div class="info">
-                        部门：{{ item.dept }}
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-                <!-- <div class="expert-list">
-                  <div v-for="(item,index) of expertList" :key="index" class="expert-item">
-                    <div>
-                      <img class="img" :src="item.icon">
-                    </div>
-                    <div>
-                      <div class="name">
-                        {{ item.name }}
-                      </div>
-                      <div class="info">
-                        工号：{{ item.number }}
-                      </div>
-                      <div class="info">
-                        部门：{{ item.dept }}
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
               </a-carousel>
+            </div>
+            <div v-else>
+              <a-empty />
             </div>
           </template>
         </g-card>
         <g-card class="half-card" title="荣誉墙">
           <template>
-            <div class="hornor">
+            <div v-if="hornorList.length > 0" class="hornor">
               <a-carousel>
                 <div v-for="(item,index) of hornorList" :key="index" class="hornor-list">
                   <div v-for="(k,i) of item.child" :key="i" class="hornor-item">
@@ -308,6 +286,9 @@
                 </div>
               </a-carousel>
             </div>
+            <div v-else>
+              <a-empty />
+            </div>
           </template>
         </g-card>
       </div>
@@ -318,12 +299,12 @@
               <el-carousel type="card" height="445px" style="width:840px">
                 <el-carousel-item v-for="item in teamList" :key="item">
                   <div class="team-item">
-                    <img :src="item.icon">
+                    <img :src="item.imageUrl">
                     <div class="team-project">
-                      {{ item.project }}
+                      {{ item.honorsOwner }}
                     </div>
-                    <div class="team-text">
-                      {{ item.text }}
+                    <div class="team-text" :title="item.summary">
+                      {{ item.summary }}
                     </div>
                   </div>
                 </el-carousel-item>
@@ -335,7 +316,7 @@
       <div class="item">
         <g-card class="half-card" title="贡献达人">
           <template>
-            <div class="talent">
+            <div v-if="talentList.length > 0" class="talent">
               <a-carousel>
                 <div v-for="(item,index) of talentList" :key="index" class="talent-list">
                   <div v-for="(k,i) of item.child" :key="i" class="talent-item">
@@ -375,6 +356,9 @@
                 </div> -->
               </a-carousel>
             </div>
+            <div v-else>
+              <a-empty />
+            </div>
           </template>
         </g-card>
         <g-card class="half-card" title="数据统计" hide-more>
@@ -412,19 +396,19 @@
 const hotImg = require('@/assets/images/home/hot.png')
 const newImg = require('@/assets/images/home/new.png')
 const recommonImg = require('@/assets/images/home/recommond.png')
-const projectImg = require('@/assets/images/home/project.png')
-const demandImg = require('@/assets/images/home/demand.png')
-const qualityImg = require('@/assets/images/home/quality.png')
-const techImg = require('@/assets/images/home/tech.png')
+// const projectImg = require('@/assets/images/home/project.png')
+// const demandImg = require('@/assets/images/home/demand.png')
+// const qualityImg = require('@/assets/images/home/quality.png')
+// const techImg = require('@/assets/images/home/tech.png')
 const month1Img = require('@/assets/images/home/month1.png')
 const month2Img = require('@/assets/images/home/month2.png')
 const month3Img = require('@/assets/images/home/month3.png')
 const salon1Img = require('@/assets/images/home/salon1.png')
 const salon2Img = require('@/assets/images/home/salon2.png')
 const salon3Img = require('@/assets/images/home/salon3.png')
-const cert1Img = require('@/assets/images/home/cert1.png')
-const cert2Img = require('@/assets/images/home/cert2.png')
-const cert3Img = require('@/assets/images/home/cert3.png')
+// const cert1Img = require('@/assets/images/home/cert1.png')
+// const cert2Img = require('@/assets/images/home/cert2.png')
+// const cert3Img = require('@/assets/images/home/cert3.png')
 // const user1Img = require('@/assets/images/home/user1.png')
 // const user2Img = require('@/assets/images/home/user2.png')
 const memberImg = require('@/assets/images/home/member.png')
@@ -434,11 +418,11 @@ const postImg = require('@/assets/images/home/post.png')
 const devloperImg = require('@/assets/images/home/devlopment.png')
 const infoImg = require('@/assets/images/home/info.png')
 const wikiImg = require('@/assets/images/home/wiki.png')
-const team1Img = require('@/assets/images/home/team1.png')
-const team2Img = require('@/assets/images/home/team2.png')
-const team3Img = require('@/assets/images/home/team3.png')
-const team4Img = require('@/assets/images/home/team4.png')
-const team5Img = require('@/assets/images/home/team5.png')
+// const team1Img = require('@/assets/images/home/team1.png')
+// const team2Img = require('@/assets/images/home/team2.png')
+// const team3Img = require('@/assets/images/home/team3.png')
+// const team4Img = require('@/assets/images/home/team4.png')
+// const team5Img = require('@/assets/images/home/team5.png')
 const defaultImg = require('@/assets/images/home/default-user.png')
 export default {
   name: 'PageHome',
@@ -471,26 +455,7 @@ export default {
     ]
     const wikiList = []
     const mapList = [
-      {
-        label: '项目管理领域',
-        path: '/projcet',
-        icon: projectImg
-      },
-      {
-        label: '需求领域',
-        path: '/demand',
-        icon: demandImg
-      },
-      {
-        label: '技术领域',
-        path: '/tech',
-        icon: techImg
-      },
-      {
-        label: '质量领域',
-        path: '/quality',
-        icon: qualityImg
-      }
+
     ]
     const monthList = [
       {
@@ -520,51 +485,14 @@ export default {
         icon: salon3Img
       }
     ]
-    const hornorList = [
-      {
-        text: '荣誉证书',
-        icon: cert1Img
-      },
-      {
-        text: '环境管理体系证书',
-        icon: cert2Img
-      },
-      {
-        text: '项目管理领域证书',
-        icon: cert3Img
-      }
-    ]
+    const hornorList = []
     const talentList = []
     const statisticList = [
 
     ]
     const expertList = []
     const teamList = [
-      {
-        project: '河北高速项目',
-        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
-        icon: team1Img
-      },
-      {
-        project: '湖南高速项目',
-        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
-        icon: team2Img
-      },
-      {
-        project: '北京联通项目',
-        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
-        icon: team3Img
-      },
-      {
-        project: '联通法务项目',
-        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
-        icon: team4Img
-      },
-      {
-        project: 'rpa',
-        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
-        icon: team5Img
-      }
+
     ]
     return {
       aiList,
@@ -603,6 +531,8 @@ export default {
     this.fetchHonorList()
     this.fetchHonorWallperList()
     this.fetchBannerList()
+    this.fetchTeamList()
+    this.fetchWikiMaps()
   },
   methods: {
     handleClick (index) {
@@ -671,16 +601,28 @@ export default {
         }
       })
     },
+    fetchTeamList () {
+      const params = {
+        honorsType: '3'
+      }
+      this.$api.getHonorList(params).then((res) => {
+        if (res) {
+          this.teamList = res
+        }
+      })
+    },
     fetchPostList () {
       const params = {
         pageSize: 8, pageNo: 1, filter: { category: 'ARTICLE', tagIds: [], sortByViews: this.activeIndex === 1 ? true : null, official: this.activeIndex === 2 ? true : null, marrow: null }
       }
       this.$api.getPostList(params).then((res) => {
-        if (res?.length > 0) {
+        console.log('cdee', res)
+        if (Array.isArray(res)) {
           res = res.map((i) => {
             return { ...i, icon: this.activeIndex === 0 ? newImg : this.activeIndex === 1 ? hotImg : recommonImg }
           })
           this.postList = res
+          console.log(this.postList, 'post')
         }
       })
     },
@@ -706,13 +648,15 @@ export default {
       })
     },
     fetchCaseList () {
-      this.$api.getWikiNodeListInfoById(1052949).then((res) => {
+      this.$api.getCaseList().then((res) => {
+        console.log(res, 'res')
         if (res?.nodeList.length > 0)
           this.caseList = res.nodeList
       })
     },
     fetchReviewList () {
-      this.$api.getWikiNodeListInfoById(1052942).then((res) => {
+      this.$api.getReviewList().then((res) => {
+        console.log(res, 'res')
         if (res?.nodeList.length > 0)
           this.reviewList = res.nodeList
       })
@@ -778,6 +722,19 @@ export default {
       const params = { pageSize: 10, pageNo: 1, filter: { state: null, name: null, type: 'HOME_CAROUSEL' } }
       this.$api.getBannerLists(params).then((res) => {
         console.log(res, 'banner')
+      })
+    },
+    fetchWikiMaps () {
+      const params = { pageNo: 1, pageSize: 100, filter: { categoryId: '' } }
+      this.$api.getWikiMaps(params).then((res) => {
+        if (Array.isArray(res)) {
+          const list = []
+          const count = Math.ceil(res.length / 4)
+          for (let i = 0; i < count; i++) {
+            list.push({ child: res.splice(0, 4) })
+          }
+          this.mapList = list
+        }
       })
     }
   }
@@ -1018,9 +975,10 @@ export default {
         }
 
     }
-    .map {
+    .map{
       padding: 36px 0px;
-      display: flex;
+    .map-list{
+      display: flex !important;
       column-gap: 30px;
       justify-content: center;
       .map-item {
@@ -1044,6 +1002,14 @@ export default {
         }
       }
     }
+    ::v-deep .ant-carousel .slick-slide {
+    height: 260px !important;
+    // line-height: 160px;
+    // background: #364d79 !important;
+    overflow: hidden;
+}
+
+  }
   .month {
     padding: 20px;
     padding-bottom: 32px;
@@ -1101,7 +1067,6 @@ export default {
               -webkit-box-orient: vertical;
         }
       }
-
     }
   }
   .hornor {
@@ -1212,6 +1177,7 @@ export default {
       background: rgba(255, 255, 255, 0.6);
       padding: 16px;
       column-gap:20px;
+      height: 116px;
        .img {
          width: 70px;
          height: 70px;
@@ -1329,7 +1295,7 @@ export default {
           font-weight: 400;
           display: -webkit-box;
           overflow: hidden; /* 隐藏溢出的内容 */
-          -webkit-line-clamp: 5;
+          -webkit-line-clamp: 4;
           -webkit-box-orient: vertical;
         }
     }

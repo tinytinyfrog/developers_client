@@ -96,12 +96,22 @@ export default {
         },
         {
           label: '咨询广场',
+          path: '/info',
           child: [{
-            label: '流程规范库',
-            path: '/a'
+            label: '活动新闻',
+            path: '/info?type=news'
           }, {
-            label: '敏捷',
-            path: 'b'
+            label: '专家墙',
+            path: '/info?type=expert'
+          }, {
+            label: '荣誉墙',
+            path: '/info?type=honor'
+          }, {
+            label: '优秀团队',
+            path: '/info?type=team'
+          }, {
+            label: '贡献达人',
+            path: '/info?type=talent'
           }],
           icon: require('@/assets/images/menu/info.png')
         }
@@ -136,6 +146,9 @@ export default {
             hasNav = true
             navIndex = i
           } else if (this.userMenu[i].path === '/article' && (/\/article\/.*\/?$/).test(to.path)) {
+            hasNav = true
+            navIndex = i
+          } else if (this.userMenu[i].path === '/info' && (/\/info\/.*\/?$/).test(to.path)) {
             hasNav = true
             navIndex = i
           } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
@@ -204,6 +217,9 @@ export default {
               if (this.userMenu[i].path === '/wiki' && (/\/wiki\/.*\/?$/).test(this.$route.path)) {
                 this.activeIndex = i
               } else if (this.userMenu[i].path === '/article' && (/\/article\/.*\/?$/).test(this.$route.path)) {
+                this.activeIndex = i
+                this.current = this.$route.path
+              } else if (this.userMenu[i].path === '/info' && (/\/info\/.*\/?$/).test(this.$route.path)) {
                 this.activeIndex = i
                 this.current = this.$route.path
               } else if (paths?.length > 0 && paths.includes(this.$route.path)) {

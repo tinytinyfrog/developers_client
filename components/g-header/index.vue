@@ -13,8 +13,11 @@
         </span> -->
       </div>
       <div class="header-right">
-        <img src="~/assets/images/header/comment.png" class="comment">
         <template v-if="userInfo">
+          <img src="~/assets/images/header/comment.png" class="comment">
+          <a-button type="primary" @click="handleWrite">
+            写文章
+          </a-button>
           <div class="msg">
             欢迎来到交付中心门户
           </div>
@@ -184,6 +187,10 @@ export default {
         this.$router.push(action.path)
       }
     },
+    handleWrite () {
+      this.$utils.openNewWindow('/draft/editor/new?t=article')
+      // this.$router.push('/draft/editor/new?t=article')
+    },
     logout () {
       console.log('coming')
       this.$confirm({
@@ -223,7 +230,8 @@ export default {
         this.currentSearch('search')
         return
       }
-      this.$utils.openNewWindow(`/search/${this.searchVal}`)
+      this.$router.push(`/search/${this.searchVal}`)
+      // this.$utils.openNewWindow(`/search/${this.searchVal}`)
     },
     handleLogin () {
       location.href = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
@@ -240,7 +248,7 @@ export default {
     min-height: @title-height;
     width: 100%;
     background-color: #fff;
-    border-bottom: 1px solid @border-4-color;
+   // border-bottom: 1px solid @border-4-color;
     transition: top 0.5s;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
     z-index: 2;

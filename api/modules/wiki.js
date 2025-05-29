@@ -110,6 +110,22 @@ const wikiApi = ($axios) => {
       return await $axios.post('/rest/wiki/category/all').then((res) => {
         return _get(res, 'data.data', [])
       })
+    },
+    async getCaseList () {
+      return await $axios.post('/rest/wiki/excellent-case').then((res) => {
+        return _get(res, 'data.data', [])
+      })
+    },
+    async getReviewList () {
+      return await $axios.post('/rest/wiki/accident-review').then((res) => {
+        console.log(res, '----')
+        return _get(res, 'data.data', [])
+      })
+    },
+    async getWikiMaps (params) {
+      return await $axios.post('/rest/wiki/maps', params).then((res) => {
+        return _get(res, 'data.data.list', [])
+      })
     }
   }
 }
