@@ -10,7 +10,7 @@ const axiosConfig = {
   proxy: !isProd
 }
 if (isProd) {
-  axiosConfig.baseURL = `${globalConfig.developerServer}${globalConfig.basePath}`
+  axiosConfig.baseURL = `${isProd ? globalConfig.productServer : globalConfig.developerServer}${globalConfig.basePath}`
   delete axiosConfig.prefix
   delete axiosConfig.proxy
 }
@@ -96,7 +96,7 @@ export default {
   axios: axiosConfig,
 
   proxy: {
-    [globalConfig.basePath]: globalConfig.developerServer
+    [globalConfig.basePath]: isProd ? globalConfig.productServer : globalConfig.developerServer
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
