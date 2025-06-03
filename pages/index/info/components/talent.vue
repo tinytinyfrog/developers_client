@@ -3,6 +3,13 @@
     <div>
       <div class="talent-header">
         <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
+        <div>
+          <a-select v-model="monthValue" style="width: 120px;">
+            <a-select-option v-for="(item,index) of months" :key="index" :value="item">
+              {{ item }}
+            </a-select-option>
+          </a-select>
+        </div>
       </div>
       <div v-if="talentList.length > 0" class="talent-list">
         <div v-for="(k,i) of talentList" :key="i" class="talent-item">
@@ -39,6 +46,7 @@
   </a-spin>
 </template>
 <script lang="js" name="TeamContent">
+import dayjs from 'dayjs'
 export default {
   name: 'TeamContent',
   components: {},
@@ -47,11 +55,17 @@ export default {
     const pageSize = 10
     const current = 1
     const loading = false
+    const inputValue = undefined
+    const months = []
+    const monthValue = dayjs().subtract(1, 'month').format('YYYY-MM')
     return {
       talentList,
       pageSize,
       current,
-      loading
+      loading,
+      inputValue,
+      months,
+      monthValue
     }
   },
   watch: {
@@ -70,24 +84,47 @@ export default {
         this.current = nVal
         this.fetchUserStatistics()
       }
+    },
+    monthValue (val) {
+      this.fetchUserStatistics()
     }
   },
   mounted () {
     this.fetchUserStatistics()
+    this.months = this.generateMonth()
   },
   methods: {
+    generateMonth () {
+      const currentMonths = []
+      const now = dayjs()
+
+      // 获取去年的同一天（例如，如果今天是 2023-03-15，我们想从 2022-03-15 开始）
+      const startOfLastYear = now.subtract(1, 'year').startOf('day')
+
+      // 循环从去年的同一天开始，到今年的同一天结束，每个月添加一次
+      for (let m = 0; m < 12; m++) {
+        const monthStart = startOfLastYear.add(m, 'month').startOf('month')
+        currentMonths.push(monthStart.format('YYYY-MM'))
+      }
+      return currentMonths
+    },
     fetchUserStatistics () {
       const params = {
-        pageSize: 12,
-        pageNo: 1,
+        pageSize: this.pageSize,
+        pageNo: this.current,
         filter: {
-          countMonth: '2025-05'
-        }
+          countMonth: this.monthValue,
+          keyword: this.inputValue
+        },
+        data: true
       }
+      this.loading = true
       this.$api.getUserStatistics(params).then((res) => {
         console.log(res, 'getuser')
-        this.talentList = res
+        this.talentList = res.list
         this.total = res.total
+      }).finally(() => {
+        this.loading = false
       })
     }
   }
@@ -95,7 +132,10 @@ export default {
 </script>
 <style lang="less" scoped>
      .talent-header {
-          margin-bottom: 10px;
+      display: flex;
+      margin-bottom: 10px;
+      width: 100%;
+      justify-content: space-between;
     }
     .talent-list {
       background-image: url('~/assets/images/home/talent-bg.png');

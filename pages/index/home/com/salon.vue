@@ -1,53 +1,53 @@
 <template>
   <g-card class="half-card" title="沙龙">
     <template>
-      <div class="salon">
+      <div v-if="salonList.length > 0" class="salon">
         <a-carousel>
-          <div class="salon-list">
+          <div v-for="(item,index) of salonList" :key="index" class="salon-list">
+            <div v-for="(k,i) of item.child" :key="i" class="salon-item">
+              <div>
+                <img class="img" :src="k.coverImageUrl">
+              </div>
+              <div class="text">
+                {{ k.summary }}
+              </div>
+            </div>
+          </div>
+          <!-- <div class="salon-list">
             <div v-for="(item,index) of salonList" :key="index" class="salon-item">
               <div>
                 <img class="img" :src="item.icon">
               </div>
               <div class="text">
-                {{ item.text }}
+                {{ item.summary }}
               </div>
             </div>
-          </div>
-          <div class="salon-list">
-            <div v-for="(item,index) of salonList" :key="index" class="salon-item">
-              <div>
-                <img class="img" :src="item.icon">
-              </div>
-              <div class="text">
-                {{ item.text }}
-              </div>
-            </div>
-          </div>
+          </div> -->
         </a-carousel>
       </div>
     </template>
   </g-card>
 </template>
 <script lang="js" name="salon">
-const salon1Img = require('@/assets/images/home/salon1.png')
-const salon2Img = require('@/assets/images/home/salon2.png')
-const salon3Img = require('@/assets/images/home/salon3.png')
+// const salon1Img = require('@/assets/images/home/salon1.png')
+// const salon2Img = require('@/assets/images/home/salon2.png')
+// const salon3Img = require('@/assets/images/home/salon3.png')
 export default {
   name: 'Salon',
   data () {
     const salonList = [
-      {
-        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
-        icon: salon1Img
-      },
-      {
-        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
-        icon: salon2Img
-      },
-      {
-        text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
-        icon: salon3Img
-      }
+    //   {
+    //     text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
+    //     icon: salon1Img
+    //   },
+    //   {
+    //     text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
+    //     icon: salon2Img
+    //   },
+    //   {
+    //     text: '铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮铁三角持续深耕，24年合同净额840万元，项目群利润率24%，成为行业线第二个粮但是开房间金额快乐健康是的克利夫兰科技开了就',
+    //     icon: salon3Img
+    //   }
     ]
     const loading = false
     return {
@@ -63,14 +63,29 @@ export default {
       this.$router.push(path)
     },
     fetchsalonList () {
-      //   this.loading = true
-      //   this.$api.getsalonList().then((res) => {
-      //     console.log(res, 'res')
-      //     if (res?.nodeList.length > 0)
-      //       this.salonList = res.nodeList
-      //   }).finally(() => {
-      //     this.loading = false
-      //   })
+      const params = {
+        pageSize: 6,
+        pageNo: 1,
+        filter: {
+          activityType: '2'
+        }
+      }
+      this.loading = true
+      this.$api.getInfoNews(params).then((res) => {
+        if (res.list.length <= 3) {
+          this.salonList = [{
+            child: res.list
+          }]
+        } else {
+          this.salonList = [{
+            child: res.list.splice(0, 3)
+          }, {
+            child: res.list.splice(0, 3)
+          }]
+        }
+      }).finally(() => {
+        this.loading = false
+      })
     }
   }
 }
@@ -89,7 +104,7 @@ export default {
           height: 300px;
           padding: 16px;
           .img {
-            width: 194px;
+            width: 100%;
             height: 145px;
           }
           .text {

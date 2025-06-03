@@ -81,7 +81,7 @@ export default {
       this.loading = true
       this.$api.getInfoHonorList(params).then((res) => {
         if (res) {
-          this.teamList = res
+          this.teamList = res.list
           this.total = res.total
         }
       }).finally(() => {

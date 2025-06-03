@@ -14,6 +14,8 @@
       <Honor v-if="activeIndex === 2" />
       <Team v-if="activeIndex === 3" />
       <Talent v-if="activeIndex === 4" />
+      <Salon v-if="activeIndex === 5" />
+      <Journal v-if="activeIndex === 6" />
     </div>
   </div>
 </template>
@@ -23,6 +25,8 @@ import Expert from './components/expert.vue'
 import Honor from './components/honor.vue'
 import Team from './components/team.vue'
 import Talent from './components/talent.vue'
+import Salon from './components/salon.vue'
+import Journal from './components/journal.vue'
 const honorImg = require('@/assets/images/info/honor.png')
 const expertImg = require('@/assets/images/info/expert.png')
 const teamImg = require('@/assets/images/info/team.png')
@@ -56,6 +60,16 @@ const menuList = [{
   path: '/info?type=talent',
   icon: talentImg,
   id: 'talent'
+}, {
+  label: '沙龙',
+  path: '/info?type=salon',
+  icon: talentImg,
+  id: 'salon'
+}, {
+  label: '月刊',
+  path: '/info?type=journal',
+  icon: talentImg,
+  id: 'journal'
 }]
 export default {
   name: 'InfoPage',
@@ -64,7 +78,9 @@ export default {
     Expert,
     Honor,
     Team,
-    Talent
+    Talent,
+    Salon,
+    Journal
   },
   data () {
     const activeIndex = 0

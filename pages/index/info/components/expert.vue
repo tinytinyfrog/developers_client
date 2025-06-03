@@ -22,7 +22,7 @@
                 {{ item.honorsDomain }}
               </div>
               <div class="expert-divier" />
-              <div>时间：{{ item.createAt }}</div>
+              <div>时间：{{ item.createAtString || '-' }}</div>
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default {
       this.loading = true
       this.$api.getInfoHonorList(params).then((res) => {
         if (res) {
-          this.expertList = res
+          this.expertList = res.list
           this.total = res.total
         }
       }).finally(() => {

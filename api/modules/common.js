@@ -43,7 +43,7 @@ const commonApi = ($axios) => {
     },
     getUserStatistics (params) {
       return $axios.post('/rest/accredit/post-user-statistics', params).then((res) => {
-        return _get(res, 'data.data.list', '')
+        return _get(res, params.data ? 'data.data' : 'data.data.list', '')
       })
     },
     getHonorList (params) {

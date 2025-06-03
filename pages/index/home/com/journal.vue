@@ -4,7 +4,17 @@
       <a-spin :spinning="loading">
         <div v-if="journalList.length > 0" class="journal">
           <a-carousel>
-            <div class="journal-list">
+            <div v-for="(item,index) of journalList" :key="index" class="journal-list">
+              <div v-for="(k,i) of item.child" :key="i" class="journal-item">
+                <div>
+                  <img class="img" :src="k.coverImageUrl">
+                </div>
+                <div class="text">
+                  {{ k.summary }}
+                </div>
+              </div>
+            </div>
+            <!-- <div class="journal-list">
               <div v-for="(item,index) of journalList" :key="index" class="journal-item">
                 <div>
                   <img class="img" :src="item.icon">
@@ -13,17 +23,7 @@
                   {{ item.text }}
                 </div>
               </div>
-            </div>
-            <div class="journal-list">
-              <div v-for="(item,index) of journalList" :key="index" class="journal-item">
-                <div>
-                  <img class="img" :src="item.icon">
-                </div>
-                <div class="text">
-                  {{ item.text }}
-                </div>
-              </div>
-            </div>
+            </div> -->
           </a-carousel>
         </div>
         <div v-else>
@@ -69,14 +69,29 @@ export default {
       this.$router.push(path)
     },
     fetchjournalList () {
-    //   this.loading = true
-    //   this.$api.getjournalList().then((res) => {
-    //     console.log(res, 'res')
-    //     if (res?.nodeList.length > 0)
-    //       this.journalList = res.nodeList
-    //   }).finally(() => {
-    //     this.loading = false
-    //   })
+      const params = {
+        pageSize: 12,
+        pageNo: 1,
+        filter: {
+          activityType: 1
+        }
+      }
+      this.loading = true
+      this.$api.getInfoNews(params).then((res) => {
+        if (res.list.length <= 3) {
+          this.journalList = [{
+            child: res.list
+          }]
+        } else {
+          this.journalList = [{
+            child: res.list.splice(0, 3)
+          }, {
+            child: res.list.splice(0, 3)
+          }]
+        }
+      }).finally(() => {
+        this.loading = false
+      })
     }
   }
 }
@@ -95,7 +110,7 @@ export default {
         height: 300px;
         padding: 16px;
         .img {
-          width: 194px;
+          width: 100%;
           height: 145px;
         }
         .text {

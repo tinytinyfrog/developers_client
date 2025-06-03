@@ -90,7 +90,7 @@ export default {
         pageNo: this.current,
         filter: {
           keyword: this.inputValue,
-          activityType: 1
+          activityType: 3
         }
       }
       this.loading = true

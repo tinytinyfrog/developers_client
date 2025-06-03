@@ -1,13 +1,13 @@
 <template>
   <a-spin :spinning="loading">
     <div>
-      <div class="honor-header">
+      <div class="salon-header">
         <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
       </div>
-      <div v-if="honorList.length > 0" class="honor-list">
-        <div v-for="(item,index) of honorList" :key="index" class="honor-item">
-          <img :src="item.imageUrl" class="honor-img">
-          <div class="honor-mask">
+      <div v-if="salonList.length > 0" class="salon-list">
+        <div v-for="(item,index) of salonList" :key="index" class="salon-item">
+          <img :src="item.coverImageUrl" class="salon-img">
+          <div class="salon-mask">
             <div>
               <div class="mask-item">
                 {{ item.title }}
@@ -27,7 +27,7 @@
       <div v-else>
         <a-empty />
       </div>
-      <div class="honor-pagination">
+      <div class="salon-pagination">
         <a-pagination
           v-model="current"
           :page-size.sync="pageSize"
@@ -40,59 +40,57 @@
     </div>
   </a-spin>
 </template>
-<script lang="js" name="HonorContent">
+<script lang="js" name="SalonContent">
 export default {
-  name: 'HonorContent',
+  name: 'SalonContent',
   components: {},
   data () {
-    const honorList = []
+    const salonList = []
     const pageSize = 10
     const current = 1
     const loading = false
-    const inputValue = undefined
     return {
-      honorList,
+      salonList,
       pageSize,
       current,
-      loading,
-      inputValue
+      loading
     }
   },
   watch: {
     inputValue (nVal, oVal) {
-      this.fetchHonorList()
+      this.fetchsalonList()
     },
     pageSize (nVal, oVal) {
       if (nVal !== oVal && nVal && oVal) {
         console.log(nVal, oVal)
         this.pageSize = nVal
-        this.fetchHonorList()
+        this.fetchsalonList()
       }
     },
     current (nVal, oVal) {
       if (nVal !== oVal && nVal && oVal) {
         this.current = nVal
-        this.fetchHonorList()
+        this.fetchsalonList()
       }
     }
   },
   mounted () {
-    this.fetchHonorList()
+    this.fetchsalonList()
   },
   methods: {
-    fetchHonorList () {
+    fetchsalonList () {
       const params = {
         pageSize: this.pageSize,
         pageNo: this.current,
         filter: {
           keyword: this.inputValue,
-          honorsType: '2'
+          activityType: '2'
         }
       }
       this.loading = true
-      this.$api.getInfoHonorList(params).then((res) => {
+      this.$api.getInfoNews(params).then((res) => {
         if (res) {
-          this.honorList = res.list
+          this.salonList = res.list
           this.total = res.total
         }
       }).finally(() => {
@@ -103,25 +101,25 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .honor-header {
+    <style lang="less" scoped>
+      .salon-header {
           margin-bottom: 10px;
     }
-  .honor-list {
+  .salon-list {
     display: flex;
     column-gap:  20px;
     row-gap:20px;
     flex-wrap: wrap;
-    .honor-item {
+    .salon-item {
         width: 304px;
         height: 360px;
         position: relative;
         cursor: pointer;
-        .honor-img{
+        .salon-img{
             width: 100%;
             height: 360px;
         }
-        .honor-mask {
+        .salon-mask {
             position: absolute;
             bottom: 0px;
             width:100%;
@@ -144,8 +142,8 @@ export default {
         }
 
     }
-    .honor-item:hover {
-        .honor-mask {
+    .salon-item:hover {
+        .salon-mask {
             height: 360px;
             transition: height 0.3s ease;
             display: flex;
@@ -168,10 +166,11 @@ export default {
     }
   }
 
-  .honor-pagination {
+  .salon-pagination {
           margin-top:24px;
           width: 100%;
           display: flex;
           justify-content: flex-end;
       }
-</style>
+
+    </style>

@@ -100,18 +100,30 @@ export default {
           child: [{
             label: '活动新闻',
             path: '/info?type=news'
-          }, {
+          },
+          {
             label: '专家墙',
             path: '/info?type=expert'
-          }, {
+          },
+          {
             label: '荣誉墙',
             path: '/info?type=honor'
-          }, {
+          },
+          {
             label: '优秀团队',
             path: '/info?type=team'
-          }, {
+          },
+          {
             label: '贡献达人',
             path: '/info?type=talent'
+          },
+          {
+            label: '沙龙',
+            path: '/info?type=salon'
+          },
+          {
+            label: '月刊',
+            path: '/info?type=journal'
           }],
           icon: require('@/assets/images/menu/info.png')
         }

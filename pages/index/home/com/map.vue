@@ -5,7 +5,14 @@
         <div v-if="mapList.length > 0" class="map">
           <a-carousel>
             <div v-for="(item,index) of mapList" :key="index" class="map-list">
-              <div v-for="(k,i) of item.child" :key="i" class="map-item">
+              <div
+                v-for="(k,i) of item.child"
+                :key="i"
+                class="map-item"
+                @click="e => {
+                  handleGoto(`/wiki/${k.id}`)
+                }"
+              >
                 <img class="img" :src="k.headImg">
                 <div class="map-title">
                   {{ k.name }}
@@ -36,6 +43,9 @@ export default {
     this.fetchWikiMaps()
   },
   methods: {
+    handleClick (e) {
+      console.log(e, 'e')
+    },
     handleGoto (path) {
       this.$router.push(path)
     },

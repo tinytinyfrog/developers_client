@@ -1,13 +1,13 @@
 <template>
   <a-spin :spinning="loading">
     <div>
-      <div class="honor-header">
+      <div class="journal-header">
         <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
       </div>
-      <div v-if="honorList.length > 0" class="honor-list">
-        <div v-for="(item,index) of honorList" :key="index" class="honor-item">
-          <img :src="item.imageUrl" class="honor-img">
-          <div class="honor-mask">
+      <div v-if="journalList.length > 0" class="journal-list">
+        <div v-for="(item,index) of journalList" :key="index" class="journal-item">
+          <img :src="item.coverImageUrl" class="journal-img">
+          <div class="journal-mask">
             <div>
               <div class="mask-item">
                 {{ item.title }}
@@ -27,7 +27,7 @@
       <div v-else>
         <a-empty />
       </div>
-      <div class="honor-pagination">
+      <div class="journal-pagination">
         <a-pagination
           v-model="current"
           :page-size.sync="pageSize"
@@ -40,59 +40,57 @@
     </div>
   </a-spin>
 </template>
-<script lang="js" name="HonorContent">
+<script lang="js" name="JournalContent">
 export default {
-  name: 'HonorContent',
+  name: 'JournalContent',
   components: {},
   data () {
-    const honorList = []
+    const journalList = []
     const pageSize = 10
     const current = 1
     const loading = false
-    const inputValue = undefined
     return {
-      honorList,
+      journalList,
       pageSize,
       current,
-      loading,
-      inputValue
+      loading
     }
   },
   watch: {
     inputValue (nVal, oVal) {
-      this.fetchHonorList()
+      this.fetchjournalList()
     },
     pageSize (nVal, oVal) {
       if (nVal !== oVal && nVal && oVal) {
         console.log(nVal, oVal)
         this.pageSize = nVal
-        this.fetchHonorList()
+        this.fetchjournalList()
       }
     },
     current (nVal, oVal) {
       if (nVal !== oVal && nVal && oVal) {
         this.current = nVal
-        this.fetchHonorList()
+        this.fetchjournalList()
       }
     }
   },
   mounted () {
-    this.fetchHonorList()
+    this.fetchjournalList()
   },
   methods: {
-    fetchHonorList () {
+    fetchjournalList () {
       const params = {
         pageSize: this.pageSize,
         pageNo: this.current,
         filter: {
           keyword: this.inputValue,
-          honorsType: '2'
+          activityType: 1
         }
       }
       this.loading = true
-      this.$api.getInfoHonorList(params).then((res) => {
+      this.$api.getInfoNews(params).then((res) => {
         if (res) {
-          this.honorList = res.list
+          this.journalList = res.list
           this.total = res.total
         }
       }).finally(() => {
@@ -104,24 +102,24 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .honor-header {
+ .journal-header {
           margin-bottom: 10px;
     }
-  .honor-list {
+  .journal-list {
     display: flex;
     column-gap:  20px;
     row-gap:20px;
     flex-wrap: wrap;
-    .honor-item {
+    .journal-item {
         width: 304px;
         height: 360px;
         position: relative;
         cursor: pointer;
-        .honor-img{
+        .journal-img{
             width: 100%;
             height: 360px;
         }
-        .honor-mask {
+        .journal-mask {
             position: absolute;
             bottom: 0px;
             width:100%;
@@ -144,8 +142,8 @@ export default {
         }
 
     }
-    .honor-item:hover {
-        .honor-mask {
+    .journal-item:hover {
+        .journal-mask {
             height: 360px;
             transition: height 0.3s ease;
             display: flex;
@@ -168,7 +166,7 @@ export default {
     }
   }
 
-  .honor-pagination {
+  .journal-pagination {
           margin-top:24px;
           width: 100%;
           display: flex;

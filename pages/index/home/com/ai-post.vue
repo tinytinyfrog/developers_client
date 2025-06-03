@@ -2,7 +2,7 @@
   <g-card class="half-card" title="AI学习天地">
     <template>
       <a-spin :spinning="loading">
-        <div class="info-content">
+        <div v-if="aiList.length > 0" class="info-content">
           <div class="block">
             <div v-if="aiList[0]" class="block-item" @click="e => handleGoto(`/article/${aiList[0].id}`)">
               <div>
@@ -35,6 +35,9 @@
               </div>
             </div>
           </template>
+        </div>
+        <div v-else>
+          <a-empty />
         </div>
       </a-spin>
     </template>

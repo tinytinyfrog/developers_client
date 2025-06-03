@@ -4,7 +4,7 @@
       <a-spin :spinning="loading">
         <div v-if="honorList.length > 0" class="honor">
           <a-carousel>
-            <div v-for="(item,index) of honorList" :key="index" class="honor-list">
+            <div v-for="(item,index) of honorList" :key="index" class="honor-list" :class="[item.child.length === 3 ? 'honor-around' : 'honor-start']">
               <div v-for="(k,i) of item.child" :key="i" class="honor-item">
                 <div>
                   <img class="img" :src="k.imageUrl">
@@ -68,11 +68,11 @@ export default {
     padding-bottom: 32px;
     .honor-list {
       display: flex !important;
-      column-gap:14px;
+      width: 100%;
       .honor-item {
-        width: calc((100% - (14px * 2)) / 3);
+        width: 180px;
         height: 300px;
-        padding: 16px 24px;
+        padding: 16px 0px;
         padding-bottom: 10px;
         .img {
           width: 180px;
@@ -89,5 +89,11 @@ export default {
       }
 
     }
+    .honor-around {
+        justify-content: space-around;
+       }
+       .honor-start {
+        justify-content: start;
+       }
   }
     </style>

@@ -41,7 +41,7 @@
             </div>
           </a-carousel>
         </div>
-        <div v-else>
+        <div v-else class="talent-empty">
           <a-empty />
         </div>
       </a-spin>
@@ -100,6 +100,11 @@ export default {
         }
       }
       this.$api.getUserStatistics(params).then((res) => {
+        console.log(res, 'talent list')
+        if (!res || res.length === 0) {
+          this.talentList = []
+          return
+        }
         if (res.length <= 6) {
           this.talentList = [{
             child: res
@@ -167,5 +172,11 @@ export default {
        }
      }
     }
+  }
+  .talent-empty {
+    height:  348px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
     </style>
