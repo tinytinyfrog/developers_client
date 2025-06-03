@@ -2,94 +2,82 @@
   <a-spin :spinning="loading">
     <div>
       <div class="info-header">
-        <a-input placeholder="请输入关键字进行搜索" style="width: 320px" />
+        <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
       </div>
-      <div v-for="(item,index) of infoList" :key="index" class="info-item">
-        <div class="info-left">
-          <img :src="getImgUrl(item.headImg)" class="info-img">
-        </div>
-        <div class="info-right">
-          <div class="info-title" @click="e => handleGoto(`/info/${item.id}`)">
-            {{ item.title }}
+      <div v-if="infoList.length > 0">
+        <div v-for="(item,index) of infoList" :key="index" class="info-item">
+          <div class="info-left">
+            <img :src="item.coverImageUrl" class="info-img">
           </div>
-          <div class="info-content">
-            {{ item.introduction }}
-          </div>
-          <div class="info-bottom">
-            <div class="bottom-left">
-              <img src="~/assets/images/info/info.png" class="bottom-img">
-              {{ item.categoryDesc }}
+          <div class="info-right">
+            <div class="info-title" @click="e => handleGoto(`/info/${item.id}`)">
+              {{ item.title }}
             </div>
-            <div class="info-divier" />
-            <div>时间：{{ item.createAtString }}</div>
+            <div class="info-content">
+              {{ item.summary }}
+            </div>
+            <div class="info-bottom">
+              <div class="bottom-left">
+                <img src="~/assets/images/info/info.png" class="bottom-img">
+                {{ item.categoryDesc }}
+              </div>
+              <div class="info-divier" />
+              <div>时间：{{ item.createAtString }}</div>
+            </div>
           </div>
         </div>
+      </div>
+      <div v-else>
+        <a-empty />
       </div>
       <div class="info-pagination">
         <a-pagination
           v-model="current"
-          :page-size="pageSize"
+          :page-size.sync="pageSize"
           :total="total"
           show-size-changer
           show-quick-jumper
+          :show-total="(total) => `总共${total}条`"
         />
       </div>
-    </div>
     </div>
   </a-spin>
 </template>
 <script lang="js" name="InfoContent">
 
-// const salon1Img = require('@/assets/images/home/salon1.png')
-// const salon2Img = require('@/assets/images/home/salon2.png')
-// const infoList = [{
-//   title: '资讯标题展示信息文案',
-//   content: '低代码开发平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率。低代码开过可视化界面和少量代码快速构建应用程序的工具，显著降低平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率',
-//   type: '资讯中心',
-//   createAt: '2025-03-21',
-//   icon: salon1Img
-// },
-// {
-//   title: '资讯标题展示信息文案',
-//   content: '低代码开发平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率。低代码开过可视化界面和少量代码快速构建应用程序的工具，显著降低平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率',
-//   type: '资讯中心',
-//   createAt: '2025-03-21',
-//   icon: salon2Img
-// },
-// {
-//   title: '资讯标题展示信息文案',
-//   content: '低代码开发平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率。低代码开过可视化界面和少量代码快速构建应用程序的工具，显著降低平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率',
-//   type: '资讯中心',
-//   createAt: '2025-03-21',
-//   icon: salon1Img
-// }, {
-//   title: '资讯标题展示信息文案',
-//   content: '低代码开发平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率。低代码开过可视化界面和少量代码快速构建应用程序的工具，显著降低平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率',
-//   type: '资讯中心',
-//   createAt: '2025-03-21',
-//   icon: salon2Img
-// }]
 export default {
   name: 'InfoContent',
   components: {},
   data () {
     const infoList = []
-    const pageSize = 5
+    const pageSize = 10
     const current = 1
     const loading = false
+    const inputValue = undefined
     return {
       infoList,
       pageSize,
       current,
-      loading
+      loading,
+      inputValue
     }
   },
   watch: {
+    inputValue (nVal, oVal) {
+      this.fetchPostList()
+    },
     pageSize (nVal, oVal) {
-      if (nVal !== oVal && nVal && oVal) this.fetchPostList()
+      if (nVal !== oVal && nVal && oVal) {
+        console.log(nVal, oVal)
+        this.pageSize = nVal
+        this.fetchPostList()
+      }
     },
     current (nVal, oVal) {
-      if (nVal !== oVal && nVal && oVal) this.fetchPostList()
+      if (nVal !== oVal && nVal && oVal) {
+        this.current = nVal
+        this.fetchPostList()
+      }
     }
   },
   mounted () {
@@ -97,10 +85,16 @@ export default {
   },
   methods: {
     fetchPostList () {
-      const params = { pageSize: this.pageSize, pageNo: this.current, filter: { category: 'INFORMATION' }, data: true }
+      const params = {
+        pageSize: this.pageSize,
+        pageNo: this.current,
+        filter: {
+          keyword: this.inputValue,
+          activityType: 1
+        }
+      }
       this.loading = true
-      this.$api.getPostList(params).then((res) => {
-        console.log(res, 'info res')
+      this.$api.getInfoNews(params).then((res) => {
         this.infoList = res.list
         this.total = res.total
       }).catch().finally(() => {
@@ -135,7 +129,8 @@ export default {
             display: flex;
             column-gap: 24px;
             padding: 18px 24px;
-            background: rgb(247, 249, 253);
+            // background: rgb(247, 249, 253);
+            background:white;
             margin-top: 10px;
             .info-left {
                 .info-img {
@@ -158,10 +153,11 @@ export default {
                     color: rgb(89, 89, 89);
                     font-size: 14px;
                     font-weight: 400;
-                    margin: 12px 0px 30px 0px;
+                    height: 70px;
+                    margin: 10px 0;
                     display: -webkit-box;
                     overflow: hidden; /* 隐藏溢出的内容 */
-                    -webkit-line-clamp: 3;
+                    -webkit-line-clamp: 4;
                     -webkit-box-orient: vertical;
                 }
                 .info-bottom {

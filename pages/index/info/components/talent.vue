@@ -1,27 +1,42 @@
 <template>
-  <div>
-    <div class="talent-header">
-      <a-input placeholder="请输入关键字进行搜索" style="width: 320px" />
-    </div>
-    <div class="talent-list">
-      <div v-for="(k,i) of talentList" :key="i" class="talent-item">
-        <div>
-          <img class="img" :src="k.avatar">
-        </div>
-        <div class="text">
-          <div class="name" :title=" k.nickname || '-' ">
-            {{ k.nickname || '-' }}
+  <a-spin :spinning="loading">
+    <div>
+      <div class="talent-header">
+        <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
+      </div>
+      <div v-if="talentList.length > 0" class="talent-list">
+        <div v-for="(k,i) of talentList" :key="i" class="talent-item">
+          <div>
+            <img class="img" :src="k.avatar">
           </div>
-          <div class="info">
-            工号：{{ k.userCode || '-' }}
-          </div>
-          <div class="info">
-            部门：{{ k.deptName|| '-' }}
+          <div class="text">
+            <div class="name" :title=" k.nickname || '-' ">
+              {{ k.nickname || '-' }}
+            </div>
+            <div class="info">
+              工号：{{ k.userCode || '-' }}
+            </div>
+            <div class="info">
+              部门：{{ k.deptName|| '-' }}
+            </div>
           </div>
         </div>
       </div>
+      <div v-else>
+        <a-empty />
+      </div>
+      <div class="talent-pagination">
+        <a-pagination
+          v-model="current"
+          :page-size.sync="pageSize"
+          :total="total"
+          show-size-changer
+          show-quick-jumper
+          :show-total="(total) => `总共${total}条`"
+        />
+      </div>
     </div>
-  </div>
+  </a-spin>
 </template>
 <script lang="js" name="TeamContent">
 export default {
@@ -29,8 +44,32 @@ export default {
   components: {},
   data () {
     const talentList = []
+    const pageSize = 10
+    const current = 1
+    const loading = false
     return {
-      talentList
+      talentList,
+      pageSize,
+      current,
+      loading
+    }
+  },
+  watch: {
+    inputValue (nVal, oVal) {
+      this.fetchUserStatistics()
+    },
+    pageSize (nVal, oVal) {
+      if (nVal !== oVal && nVal && oVal) {
+        console.log(nVal, oVal)
+        this.pageSize = nVal
+        this.fetchUserStatistics()
+      }
+    },
+    current (nVal, oVal) {
+      if (nVal !== oVal && nVal && oVal) {
+        this.current = nVal
+        this.fetchUserStatistics()
+      }
     }
   },
   mounted () {
@@ -48,6 +87,7 @@ export default {
       this.$api.getUserStatistics(params).then((res) => {
         console.log(res, 'getuser')
         this.talentList = res
+        this.total = res.total
       })
     }
   }
@@ -98,4 +138,10 @@ export default {
        }
      }
     }
+    .talent-pagination {
+          margin-top:24px;
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+      }
 </style>

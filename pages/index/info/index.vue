@@ -106,6 +106,7 @@ export default {
     display: flex;
     background: #fff;
     display: flex;
+    background:#f7f8fa;
     .info-menu {
         width:265px;
         height: calc( 100vh - 140px);
@@ -120,6 +121,7 @@ export default {
             display: flex;
             column-gap: 10px;
             cursor: pointer;
+            align-items: center;
             img {
                 width: 18px;
                 height: 18px;

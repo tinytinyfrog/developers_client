@@ -1,20 +1,35 @@
 <template>
-  <div>
-    <div class="team-header">
-      <a-input placeholder="请输入关键字进行搜索" style="width: 320px" />
-    </div>
-    <div class="team-list">
-      <div v-for="(item,index) of teamList" :key="index" class="team-item">
-        <img :src="item.imageUrl">
-        <div class="team-project">
-          {{ item.honorsOwner }}
-        </div>
-        <div class="team-text" :title="item.summary">
-          {{ item.summary }}
+  <a-spin :spinning="loading">
+    <div>
+      <div class="team-header">
+        <a-input-search placeholder="请输入关键字进行搜索" style="width: 320px" />
+      </div>
+      <div v-if="teamList.length > 0" class="team-list">
+        <div v-for="(item,index) of teamList" :key="index" class="team-item">
+          <img :src="item.imageUrl">
+          <div class="team-project">
+            {{ item.honorsOwner }}
+          </div>
+          <div class="team-text" :title="item.summary">
+            {{ item.summary }}
+          </div>
         </div>
       </div>
+      <div v-else>
+        <a-empty />
+      </div>
+      <div class="team-pagination">
+        <a-pagination
+          v-model="current"
+          :page-size.sync="pageSize"
+          :total="total"
+          show-size-changer
+          show-quick-jumper
+          :show-total="(total) => `总共${total}条`"
+        />
+      </div>
     </div>
-  </div>
+  </a-spin>
 </template>
 <script lang="js" name="TeamContent">
 export default {
@@ -22,8 +37,32 @@ export default {
   components: {},
   data () {
     const teamList = []
+    const pageSize = 10
+    const current = 1
+    const loading = false
     return {
-      teamList
+      teamList,
+      pageSize,
+      current,
+      loading
+    }
+  },
+  watch: {
+    inputValue (nVal, oVal) {
+      this.fetchTeamList()
+    },
+    pageSize (nVal, oVal) {
+      if (nVal !== oVal && nVal && oVal) {
+        console.log(nVal, oVal)
+        this.pageSize = nVal
+        this.fetchTeamList()
+      }
+    },
+    current (nVal, oVal) {
+      if (nVal !== oVal && nVal && oVal) {
+        this.current = nVal
+        this.fetchTeamList()
+      }
     }
   },
   mounted () {
@@ -32,12 +71,21 @@ export default {
   methods: {
     fetchTeamList () {
       const params = {
-        honorsType: '3'
+        pageSize: this.pageSize,
+        pageNo: this.current,
+        filter: {
+          keyword: this.inputValue,
+          honorsType: '3'
+        }
       }
-      this.$api.getHonorList(params).then((res) => {
+      this.loading = true
+      this.$api.getInfoHonorList(params).then((res) => {
         if (res) {
           this.teamList = res
+          this.total = res.total
         }
+      }).finally(() => {
+        this.loading = false
       })
     }
 
@@ -53,7 +101,7 @@ export default {
         column-gap:20px;
         row-gap:20px;
       .team-item {
-      width:100%;
+      width: calc((100% - (20px * 3)) / 4);;
       height: 445px;
       border: 1px solid rgb(206, 223, 244);
       border-radius: 4px;
@@ -81,5 +129,11 @@ export default {
         }
       }
     }
+    .team-pagination {
+          margin-top:24px;
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+      }
 
   </style>

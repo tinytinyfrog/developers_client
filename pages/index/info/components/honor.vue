@@ -1,30 +1,44 @@
 <template>
-  <div>
-    <div class="honor-header">
-      <a-input placeholder="请输入关键字进行搜索" style="width: 320px" />
-    </div>
-    <div class="honor-list">
-      <div v-for="(item,index) of honorList" :key="index" class="honor-item">
-        <img :src="item.imageUrl" class="honor-img">
-        </img>
-        <div class="honor-mask">
-          <div>
-            <div class="mask-item">
-              {{ item.title }}
+  <a-spin :spinning="loading">
+    <div>
+      <div class="honor-header">
+        <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
+      </div>
+      <div v-if="honorList.length > 0" class="honor-list">
+        <div v-for="(item,index) of honorList" :key="index" class="honor-item">
+          <img :src="item.imageUrl" class="honor-img">
+          <div class="honor-mask">
+            <div>
+              <div class="mask-item">
+                {{ item.title }}
+              </div>
+              <div class="mask-summary">
+                {{ item.summary }}
+              </div>
             </div>
-            <div class="mask-summary">
-              {{ item.summary }}
+            <div class="mask-button">
+              <a-button type="primary" shape="round">
+                查看详情
+              </a-button>
             </div>
-          </div>
-          <div class="mask-button">
-            <a-button type="primary" shape="round">
-              查看详情
-            </a-button>
           </div>
         </div>
       </div>
+      <div v-else>
+        <a-empty />
+      </div>
+      <div class="honor-pagination">
+        <a-pagination
+          v-model="current"
+          :page-size.sync="pageSize"
+          :total="total"
+          show-size-changer
+          show-quick-jumper
+          :show-total="(total) => `总共${total}条`"
+        />
+      </div>
     </div>
-  </div>
+  </a-spin>
 </template>
 <script lang="js" name="HonorContent">
 export default {
@@ -32,22 +46,57 @@ export default {
   components: {},
   data () {
     const honorList = []
+    const pageSize = 10
+    const current = 1
+    const loading = false
+    const inputValue = undefined
     return {
-      honorList
+      honorList,
+      pageSize,
+      current,
+      loading,
+      inputValue
+    }
+  },
+  watch: {
+    inputValue (nVal, oVal) {
+      this.fetchHonorList()
+    },
+    pageSize (nVal, oVal) {
+      if (nVal !== oVal && nVal && oVal) {
+        console.log(nVal, oVal)
+        this.pageSize = nVal
+        this.fetchHonorList()
+      }
+    },
+    current (nVal, oVal) {
+      if (nVal !== oVal && nVal && oVal) {
+        this.current = nVal
+        this.fetchHonorList()
+      }
     }
   },
   mounted () {
-    this.fetchPostList()
+    this.fetchHonorList()
   },
   methods: {
-    fetchPostList () {
+    fetchHonorList () {
       const params = {
-        honorsType: '2'
+        pageSize: this.pageSize,
+        pageNo: this.current,
+        filter: {
+          keyword: this.inputValue,
+          honorsType: '2'
+        }
       }
-      this.$api.getHonorList(params).then((res) => {
+      this.loading = true
+      this.$api.getInfoHonorList(params).then((res) => {
         if (res) {
           this.honorList = res
+          this.total = res.total
         }
+      }).finally(() => {
+        this.loading = false
       })
     }
 
@@ -118,4 +167,11 @@ export default {
         }
     }
   }
+
+  .honor-pagination {
+          margin-top:24px;
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+      }
 </style>

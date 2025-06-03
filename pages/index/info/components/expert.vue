@@ -2,36 +2,42 @@
   <a-spin :spinning="loading">
     <div>
       <div class="expert-header">
-        <a-input placeholder="请输入关键字进行搜索" style="width: 320px" />
+        <a-input-search placeholder="请输入关键字进行搜索" style="width: 320px" />
       </div>
-      <div v-for="(item,index) of expertList" :key="index" class="expert-item">
-        <div class="expert-left">
-          <img :src="item.imageUrl" class="expert-img">
-        </div>
-        <div class="expert-right">
-          <div class="expert-title">
-            {{ item.title }}
+      <div v-if="expertList.length > 0">
+        <div v-for="(item,index) of expertList" :key="index" class="expert-item">
+          <div class="expert-left">
+            <img :src="item.imageUrl" class="expert-img">
           </div>
-          <div class="expert-content">
-            {{ item.summary }}
-          </div>
-          <div class="expert-bottom">
-            <div class="bottom-left">
-              <img src="~/assets/images/info/info.png" class="bottom-img">
-              {{ item.honorsDomain }}
+          <div class="expert-right">
+            <div class="expert-title">
+              {{ item.title }}
             </div>
-            <div class="expert-divier" />
-            <div>时间：{{ item.createAt }}</div>
+            <div class="expert-content">
+              {{ item.summary }}
+            </div>
+            <div class="expert-bottom">
+              <div class="bottom-left">
+                <img src="~/assets/images/info/info.png" class="bottom-img">
+                {{ item.honorsDomain }}
+              </div>
+              <div class="expert-divier" />
+              <div>时间：{{ item.createAt }}</div>
+            </div>
           </div>
         </div>
+      </div>
+      <div v-else>
+        <a-empty />
       </div>
       <div class="expert-pagination">
         <a-pagination
           v-model="current"
-          :page-size="pageSize"
+          :page-size.sync="pageSize"
           :total="total"
           show-size-changer
           show-quick-jumper
+          :show-total="(total) => `总共${total}条`"
         />
       </div>
     </div>
@@ -74,7 +80,7 @@ export default {
   components: {},
   data () {
     const expertList = []
-    const pageSize = 5
+    const pageSize = 10
     const current = 1
     const loading = false
     return {
@@ -86,24 +92,36 @@ export default {
   },
   watch: {
     pageSize (nVal, oVal) {
-      if (nVal !== oVal && nVal && oVal) this.fetchPostList()
+      if (nVal !== oVal && nVal && oVal) this.fetchExpertList()
     },
     current (nVal, oVal) {
-      if (nVal !== oVal && nVal && oVal) this.fetchPostList()
+      if (nVal !== oVal && nVal && oVal) this.fetchExpertList()
+    },
+    inputValue (nVal, oVal) {
+      this.fetchExpertList()
     }
   },
   mounted () {
-    this.fetchPostList()
+    this.fetchExpertList()
   },
   methods: {
-    fetchPostList () {
+    fetchExpertList () {
       const params = {
-        honorsType: '1'
+        pageSize: this.pageSize,
+        pageNo: this.current,
+        filter: {
+          keyword: this.inputValue,
+          honorsType: '1'
+        }
       }
-      this.$api.getHonorList(params).then((res) => {
+      this.loading = true
+      this.$api.getInfoHonorList(params).then((res) => {
         if (res) {
           this.expertList = res
+          this.total = res.total
         }
+      }).finally(() => {
+        this.loading = false
       })
     },
     handleGoto (path) {
@@ -134,7 +152,8 @@ export default {
               display: flex;
               column-gap: 24px;
               padding: 18px 24px;
-              background: rgb(247, 249, 253);
+              // background: rgb(247, 249, 253);
+              background:white;
               margin-top: 10px;
               .expert-left {
                   .expert-img {

@@ -6,6 +6,7 @@ import collectApi from './modules/collect'
 import commonApi from './modules/common'
 import messageApi from './modules/message'
 import wikiApi from './modules/wiki'
+import infoApi from './modules/info'
 
 export const api = function ($axios) {
   // $axios.setHeader('Token', jsCookie.get('__dp_tk__'))
@@ -17,6 +18,7 @@ export const api = function ($axios) {
     ...collectApi($axios),
     ...commonApi($axios),
     ...messageApi($axios),
-    ...wikiApi($axios)
+    ...wikiApi($axios),
+    ...infoApi($axios)
   }
 }
