@@ -95,7 +95,7 @@ export default {
           icon: require('@/assets/images/menu/platform.png')
         },
         {
-          label: '咨询广场',
+          label: '资讯广场',
           path: '/info',
           child: [{
             label: '活动新闻',
@@ -135,6 +135,10 @@ export default {
       // })
       if (to.path === '/article') {
         this.current = to.path + '?tagId=' + to.query.tagId
+      }
+      if (to.path === '/info') {
+        console.log(to, 'to')
+        this.current = to.path + '?type=' + to.query.type
       }
       for (let i = 0; i < this.userMenu.length; i++) {
         if (this.userMenu[i]?.path && this.userMenu[i].path === to.path) {

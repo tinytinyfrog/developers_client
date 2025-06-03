@@ -1,10 +1,17 @@
 <template>
-  <div class="page-article-container g-margin-top">
-    <div class="tag-list">
+  <div class="page-article-container ">
+    <div class="info-menu">
+      <div v-for="(item,index) of tagList" :key="index" class="menu-item" :class="tagIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+        <div>
+          {{ item.name }}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="tag-list">
       <div v-for="(item,index) of tagList" :key="index" class="tag-item" :class="[tagIndex === index ?'active-tag':'']" @click="e => handleGoto(item)">
         {{ item.name }}
       </div>
-    </div>
+    </div> -->
     <div class="article-content">
       <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
       <div v-infinite-scroll="loadData" class="home-list-box">
@@ -21,6 +28,7 @@
       <SliderRecommend :recommend="randomArticle" />
       <slider-tags />
     </CommonSlider> -->
+  </div>
   </div>
 </template>
 
@@ -226,39 +234,64 @@ export default {
   display: flex;
   width: 100%;
   height: 100%;
-  justify-content: center;
+  // justify-content: center;
   min-height: 100vh;
-  column-gap: 4%;
-  .tag-list {
-    background: #fff;
-    border-radius: 8px;
-    width:200px;
-    padding:  16px 0px;
-    margin-bottom: 20px;
-    height:calc(100vh - 184px);
-    .tag-item {
-      padding: 8px 20px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 400;
-      color:rgba(0, 0, 0, 0.8)
+  .info-menu {
+        width:265px;
+        min-height: calc( 100vh - 140px);
+        background: rgb(246, 246, 246);
+        color: rgb(40, 40, 40);
+        font-family: PingFang SC;
+        font-size: 16px;
+        font-weight: 400;
+        border-right: 1px solid rgb(226, 232, 246);;
+        .menu-item {
+            padding: 16px 24px;
+            display: flex;
+            column-gap: 10px;
+            cursor: pointer;
+            img {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        .active-menu {
+            background: #ffff;
+            border-left:  6px solid  rgb(0, 112, 255);
+        }
+
     }
-    .tag-item:hover{
-      color:#0070ff
-    }
-    .active-tag {
-      color: #0070ff;
-      font-size: 14px;
-      font-weight: 500;
-    }
-  }
+  // .tag-list {
+  //   background: #fff;
+  //   border-radius: 8px;
+  //   width:200px;
+  //   padding:  16px 0px;
+  //   margin-bottom: 20px;
+  //   height:calc(100vh - 184px);
+  //   .tag-item {
+  //     padding: 8px 20px;
+  //     cursor: pointer;
+  //     font-size: 14px;
+  //     font-weight: 400;
+  //     color:rgba(0, 0, 0, 0.8)
+  //   }
+  //   .tag-item:hover{
+  //     color:#0070ff
+  //   }
+  //   .active-tag {
+  //     color: #0070ff;
+  //     font-size: 14px;
+  //     font-weight: 500;
+  //   }
+  // }
   .article-content {
-    width: @content-max-width;
+    // width: @content-max-width;
+    width:0;
+    flex:1;
     height: 100%;
     background-color: #fff;
     border-radius: @g-radius;
     padding-bottom: 20px;
-    margin-right: @g-padding * 2;
   }
   .loading {
     width: 100%;

@@ -1,7 +1,7 @@
 <template>
   <div class="info-container">
     <div class="info-menu">
-      <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="activeIndex === index ? 'active-menu':''" @click="e => handleClick(index)">
+      <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="activeIndex === index ? 'active-menu':''" @click="e => handleClick(item,index)">
         <img :src="item.icon">
         <div>
           {{ item.label }}
@@ -10,11 +10,19 @@
     </div>
     <div class="info-content">
       <Info v-if="activeIndex === 0" />
+      <Expert v-if="activeIndex === 1" />
+      <Honor v-if="activeIndex === 2" />
+      <Team v-if="activeIndex === 3" />
+      <Talent v-if="activeIndex === 4" />
     </div>
   </div>
 </template>
-<script lang="ts" name="InfoPage">
+<script lang="js" name="InfoPage">
 import Info from './components/info.vue'
+import Expert from './components/expert.vue'
+import Honor from './components/honor.vue'
+import Team from './components/team.vue'
+import Talent from './components/talent.vue'
 const honorImg = require('@/assets/images/info/honor.png')
 const expertImg = require('@/assets/images/info/expert.png')
 const teamImg = require('@/assets/images/info/team.png')
@@ -24,29 +32,39 @@ const talentImg = require('@/assets/images/info/talent.png')
 const menuList = [{
   label: '活动新闻',
   path: '/info?type=news',
-  icon: honorImg
+  icon: honorImg,
+  id: 'news'
 }, {
   label: '专家墙',
   path: '/info?type=expert',
-  icon: expertImg
+  icon: expertImg,
+  id: 'expert'
 }, {
   label: '荣誉墙',
   path: '/info?type=honor',
-  icon: demandImg
+  icon: demandImg,
+  id: 'honor'
 
 }, {
   label: '优秀团队',
   path: '/info?type=team',
-  icon: teamImg
+  icon: teamImg,
+  id: 'team'
+
 }, {
   label: '贡献达人',
   path: '/info?type=talent',
-  icon: talentImg
+  icon: talentImg,
+  id: 'talent'
 }]
 export default {
   name: 'InfoPage',
   components: {
-    Info
+    Info,
+    Expert,
+    Honor,
+    Team,
+    Talent
   },
   data () {
     const activeIndex = 0
@@ -57,8 +75,25 @@ export default {
       infoList
     }
   },
+  watch: {
+    '$route' (to) {
+      console.log(to, 'to')
+      const { type } = to.query
+      if (this.menuList.length > 0) {
+        this.activeIndex = this.menuList.findIndex(item => item.id === type)
+        console.log(this.activeIndex, 'coming')
+      }
+    }
+  },
+  mounted () {
+    if (this.menuList.length > 0) {
+      this.activeIndex = this.menuList.findIndex(item => item.id === this.$route.query.type)
+      console.log(this.activeIndex, 'coming')
+    }
+  },
   methods: {
-    handleClick (index) {
+    handleClick (item, index) {
+      this.$router.push(item.path)
       this.activeIndex = index
     }
   }

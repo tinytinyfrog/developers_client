@@ -236,7 +236,7 @@ export default {
     height: 100%;
     width: 100%;
     // max-width: @max-width;
-    justify-content: space-between;
+    justify-content: center;
     transition: all 0.2s;
 
     .ant-back-top {

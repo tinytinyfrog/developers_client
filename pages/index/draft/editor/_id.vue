@@ -180,6 +180,7 @@ export default {
       htmlContent: ''
     }
     let isSelf = true
+
     if (id !== 'new') {
       const userId = store.state.user.userInfo.id
       content = await $api[methodMap[t]](id)
@@ -187,6 +188,7 @@ export default {
         isSelf = userId === content.authorId
       }
     }
+    console.log(content)
     const tagGroup = store.state.tag.tagGroup
     return {
       id,
