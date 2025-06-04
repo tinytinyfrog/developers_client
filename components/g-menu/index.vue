@@ -219,7 +219,7 @@ export default {
           this.userMenu[1].child = res.map((i) => {
             return {
               label: i.name,
-              path: this.userMenu[1].path + '/' + i.id
+              path: this.userMenu[1].path + '?wikiId=' + i.id
             }
           })
         this.current = this.userMenu[1].child[0].path

@@ -10,7 +10,7 @@
                 :key="i"
                 class="map-item"
                 @click="e => {
-                  handleGoto(`/wiki/${k.id}`)
+                  handleGoto(`/wiki?wikiId=${k.id}`)
                 }"
               >
                 <img class="img" :src="k.headImg">

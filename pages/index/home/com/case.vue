@@ -3,7 +3,7 @@
     <template>
       <a-spin :spinning="loading">
         <div class="info-content">
-          <div v-for="(item,index) of caseList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/1052949/${item.postsId}`)">
+          <div v-for="(item,index) of caseList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/${item.postsId}?wikiId=1052949`)">
             <div class="item-left">
               <div class="case-icon">
                 <img src="~/assets/images/home/like.png" class="img">

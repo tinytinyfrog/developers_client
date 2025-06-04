@@ -46,7 +46,7 @@ export default {
       loading: true,
       article: null,
       ctxType: this.ctxType || 'ARTICLE',
-      nodeId: this.$route.params.id || ''
+      nodeId: this.$route.params.nodeId || ''
     }
   },
   provide () {
@@ -56,7 +56,7 @@ export default {
   },
   watch: {
     '$route' () {
-      const nodeId = this.$route.params.id
+      const nodeId = this.$route.params.nodeId
       if (nodeId && nodeId !== this.nodeId) {
         this.nodeId = nodeId
         this.article = null
@@ -99,11 +99,9 @@ export default {
 <style lang="less">
 @import '~/pages/components/byte-markdown-editor/theme.less';
 .page-wiki-node-detail {
-  width: 60%;
+  width: 100%;
   min-height: 100vh;
   padding-bottom: 100px;
-  margin: 0 auto;
-  margin-top: 20px;
   .loading-box {
     padding-top: 50px;
     text-align: center;

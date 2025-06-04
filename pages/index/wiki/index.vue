@@ -1,63 +1,197 @@
 <template>
-  <div class="page-wiki-container g-margin-top">
-    <div v-if="canEdit" class="wiki-title-box">
-      <h3 class="wiki-title">
-        知识库
-      </h3>
-      <div class="action">
-        <a-space>
-          <a-checkbox :checked="myWiki" @change="onChange">
-            我的
-          </a-checkbox>
-          <a-button type="primary" icon="plus" ghost @click="showDrawer = true">
-            添加知识库
-          </a-button>
-        </a-space>
+  <div>
+    <div class="page-wiki-container ">
+      <div class="info-menu">
+        <div v-for="(item,index) of tagList" :key="index" class="menu-item" :class="tagIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+          <div>
+            {{ item.name }}
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="wiki-list-box">
-      <CreateWiki :category-list="categoryList" :show-drawer.sync="showDrawer" />
-      <WikiList :category-list="categoryList" :wiki-type="myWiki ? 'self' : 'all'" />
+      <!-- <div class="tag-list">
+      <div v-for="(item,index) of tagList" :key="index" class="tag-item" :class="[tagIndex === index ?'active-tag':'']" @click="e => handleGoto(item)">
+        {{ item.name }}
+      </div>
+    </div> -->
+      <div class="wiki-content">
+        <!-- <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" /> -->
+        <div v-infinite-scroll="loadData" class="home-list-box">
+          <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
+        </div>
+        <g-empty :list="wikiList" :finished="finished" :loading="loading" />
+      </div>
+    <!-- <CommonSlider>
+      <slider-sign-in />
+      <SliderBanner />
+      <slider-my-achievement :my-achievement="myAchievement" />
+      <slider-list :slider-data="noticeData" />
+      <slider-honor-list :honor="honor" />
+      <SliderRecommend :recommend="randomArticle" />
+      <slider-tags />
+    </CommonSlider> -->
     </div>
   </div>
 </template>
 
 <script>
-import _get from 'lodash/get'
-import { RULE_ENUM } from '@/lib/enum'
-import EventBus from '../../../lib/event-bus'
-import WikiList from './components/wiki-list'
-import CreateWiki from './components/create-wiki'
+import EventBus from '@/lib/event-bus'
+// import HomeTitle from '../components/home-title.vue'
+import WikiItem from '../components/wiki-item.vue'
+
 export default {
-  name: 'PageWiki',
+  name: 'WikiHome',
   components: {
-    WikiList,
-    CreateWiki
+    // HomeTitle,
+    WikiItem
+    // CommonSlider,
+    // SliderList,
+    // SliderSignIn,
+    // SliderRecommend,
+    // SliderMyAchievement,
+    // SliderHonorList,
+    // SliderBanner
+  },
+  async asyncData ({ $api, store, route }) {
+    const { wikiId } = route.query
+    // if (category && !tagId) {
+    //   const tags = store.state.tag.tags
+    //   tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
+    // }
+    const data = {
+      // q,
+      finished: false,
+      pageNo: 1,
+      pageSize: 20,
+      articleList: [],
+      randomArticle: {
+        title: '随便看看',
+        list: []
+      },
+      honor: {
+        title: '作者榜',
+        list: []
+      },
+      noticeData: {
+        title: '公告',
+        list: []
+      },
+      myAchievement: null,
+      filter: {
+        wikiId
+      },
+      tagList: []
+    }
+
+    await Promise.all([
+      $api.getWikiList({
+        pageNo: 1,
+        pageSize: 100,
+        filter: { categoryId: '' }
+      }).then((list) => {
+        data.tagList = list
+      })
+    ])
+    return data
   },
   data () {
-    const perm = _get(this, '$store.state.user.userInfo.perm', 0)
-    let role = _get(this, '$store.state.user.userInfo.role', '')
-    role = role && role !== 'USER'
     return {
-      myWiki: false,
-      showDrawer: false,
-      categoryList: [],
-      canEdit: role || ((perm & RULE_ENUM.WIKI) === RULE_ENUM.WIKI)
+      loading: false,
+      currentTagIndex: 0,
+      tagIndex: -1,
+      titleTags: Object.freeze([
+        {
+          title: '最新',
+          type: 1
+        },
+        {
+          title: '最热',
+          type: 2,
+          prop: 'sortByViews'
+        },
+        {
+          title: '官方',
+          type: 3,
+          prop: 'official'
+        },
+        {
+          title: '加精',
+          type: 4,
+          prop: 'marrow'
+        }
+      ])
+    }
+  },
+  watch: {
+    currentTagIndex (nVal, oVal) {
+      console.log(nVal, oVal)
+      // if (nVal === oVal) { return }
+      // const filter = this.titleTags[nVal]
+      // this.filter.sortByViews = null
+      // this.filter.official = null
+      // this.filter.marrow = null
+      // if (filter.prop) {
+      //   this.filter[filter.prop] = true
+      // }
+      // this.clearStatus()
+      // this.loadData()
+    },
+    '$route' (to) {
+      const { wikiId } = to.query
+      // this.filter.tagIds = [tagId]
+      // this.filter.sortByViews = null
+      // this.filter.official = null
+      // this.filter.marrow = null
+      this.filter = {
+        wikiId
+      }
+
+      this.clearStatus()
+      this.loadData()
+      if (this.tagList.length > 0) {
+        this.tagIndex = this.tagList.findIndex(item => item.id === Number(wikiId))
+      }
     }
   },
   mounted () {
-    this.getWikiCategoryList()
+    this.loadData()
+    // EventBus.$on('G_Tags', (tagIds) => {
+    //   this.filter = Object.assign(this.filter, {
+    //     tagIds
+    //   })
+    //   this.clearStatus()
+    //   this.loadData()
+    // })
+    if (this.tagList.length > 0) {
+      this.tagIndex = this.tagList.findIndex(item => item.id === Number(this.$route.query.wikiId))
+    }
+  },
+  beforeDestroy () {
+    EventBus.$off('G_Tags')
   },
   methods: {
-    onChange () {
-      this.myWiki = !this.myWiki
-      this.$nextTick(() => {
-        EventBus.$emit('on-update-wiki')
-      })
+    handleGoto (item) {
+      this.$router.push(`/wiki?wikiId=${item.id}`)
     },
-    getWikiCategoryList () {
-      this.$api.getWikiCategoryList().then((list) => {
-        this.categoryList = list
+    clearStatus () {
+      this.pageNo = 1
+      this.finished = false
+      this.loading = false
+    },
+    loadData () {
+      if (this.loading || this.finished) { return }
+      this.loading = true
+      this.$api.getWikiNodes({
+        filter: this.filter,
+        pageNo: this.pageNo,
+        pageSize: this.pageSize
+      }).then((list) => {
+        if (list) {
+          this.wikiList = this.pageNo === 1 ? list : [...this.wikiList, ...list]
+          this.pageNo++
+          this.finished = list.length < this.pageSize
+        }
+      }).finally(() => {
+        this.loading = false
       })
     }
   }
@@ -66,27 +200,135 @@ export default {
 
 <style lang="less" scoped>
 .page-wiki-container {
+  position: relative;
+  display: flex;
   width: 100%;
-  background-color: #fff;
-  min-height: calc(100vh - @title-height - @g-margin * 3);
-  padding: @g-padding * 2;
-  .wiki-title-box {
-    display: flex;
-    height: 50px;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: @g-margin * 2;
-    padding: 0 @g-padding * 2;
-    background-color: @g-bg-blue;
-  }
-  .wiki-list-box {
-    position: relative;
-    overflow: hidden;
+  height: 100%;
+  // justify-content: center;
+  min-height: 100vh;
+  .info-menu {
+        width:265px;
+        min-height: calc( 100vh - 140px);
+        background: rgb(246, 246, 246);
+        color: rgb(40, 40, 40);
+        font-family: PingFang SC;
+        font-size: 16px;
+        font-weight: 400;
+        border-right: 1px solid rgb(226, 232, 246);;
+        .menu-item {
+            padding: 16px 24px;
+            display: flex;
+            column-gap: 10px;
+            cursor: pointer;
+            img {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        .active-menu {
+            background: #ffff;
+            border-left:  6px solid  rgb(0, 112, 255);
+        }
+
+    }
+  // .tag-list {
+  //   background: #fff;
+  //   border-radius: 8px;
+  //   width:200px;
+  //   padding:  16px 0px;
+  //   margin-bottom: 20px;
+  //   height:calc(100vh - 184px);
+  //   .tag-item {
+  //     padding: 8px 20px;
+  //     cursor: pointer;
+  //     font-size: 14px;
+  //     font-weight: 400;
+  //     color:rgba(0, 0, 0, 0.8)
+  //   }
+  //   .tag-item:hover{
+  //     color:#0070ff
+  //   }
+  //   .active-tag {
+  //     color: #0070ff;
+  //     font-size: 14px;
+  //     font-weight: 500;
+  //   }
+  // }
+  .wiki-content {
+    // width: @content-max-width;
+    width:0;
+    flex:1;
     height: 100%;
+    background-color: #fff;
+    border-radius: @g-radius;
+    padding-bottom: 20px;
   }
-  @media screen and (max-width: 1000px) {
-    .wiki-title-box {
-      display: none;
+  .loading {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    color: @font-color-third;
+    text-align: center;
+  }
+  .action-container {
+    position: relative;
+    padding: @g-padding * 2;
+    margin-bottom: @g-margin;
+    background-color: #fff;
+    border-radius: @g-radius;
+    border: 1px solid #fff;
+    .saying-text {
+      color: #000;
+      word-spacing: 5px;
+      text-indent: 30px;
+      margin-bottom: 20px;
+    }
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      content: "";
+      background-image: url("https://cdn.jsdelivr.net/gh/umlink/umlink-figure-bed_1@master/images/1633585808102WechatIMG14.jpeg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.3;
+    }
+  }
+  .banner {
+    width: 100%;
+    border-radius: @g-radius;
+  }
+  .tag-container {
+    background-color: #fff;
+    margin-bottom: @g-margin;
+    padding: @g-padding;
+    .tags {
+      margin: 0 auto;
+      width: @max-width;
+      padding: @g-margin 0;
+      .tag {
+        color: #849484;
+        display: inline-block;
+        background-color: #fff;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+        margin-right: 8px;
+        cursor: pointer;
+        &:hover {
+          color: @g-active-color;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 1000px) {
+  .page-article-container {
+    .article-content {
+      padding-bottom: 0;
+      margin-right:0;
     }
   }
 }

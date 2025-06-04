@@ -2,7 +2,7 @@
   <g-card class="half-card" title="事故复盘" :go-to="e => handleGoto(`/wiki/1052942`)">
     <template>
       <div class="info-content">
-        <div v-for="(item,index) of reviewList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/1052942/${item.postsId}`)">
+        <div v-for="(item,index) of reviewList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/${item.postsId}?wikiId=1052942`)">
           <div class="item-left">
             <div class="review-icon">
               <img src="~/assets/images/home/warning.png" class="img">

@@ -126,6 +126,11 @@ const wikiApi = ($axios) => {
       return await $axios.post('/rest/wiki/maps', params).then((res) => {
         return _get(res, 'data.data.list', [])
       })
+    },
+    async getWikiNodes (params) {
+      return await $axios.post('/rest/wiki/page-node-posts', params).then((res) => {
+        return _get(res, 'data.data.list', [])
+      })
     }
   }
 }

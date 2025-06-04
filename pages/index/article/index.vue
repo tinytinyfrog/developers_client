@@ -29,7 +29,6 @@
       <slider-tags />
     </CommonSlider> -->
   </div>
-  </div>
 </template>
 
 <script>

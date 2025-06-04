@@ -232,11 +232,11 @@ export default {
   width: 100%;
 
   .child-container {
-    display: flex;
+    // display: flex;
     height: 100%;
     width: 100%;
     // max-width: @max-width;
-    justify-content: center;
+    // justify-content: center;
     transition: all 0.2s;
 
     .ant-back-top {

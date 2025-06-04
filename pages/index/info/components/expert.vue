@@ -2,7 +2,7 @@
   <a-spin :spinning="loading">
     <div>
       <div class="expert-header">
-        <a-input-search placeholder="请输入关键字进行搜索" style="width: 320px" />
+        <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
       </div>
       <div v-if="expertList.length > 0">
         <div v-for="(item,index) of expertList" :key="index" class="expert-item">
@@ -83,11 +83,13 @@ export default {
     const pageSize = 10
     const current = 1
     const loading = false
+    const inputValue = undefined
     return {
       expertList,
       pageSize,
       current,
-      loading
+      loading,
+      inputValue
     }
   },
   watch: {
