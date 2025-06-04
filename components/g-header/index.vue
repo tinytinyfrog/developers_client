@@ -199,7 +199,7 @@ export default {
         okText: '确认',
         cancelText: '取消',
         onCancel: () => {},
-        onOk: async () => {
+        onOk: () => {
           console.log('coming')
           this.$api.logout({
             token: cookieUtils.getToken()
