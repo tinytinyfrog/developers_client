@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import cookieUtils from '@/lib/cookie-utils'
-import EventBus from '../lib/event-bus'
+// import EventBus from '../lib/event-bus'
 window._gAuthEvents = []
 Vue.directive('auth', (el, binding) => {
   try {
@@ -13,9 +13,10 @@ Vue.directive('auth', (el, binding) => {
         const userAgent = navigator.userAgent
         const isMiniProgram = /miniProgram/gi.test(userAgent)
         if (!isMiniProgram) {
-          EventBus.$emit('GLOGIN')
+        //  EventBus.$emit('GLOGIN')
+          Vue.prototype.$message.info('请先登录！')
         } else {
-          Vue.$message.info('微信小程序暂不支持登录')
+          Vue.prototype.$message.info('微信小程序暂不支持登录')
         }
         if (noLoginCallback) noLoginCallback()
         return
