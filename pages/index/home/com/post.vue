@@ -27,41 +27,38 @@
     </template>
     <template>
       <a-spin :spinning="loading">
-        <div class="info-content">
-          <template v-if="postList.length > 0">
-            <div v-for="(item,index) of postList" :key="index" class="info-item" @click="e => handleGoto(`/article/${item.id}`)">
-              <div class="item-left">
-                <div style="width:14px">
-                  <!-- <img v-if="item.flag" :src="item.flag" class="img"> -->
-                  <img :src="item.icon" class="img">
-                </div>
-                <div class="tag">
-                  <a-tag color="blue">
-                    {{ item.categoryDesc }}
-                  </a-tag>
-                </div>
-                <div class="content" :title="item.title + item.introduction">
-                  {{ item.title }}
-                </div>
+        <div v-if="postList.length > 0" class="info-content">
+          <div v-for="(item,index) of postList" :key="index" class="info-item" @click="e => handleGoto(`/article/${item.id}`)">
+            <div class="item-left">
+              <div style="width:14px">
+                <!-- <img v-if="item.flag" :src="item.flag" class="img"> -->
+                <img :src="item.icon" class="img">
               </div>
-              <div class="item-right">
-                <a-avatar class="item-avatar" :src="item.authorAvatar || defaultImg" />
-                <div class="name">
-                  {{ item.authorNickname }}
-                </div>
-                <div class="divier" />
-                <div>
-                  {{ item.createAtString }}
-                </div>
+              <div class="tag">
+                <a-tag color="blue">
+                  {{ item.categoryDesc }}
+                </a-tag>
+              </div>
+              <div class="content" :title="item.title + item.introduction">
+                {{ item.title }}
               </div>
             </div>
-          </template>
-          <template v-else>
-            <a-empty />
-          </template>
+            <div class="item-right">
+              <a-avatar class="item-avatar" :src="item.authorAvatar || defaultImg" />
+              <div class="name">
+                {{ item.authorNickname }}
+              </div>
+              <div class="divier" />
+              <div>
+                {{ item.createAtString }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="info-content info-empty">
+          <a-empty />
         </div>
       </a-spin>
-      </div>
     </template>
   </g-card>
 </template>
@@ -352,5 +349,10 @@ export default {
             }
         }
 
+    }
+    .info-empty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 </style>

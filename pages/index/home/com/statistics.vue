@@ -40,10 +40,10 @@ const wikiImg = require('@/assets/images/home/wiki.png')
 export default {
   name: 'Statistics',
   data () {
-    const statisticsList = []
+    const statisticList = []
     const loading = false
     return {
-      statisticsList,
+      statisticList,
       loading
     }
   },

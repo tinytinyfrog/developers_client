@@ -1,30 +1,24 @@
 <template>
-  <div>
-    <div class="page-wiki-container ">
-      <div class="info-menu">
-        <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
-          <div>
-            {{ item.name }}
-          </div>
+  <div class="page-article-container ">
+    <div class="info-menu">
+      <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+        <div>
+          {{ item.name }}
         </div>
       </div>
-      <!-- <div class="tag-list">
+    </div>
+    <!-- <div class="tag-list">
       <div v-for="(item,index) of menuList" :key="index" class="tag-item" :class="[menuIndex === index ?'active-tag':'']" @click="e => handleGoto(item)">
         {{ item.name }}
       </div>
     </div> -->
-      <div class="wiki-content">
-        <!-- <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentmenuIndex" /> -->
-        <div class="wiki-filter">
-          <div v-for="(item,index) of tagList" :key="index" class="wiki-tag" :class="tagIndex === item.value ? 'active-tag':''" @click="e =>{ handleTag(item)}">
-            {{ item.label }}
-          </div>
-        </div>
-        <div v-infinite-scroll="loadData" class="home-list-box">
-          <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
-        </div>
-        <g-empty :list="wikiList" :finished="finished" :loading="loading" />
+    <div class="article-content">
+      <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currenttagIndex" />
+      <div v-infinite-scroll="loadData" class="home-list-box">
+        <PlatformItem v-for="(item, index) in articleList" :key="index" :article="item" />
       </div>
+      <g-empty :list="articleList" :finished="finished" :loading="loading" />
+    </div>
     <!-- <CommonSlider>
       <slider-sign-in />
       <SliderBanner />
@@ -34,20 +28,29 @@
       <SliderRecommend :recommend="randomArticle" />
       <slider-tags />
     </CommonSlider> -->
-    </div>
   </div>
 </template>
 
 <script>
+/**
+ * 首页
+ * */
+// import CommonSlider from '@/pages/components/common-slider'
+// import SliderSignIn from '@/pages/components/slider-sign-in'
+// import SliderList from '@/pages/components/slider-list'
+// import SliderMyAchievement from '@/pages/components/slider-my-achievement'
+// import SliderRecommend from '@/pages/components/slider-recommend'
+// import SliderHonorList from '@/pages/components/slider-honor-list'
+// import SliderBanner from '@/pages/components/slider-banner'
 import EventBus from '@/lib/event-bus'
-// import HomeTitle from '../components/home-title.vue'
-import WikiItem from '../components/wiki-item.vue'
+import HomeTitle from '../components/home-title.vue'
+import PlatformItem from '../components/platform-item.vue'
 
 export default {
-  name: 'WikiHome',
+  name: 'PageHome',
   components: {
-    // HomeTitle,
-    WikiItem
+    HomeTitle,
+    PlatformItem
     // CommonSlider,
     // SliderList,
     // SliderSignIn,
@@ -57,7 +60,8 @@ export default {
     // SliderBanner
   },
   async asyncData ({ $api, store, route }) {
-    const { wikiId } = route.query
+    const { platformId } = route.query
+    const tagIds = platformId ? [platformId] : []
     // if (category && !tagId) {
     //   const tags = store.state.tag.tags
     //   tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
@@ -81,20 +85,40 @@ export default {
         list: []
       },
       myAchievement: null,
-      menuList: [],
-      tagList: [],
-      tagIndex: 0,
       filter: {
-        wikiId
-      }
+        category: 'PLATFORM',
+        tagIds
+      },
+      menuList: []
     }
-
     await Promise.all([
-      $api.getWikiList({
-        pageNo: 1,
-        pageSize: 100,
-        filter: { categoryId: '' }
+      $api.getTopicList({
+        filter: data.filter,
+        pageNo: data.pageNo,
+        pageSize: data.pageSize
       }).then((list) => {
+        if (list) {
+          data.articleList = list
+          data.pageNo++
+          data.finished = list.length < data.pageSize
+        }
+      }).catch((e) => {
+        console.log(e)
+      }),
+      $api.getUserActionRecord().then((res) => {
+        data.myAchievement = res.data
+      }).catch(console.log),
+      $api.getRandomArticle().then((list) => {
+        data.randomArticle.list = list
+      }),
+      $api.getUserHonorList().then((list) => {
+        data.honor.list = list
+      }),
+      $api.getNoticeList().then((list) => {
+        data.noticeData.list = list
+      }),
+      $api.getPlatformTag({ category: 'PLATFORM' }).then((list) => {
+        console.log(list, 'list')
         data.menuList = list
       })
     ])
@@ -103,9 +127,8 @@ export default {
   data () {
     return {
       loading: false,
-      currentmenuIndex: 0,
+      currenttagIndex: 0,
       menuIndex: -1,
-      wikiList: [],
       titleTags: Object.freeze([
         {
           title: '最新',
@@ -131,74 +154,51 @@ export default {
   },
   watch: {
     currenttagIndex (nVal, oVal) {
-      console.log(nVal, oVal)
-      // if (nVal === oVal) { return }
-      // const filter = this.titleTags[nVal]
-      // this.filter.sortByViews = null
-      // this.filter.official = null
-      // this.filter.marrow = null
-      // if (filter.prop) {
-      //   this.filter[filter.prop] = true
-      // }
-      // this.clearStatus()
-      // this.loadData()
-    },
-    menuIndex (nVal, oVal) {
-      if (nVal !== oVal) {
-        this.tagList = []
-        this.fetchWikiTag()
-      }
-    },
-    tagIndex (nVal) {
-      this.filter = {
-        wikiId: this.$route.query.wikiId,
-        tags: nVal ? [nVal] : undefined
+      if (nVal === oVal) { return }
+      const filter = this.titleTags[nVal]
+      this.filter.sortByViews = null
+      this.filter.official = null
+      this.filter.marrow = null
+      if (filter.prop) {
+        this.filter[filter.prop] = true
       }
       this.clearStatus()
       this.loadData()
     },
     '$route' (to) {
-      const { wikiId } = to.query
-      // this.filter.tagIds = [tagId]
-      // this.filter.sortByViews = null
-      // this.filter.official = null
-      // this.filter.marrow = null
-      this.filter = {
-        wikiId
-      }
+      const { platformId } = to.query
+      this.filter.tagIds = [platformId]
+      this.filter.sortByViews = null
+      this.filter.official = null
+      this.filter.marrow = null
 
       this.clearStatus()
       this.loadData()
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(item => item.id === Number(wikiId))
+        this.menuIndex = this.menuList.findIndex(item => item.id === Number(platformId))
       }
     }
   },
-  // beforeMount () {
-  //   this.fetchWikiTag()
-  // },
   mounted () {
     this.loadData()
-    // EventBus.$on('G_Tags', (tagIds) => {
-    //   this.filter = Object.assign(this.filter, {
-    //     tagIds
-    //   })
-    //   this.clearStatus()
-    //   this.loadData()
-    // })
+    EventBus.$on('G_Tags', (tagIds) => {
+      this.filter = Object.assign(this.filter, {
+        tagIds
+      })
+      this.clearStatus()
+      this.loadData()
+    })
     if (this.menuList.length > 0) {
-      this.menuIndex = this.menuList.findIndex(item => item.id === Number(this.$route.query.wikiId))
+      this.menuIndex = this.menuList.findIndex(item => item.id === Number(this.$route.query.platformId))
+      console.log('menuIndex', this.menuList, this.$route.query.platformId, this.menuIndex)
     }
   },
   beforeDestroy () {
     EventBus.$off('G_Tags')
   },
   methods: {
-    handleTag (item) {
-      this.tagIndex = item.value
-    },
     handleGoto (item) {
-      this.$router.push(`/wiki?wikiId=${item.id}`)
+      this.$router.push(`/platform?platformId=${item.id}`)
     },
     clearStatus () {
       this.pageNo = 1
@@ -208,27 +208,18 @@ export default {
     loadData () {
       if (this.loading || this.finished) { return }
       this.loading = true
-      this.$api.getWikiNodes({
+      this.$api.getTopicList({
         filter: this.filter,
         pageNo: this.pageNo,
         pageSize: this.pageSize
       }).then((list) => {
         if (list) {
-          this.wikiList = this.pageNo === 1 ? list : [...this.wikiList, ...list]
+          this.articleList = this.pageNo === 1 ? list : [...this.articleList, ...list]
           this.pageNo++
           this.finished = list.length < this.pageSize
         }
       }).finally(() => {
         this.loading = false
-      })
-    },
-    fetchWikiTag () {
-      this.$api.getWikiTag({ wikiId: this.$route.query.wikiId, tags: [] }).then((res) => {
-        if (res.length > 0) {
-          this.tagList = res.map(i => ({ label: i.tagName, value: i.tagId }))
-        }
-        console.log(this.tagList, 'taglist', res)
-        this.tagList.unshift({ label: '全部', value: 0 })
       })
     }
   }
@@ -236,7 +227,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.page-wiki-container {
+.page-article-container {
   position: relative;
   display: flex;
   width: 100%;
@@ -291,7 +282,7 @@ export default {
   //     font-weight: 500;
   //   }
   // }
-  .wiki-content {
+  .article-content {
     // width: @content-max-width;
     width:0;
     flex:1;
@@ -299,30 +290,6 @@ export default {
     background-color: #fff;
     border-radius: @g-radius;
     padding-bottom: 20px;
-    .wiki-filter {
-      height: 58px;
-      border-bottom: 1px solid #f2f2f2;
-      display: flex;
-      padding: 0 8px;
-      .wiki-tag {
-        cursor: pointer;
-        color: #606a78;
-        font-size: 15px;
-        margin: 14px 6px;
-        padding: 3px 14px;
-        word-break: keep-all;
-        &:hover {
-          color: #004fc4 !important;
-          background-color: rgba(5, 105, 204, .05);
-        }
-      }
-    }
-    .active-tag {
-      color: #fff !important;
-      background-color: #004fc4;
-      font-weight: 700;
-      border-radius: 3px;
-    }
   }
   .loading {
     width: 100%;

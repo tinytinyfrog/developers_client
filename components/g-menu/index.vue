@@ -85,13 +85,8 @@ export default {
         },
         {
           label: '开发平台&通用框架',
-          child: [{
-            label: '流程规范库',
-            path: '/a'
-          }, {
-            label: '敏捷',
-            path: 'b'
-          }],
+          path: '/platform',
+          child: [],
           icon: require('@/assets/images/menu/platform.png')
         },
         {
@@ -152,6 +147,10 @@ export default {
         console.log(to, 'to')
         this.current = to.path + '?type=' + to.query.type
       }
+      if (to.path === '/platform') {
+        console.log(to, 'to')
+        this.current = to.path + '?platformId=' + to.query.platformId
+      }
       for (let i = 0; i < this.userMenu.length; i++) {
         if (this.userMenu[i]?.path && this.userMenu[i].path === to.path) {
           hasNav = true
@@ -167,6 +166,9 @@ export default {
           } else if (this.userMenu[i].path === '/info' && (/\/info\/.*\/?$/).test(to.path)) {
             hasNav = true
             navIndex = i
+          } else if (this.userMenu[i].path === '/platform' && (/\/platform\/.*\/?$/).test(to.path)) {
+            hasNav = true
+            navIndex = i
           } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
             hasNav = true
             navIndex = i
@@ -179,12 +181,19 @@ export default {
   beforeMount () {
     this.fetchWikiList()
     this.fetchTagList()
+    this.fetchPlatformTagList()
   },
   mounted () {
     // this.getMessageCount()
     EventBus.$on('G_UPDATE_MSG_COUNT', this.getMessageCount)
     if (this.$route.path === '/article') {
       this.current = this.$route.path + '?tagId=' + this.$route.query.tagId
+    }
+    if (this.$route.path === '/info') {
+      this.current = this.$route.path + '?type=' + this.$route.query.type
+    }
+    if (this.$route.path === '/platform') {
+      this.current = this.$route.path + '?platformId=' + this.$route.query.platformId
     }
   },
   beforeDestroy () {
@@ -238,6 +247,9 @@ export default {
               } else if (this.userMenu[i].path === '/info' && (/\/info\/.*\/?$/).test(this.$route.path)) {
                 this.activeIndex = i
                 this.current = this.$route.path
+              } else if (this.userMenu[i].path === '/platform' && (/\/platform\/.*\/?$/).test(this.$route.path)) {
+                this.activeIndex = i
+                this.current = this.$route.path
               } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
                 this.activeIndex = i
               }
@@ -255,6 +267,18 @@ export default {
               path: `${this.userMenu[2].path}?tagId=${i.id}`
             }
           })
+      })
+    },
+    fetchPlatformTagList () {
+      this.$api.getPlatformTag({ category: 'PLATFORM' }).then((res) => {
+        if (res?.length > 0) {
+          this.userMenu[3].child = res.map((i) => {
+            return {
+              label: i.name,
+              path: `${this.userMenu[3].path}?platformId=${i.id}`
+            }
+          })
+        }
       })
     }
   }

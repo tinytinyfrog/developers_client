@@ -7,6 +7,7 @@ import commonApi from './modules/common'
 import messageApi from './modules/message'
 import wikiApi from './modules/wiki'
 import infoApi from './modules/info'
+import platformApi from './modules/platform'
 
 export const api = function ($axios) {
   // $axios.setHeader('Token', jsCookie.get('__dp_tk__'))
@@ -19,6 +20,7 @@ export const api = function ($axios) {
     ...commonApi($axios),
     ...messageApi($axios),
     ...wikiApi($axios),
-    ...infoApi($axios)
+    ...infoApi($axios),
+    ...platformApi($axios)
   }
 }

@@ -36,7 +36,7 @@
             </div>
           </template>
         </div>
-        <div v-else>
+        <div v-else class="info-content info-empty">
           <a-empty />
         </div>
       </a-spin>
@@ -293,5 +293,10 @@ export default {
             }
         }
 
+    }
+    .info-empty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 </style>

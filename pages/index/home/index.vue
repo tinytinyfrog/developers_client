@@ -1,8 +1,16 @@
 <template>
   <div class="home-container">
     <div class="home-container-banner">
-      <a-carousel>
-        <img v-for="(item,index) of bannerList" :key="index" class="home-container-banner-img" :src="item.imgUrl">
+      <a-carousel autoplay>
+        <img
+          v-for="(item,index) of bannerList"
+          :key="index"
+          class="home-container-banner-img"
+          :src="item.imgUrl"
+          @click="e => {
+            handleOpen(item)
+          }"
+        >
       </a-carousel>
     </div>
     <div class="home-content">
@@ -71,9 +79,6 @@ export default {
     const bannerList = [{
       imgUrl: bannerDefaultImg,
       actionUrl: ''
-    }, {
-      imgUrl: bannerDefaultImg,
-      actionUrl: ''
     }
     ]
     return {
@@ -94,11 +99,14 @@ export default {
     handleGoto (path) {
       this.$router.push(path)
     },
-
+    handleOpen (item) {
+      if (item.actionUrl) {
+        window.open(item.actionUrl)
+      }
+    },
     fetchBannerList () {
       const params = { pageSize: 10, pageNo: 1, filter: { state: null, name: null, type: 'HOME_CAROUSEL' } }
       this.$api.getBannerLists(params).then((res) => {
-        console.log(res, 'banner')
         if (res?.list?.length > 0) {
           this.bannerList = res.list.map((i) => {
             return JSON.parse(i.content)
@@ -118,6 +126,7 @@ export default {
         &-img {
           width: 100%;
           height:300px;
+          cursor: pointer;
         }
 
        ::v-deep .ant-carousel .slick-dots-bottom {

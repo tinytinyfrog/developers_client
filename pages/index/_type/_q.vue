@@ -187,6 +187,7 @@ export default {
 <style lang="less" scoped>
   .common-search-page {
     width: 60%;
+    margin: 0 auto;
     .base-msg {
       width: 100%;
       display: flex;

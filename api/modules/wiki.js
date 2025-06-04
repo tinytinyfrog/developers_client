@@ -131,6 +131,11 @@ const wikiApi = ($axios) => {
       return await $axios.post('/rest/wiki/page-node-posts', params).then((res) => {
         return _get(res, 'data.data.list', [])
       })
+    },
+    async getWikiTag (params) {
+      return await $axios.post('/rest/wiki/wiki-posts-tag', params).then((res) => {
+        return _get(res, 'data.data', [])
+      })
     }
   }
 }
