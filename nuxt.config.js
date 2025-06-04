@@ -26,7 +26,7 @@ export default {
       { hid: 'description', name: 'description', content: information.description }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: 'https://static.developers.pub/baacbb720fd04e3d8c59312a45298ec9' }
+      { rel: 'icon', type: 'image/x-icon', href: './assets/favicon.ico' }
     ],
     script: [
       {

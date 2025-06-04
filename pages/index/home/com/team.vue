@@ -4,7 +4,7 @@
       <a-spin :spinning="loading">
         <div v-if="teamList.length>0" class="team">
           <el-carousel type="card" height="445px" style="width:840px">
-            <el-carousel-item v-for="item in teamList" :key="item">
+            <el-carousel-item v-for="(item,index) of teamList" :key="index">
               <div class="team-item">
                 <img :src="item.imageUrl">
                 <div class="team-project">

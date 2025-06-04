@@ -146,6 +146,7 @@ export default {
     menuIndex (nVal, oVal) {
       if (nVal !== oVal) {
         this.tagList = []
+        this.tagIndex = 0
         this.fetchWikiTag()
       }
     },

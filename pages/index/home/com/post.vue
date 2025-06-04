@@ -45,12 +45,12 @@
             </div>
             <div class="item-right">
               <a-avatar class="item-avatar" :src="item.authorAvatar || defaultImg" />
-              <div class="name">
+              <div class="name" :title="item.authorNickname">
                 {{ item.authorNickname }}
               </div>
               <div class="divier" />
               <div>
-                {{ item.createAtString }}
+                {{ item.createAtDate || '-' }}
               </div>
             </div>
           </div>
@@ -329,13 +329,13 @@ export default {
                 display:flex;
                 column-gap: 8px;
                 align-items:center;
-                min-width: 38%;
+                min-width: 28%;
                 .item-avatar {
                   width: 24px;
                   height: 24px;
                 }
                 .name {
-                    width:60px;
+                    width:80px;
                     white-space: nowrap; /* 防止文本换行 */
                     overflow: hidden; /* 隐藏溢出的内容 */
                     text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
