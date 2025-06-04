@@ -21,6 +21,9 @@ const store = {
           cookieUtils.clearToken()
         }
       })
+    },
+    clearUserInfo ({ commit }) {
+      commit('insertUserInfo', null)
     }
   }
 }

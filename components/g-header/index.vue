@@ -205,11 +205,12 @@ export default {
             token: cookieUtils.getToken()
           })
           cookieUtils.clearToken()
-          await this.$store.dispatch('user/getUserInfo', {
-            $api: this.$api,
-            clear: true
-          })
-          // location.href = '/'
+          this.$store.dispatch('user/clearUserInfo')
+          // await this.$store.dispatch('user/getUserInfo', {
+          //   $api: this.$api,
+          //   clear: true
+          // })
+          location.href = '/'
         }
       })
     },

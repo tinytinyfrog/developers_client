@@ -42,9 +42,9 @@ export default {
           console.log(userInfo)
           //   this.lockStore.resetLockInfo()
           //   this.userStore.setToken(res.Authorization)
-          localStorage.setItem('TOKEN', userInfo.token)
+          // localStorage.setItem('TOKEN', userInfo.token)
           cookieUtils.setToken(userInfo.token)
-          this.$store.dispatch('user/getUserInfo', userInfo)
+          this.$store.dispatch('user/getUserInfo', this)
           //   localStorage.setItem('JWT_TOKEN', res.Authorization)
           this.$router.push('/')
           if (userInfo) {
