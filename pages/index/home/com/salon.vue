@@ -1,5 +1,5 @@
 <template>
-  <g-card class="half-card" title="沙龙">
+  <g-card class="half-card" title="沙龙" :go-to="e => handleGoto(`/info?type=salon`)">
     <template>
       <div v-if="salonList.length > 0" class="salon">
         <a-carousel>

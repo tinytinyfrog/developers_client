@@ -380,7 +380,7 @@ export default {
         const content = this.markdownContent || this.htmlContent
         if (this.type !== 'article') return
         if (!this.articleTitle || !content) return
-        this.saveArticle(true)
+        this.$route.query.flag === 'platform' ? this.savePlatform(true) : this.saveArticle(true)
       }, 3000)
     },
     handleTagChange (tags) {
@@ -434,7 +434,7 @@ export default {
       }
       const saveMap = {
         qa: 'saveFq',
-        article: 'saveArticle',
+        article: this.$route.query.flag === 'platform' ? 'savePlatform' : 'saveArticle',
         wiki: 'saveWiki'
       }
       if (this.type) {
@@ -498,6 +498,56 @@ export default {
         directory = generateDirectory(el)
       }
       this.$api.saveNewArticle({
+        title: this.articleTitle,
+        directory: JSON.stringify(directory),
+        contentType,
+        htmlContent: this.htmlContent,
+        headImg: this.getArticleImgs(),
+        id: this.draftId || this.content?.id,
+        draft,
+        markdownContent: this.markdownContent,
+        tagIds: this.selectTagIds,
+        originalTitle: this.originalTitle.trim(),
+        originalUrl: this.originalUrl.trim(),
+        originalAuthor: this.originalAuthor.trim()
+      }).then((res) => {
+        if (res.success) {
+          if (draft) {
+            this.draftId = res.data
+            this.$message.success('已存为草稿')
+          } else {
+            this.clearDraft()
+            this.draftId = ''
+            this.$notification.success({
+              duration: 2,
+              message: '发布成功！'
+            })
+            setTimeout(() => {
+              if (this.content?.id) {
+                window.history.back()
+                return
+              }
+              window.location.replace('/')
+            }, 1000)
+          }
+        } else {
+          this.$notification.error({
+            duration: 2,
+            message: res.message
+          })
+        }
+      })
+    },
+    savePlatform (draft = '') {
+      // 防止草稿更新状态
+      if (!draft) clearTimeout(this.draftTimer)
+      const contentType = this.isMarkDown ? 'MARKDOWN' : 'HTML'
+      let directory = []
+      const el = document.getElementsByClassName('bytemd-preview')[0]
+      if (this.isMarkDown && el) {
+        directory = generateDirectory(el)
+      }
+      this.$api.saveNewPlatformArticle({
         title: this.articleTitle,
         directory: JSON.stringify(directory),
         contentType,

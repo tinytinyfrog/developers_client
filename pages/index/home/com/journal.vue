@@ -1,5 +1,5 @@
 <template>
-  <g-card class="half-card" title="月刊">
+  <g-card class="half-card" title="月刊" :go-to="e => handleGoto(`/info?type=journal`)">
     <template>
       <a-spin :spinning="loading">
         <div v-if="journalList.length > 0" class="journal">

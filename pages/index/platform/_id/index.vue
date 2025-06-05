@@ -84,7 +84,9 @@ export default {
     }
   },
   data () {
+    const userInfo = this.$store.state.user.userInfo
     return {
+      userInfo,
       offsetTop: 70,
       targetOffset: 70,
       article: null,

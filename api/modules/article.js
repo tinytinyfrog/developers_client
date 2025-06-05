@@ -94,6 +94,14 @@ const articleApi = ($axios) => {
       })
     },
     /**
+     * 添加平台文章
+    */
+    saveNewPlatformArticle (article) {
+      return $axios.post('rest/platform/saveOrUpdate', article).then((res) => {
+        return _get(res, 'data', null)
+      })
+    },
+    /**
      * 删除文章
      */
     delArticleBy (articleId) {

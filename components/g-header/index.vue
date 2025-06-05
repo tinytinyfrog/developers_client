@@ -33,6 +33,9 @@
                 <a-menu-item>
                   <a href="javascript:;" @click="handleGoto">个人中心</a>
                 </a-menu-item>
+                <a-menu-item v-if="userInfo && ['ADMIN', 'SUPER_ADMIN'].includes(userInfo.role) ">
+                  <span @click="handleOpenAdmin">后台管理</span>
+                </a-menu-item>
                 <a-menu-item>
                   <span style="color:red" @click="logout">退出系统</span>
                 </a-menu-item>
@@ -54,6 +57,7 @@
 import { Input, Avatar, Button } from 'ant-design-vue'
 import EventBus from '@/lib/event-bus'
 import cookieUtils from '@/lib/cookie-utils'
+
 const InputSearch = Input.Search
 export default {
   name: 'GHeader',
@@ -241,6 +245,9 @@ export default {
     },
     handleGoto () {
       this.$router.push('/user')
+    },
+    handleOpenAdmin () {
+      window.open(location.origin + '/wiki-admin/#/admin/')
     }
   }
 }

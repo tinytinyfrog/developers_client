@@ -49,11 +49,13 @@ export default {
     const pageSize = 10
     const current = 1
     const loading = false
+    const inputValue = undefined
     return {
       journalList,
       pageSize,
       current,
-      loading
+      loading,
+      inputValue
     }
   },
   watch: {

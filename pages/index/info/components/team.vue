@@ -2,7 +2,7 @@
   <a-spin :spinning="loading">
     <div>
       <div class="team-header">
-        <a-input-search placeholder="请输入关键字进行搜索" style="width: 320px" />
+        <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
       </div>
       <div v-if="teamList.length > 0" class="team-list">
         <div v-for="(item,index) of teamList" :key="index" class="team-item" @click="e =>handleGoto(`/info/${item.id}?type=team`)">
@@ -40,11 +40,13 @@ export default {
     const pageSize = 10
     const current = 1
     const loading = false
+    const inputValue = undefined
     return {
       teamList,
       pageSize,
       current,
-      loading
+      loading,
+      inputValue
     }
   },
   watch: {

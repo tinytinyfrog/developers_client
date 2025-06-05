@@ -21,7 +21,7 @@
               {{ item.label }}
             </div>
           </div>
-          <a-button v-if="userInfo" type="primary" @click="handleWrite">
+          <a-button v-if="userInfo && userInfo.role === 'ADMIN'" type="primary" @click="handleWrite">
             写wiki
           </a-button>
         </div>
