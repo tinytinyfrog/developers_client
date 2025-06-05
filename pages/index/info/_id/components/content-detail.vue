@@ -11,7 +11,7 @@
         @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)"
       />
       <span class="nick-name g-hover" @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)">{{ article.authorNickname }}</span><g-space />
-      <span><Icon type="eye" /> {{ article.views }}</span><g-space />
+      <!-- <span><Icon type="eye" /> {{ article.views }}</span><g-space /> -->
       <span><Icon type="dashboard" /> {{ article.createAt | formatDate('YYYY-MM-DD') }}</span>
       <!-- <template v-if="canEdit && !isWiki && !isMobile">
         <g-space />
