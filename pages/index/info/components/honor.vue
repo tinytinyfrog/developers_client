@@ -9,7 +9,7 @@
           <img :src="item.imageUrl" class="honor-img">
           <div class="honor-mask">
             <div>
-              <div class="mask-item">
+              <div class="mask-item" @click="e =>handleGoto(`/info/${item.id}?type=honor`)">
                 {{ item.title }}
               </div>
               <div class="mask-summary">
@@ -80,6 +80,9 @@ export default {
     this.fetchHonorList()
   },
   methods: {
+    handleGoto (path) {
+      this.$router.push(path)
+    },
     fetchHonorList () {
       const params = {
         pageSize: this.pageSize,

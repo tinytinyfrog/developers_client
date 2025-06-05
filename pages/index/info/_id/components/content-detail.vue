@@ -13,7 +13,7 @@
       <span class="nick-name g-hover" @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)">{{ article.authorNickname }}</span><g-space />
       <span><Icon type="eye" /> {{ article.views }}</span><g-space />
       <span><Icon type="dashboard" /> {{ article.createAt | formatDate('YYYY-MM-DD') }}</span>
-      <template v-if="canEdit && !isWiki && !isMobile">
+      <!-- <template v-if="canEdit && !isWiki && !isMobile">
         <g-space />
         <router-link class="g-main-color" :to="{path: `/draft/editor/${article.id}?t=article`}">
           编辑
@@ -22,10 +22,23 @@
         <span class="g-main-color g-hover" @click="onDelArticle">
           删除
         </span>
-      </template>
+      </template> -->
     </div>
     <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
-    <div v-if="showCurPage" class="cut-page-container">
+    <div v-if="article.attachmentName" class="attach-info">
+      <div>附件:</div>
+      <div class="attach-item">
+        <div class="attach-name" @click="e => handleDownload(article)">
+          {{ article.attachmentName }}
+        </div>
+        <a-tooltip title="预览">
+          <div class="attach-preview" @click="e => handlePreview(article)">
+            <a-icon type="eye" />
+          </div>
+        </a-tooltip>
+      </div>
+    </div>
+    <!-- <div v-if="showCurPage" class="cut-page-container">
       <span>
         <a-button v-if="prePage" type="link" @click="onNewArticle(prePage)">
           <a-icon type="left" /><span class="cur-title g-hidden-line1">{{ prePage.postsTitle }}</span>
@@ -135,27 +148,28 @@
           <span>评论</span>
         </span>
       </div>
-    </Affix>
+    </Affix> -->
   </section>
 </template>
 
 <script>
-import { Popover, Icon, Avatar, Rate, Affix } from 'ant-design-vue'
+import { Avatar } from 'ant-design-vue'
+// import { Popover, Icon, Avatar, Rate, Affix } from 'ant-design-vue'
 import ByteViewer from '@/pages/components/byte-viewer/index.vue'
 import { generateDirectory } from '@/lib/utils'
 import EventBus from '@/lib/event-bus'
-import CollectMark from '../../../components/collect-mark'
+// import CollectMark from '../../../components/collect-mark'
 
 export default {
   name: 'LibraryDetailContent',
   components: {
     ByteViewer,
-    Popover,
-    Icon,
-    Avatar,
-    Rate,
-    CollectMark,
-    Affix
+    // Popover,
+    // Icon,
+    Avatar
+    // Rate,
+    // CollectMark,
+    // Affix
   },
   props: {
     isWiki: {
@@ -238,6 +252,18 @@ export default {
     }
   },
   methods: {
+    base64Encode (str) {
+      const encoder = new TextEncoder()
+      const uint8Array = encoder.encode(str)
+      const base64String = btoa(String.fromCharCode.apply(null, uint8Array))
+      return base64String
+    },
+    handleDownload (item) {
+      window.open(item.attachmentUrl)
+    },
+    handlePreview (item) {
+      window.open('https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' + window.encodeURIComponent(this.base64Encode(item.attachmentUrl)))
+    },
     computePage () {
       let list = []
       this.menuList.forEach((item) => {
@@ -414,6 +440,23 @@ export default {
     }
     .folow-btn {
       width: 80px;
+    }
+  }
+  .attach-info {
+    margin: 40px 0px;
+    .attach-item {
+      display: flex;
+      column-gap: 8px;
+      margin-top: 4px;
+      align-items: center;
+      .attach-name {
+        color: #0070ff;
+        cursor: pointer;
+      }
+      .attach-preview {
+        color: #0070ff;
+        cursor: pointer;
+      }
     }
   }
   .wiki-list {

@@ -10,7 +10,7 @@
             <img :src="item.imageUrl" class="expert-img">
           </div>
           <div class="expert-right">
-            <div class="expert-title">
+            <div class="expert-title" @click="e =>handleGoto(`/info/${item.id}?type=expert`)">
               {{ item.title }}
             </div>
             <div class="expert-content">

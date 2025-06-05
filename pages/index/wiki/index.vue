@@ -15,10 +15,15 @@
     </div> -->
       <div class="wiki-content">
         <!-- <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentmenuIndex" /> -->
-        <div class="wiki-filter">
-          <div v-for="(item,index) of tagList" :key="index" class="wiki-tag" :class="tagIndex === item.value ? 'active-tag':''" @click="e =>{ handleTag(item)}">
-            {{ item.label }}
+        <div class="wiki-content-header">
+          <div class="wiki-filter">
+            <div v-for="(item,index) of tagList" :key="index" class="wiki-tag" :class="tagIndex === item.value ? 'active-tag':''" @click="e =>{ handleTag(item)}">
+              {{ item.label }}
+            </div>
           </div>
+          <a-button v-if="userInfo" type="primary" @click="handleWrite">
+            写wiki
+          </a-button>
         </div>
         <div v-infinite-scroll="loadData" class="home-list-box">
           <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
@@ -101,7 +106,9 @@ export default {
     return data
   },
   data () {
+    const userInfo = this.$store.state.user.userInfo
     return {
+      userInfo,
       loading: false,
       currentmenuIndex: 0,
       menuIndex: -1,
@@ -197,6 +204,11 @@ export default {
   methods: {
     handleTag (item) {
       this.tagIndex = item.value
+    },
+    handleWrite () {
+      this.$utils.openNewWindow('/draft/editor/new?t=wiki')
+    //  this.$utils.openNewWindow('/draft/editor/new?t=article')
+      // this.$router.push('/draft/editor/new?t=article')
     },
     handleGoto (item) {
       this.$router.push(`/wiki?wikiId=${item.id}`)
@@ -300,11 +312,16 @@ export default {
     background-color: #fff;
     border-radius: @g-radius;
     padding-bottom: 20px;
+    .wiki-content-header{
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8px;
     .wiki-filter {
       height: 58px;
       border-bottom: 1px solid #f2f2f2;
       display: flex;
-      padding: 0 8px;
+      flex:1;
       .wiki-tag {
         cursor: pointer;
         color: #606a78;
@@ -318,6 +335,7 @@ export default {
         }
       }
     }
+  }
     .active-tag {
       color: #fff !important;
       background-color: #004fc4;

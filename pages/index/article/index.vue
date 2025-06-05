@@ -13,7 +13,12 @@
       </div>
     </div> -->
     <div class="article-content">
-      <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
+      <div class="article-header">
+        <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
+        <a-button v-if="userInfo" type="primary" @click="handleWrite">
+          写文章
+        </a-button>
+      </div>
       <div v-infinite-scroll="loadData" class="home-list-box">
         <ArticleItem v-for="(item, index) in articleList" :key="index" :article="item" />
       </div>
@@ -124,7 +129,9 @@ export default {
     return data
   },
   data () {
+    const userInfo = this.$store.state.user.userInfo
     return {
+      userInfo,
       loading: false,
       currentTagIndex: 0,
       tagIndex: -1,
@@ -198,6 +205,11 @@ export default {
     EventBus.$off('G_Tags')
   },
   methods: {
+    handleWrite () {
+      // this.$utils.openNewWindow('/draft/editor/new?t=wiki')
+      this.$utils.openNewWindow('/draft/editor/new?t=article')
+      // this.$router.push('/draft/editor/new?t=article')
+    },
     handleGoto (item) {
       this.$router.push(`/article?tagId=${item.id}`)
     },
@@ -291,6 +303,12 @@ export default {
     background-color: #fff;
     border-radius: @g-radius;
     padding-bottom: 20px;
+    .article-header {
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 8px;
+    }
   }
   .loading {
     width: 100%;

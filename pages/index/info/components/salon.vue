@@ -17,7 +17,7 @@
               </div>
             </div>
             <div class="mask-button">
-              <a-button type="primary" shape="round">
+              <a-button type="primary" shape="round" @click="e =>handleGoto(`/info/${item.id}?type=salon`)">
                 查看详情
               </a-button>
             </div>
@@ -78,6 +78,9 @@ export default {
     this.fetchsalonList()
   },
   methods: {
+    handleGoto (path) {
+      this.$router.push(path)
+    },
     fetchsalonList () {
       const params = {
         pageSize: this.pageSize,

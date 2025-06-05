@@ -14,10 +14,10 @@
       </div>
       <div class="header-right">
         <template v-if="userInfo">
-          <img src="~/assets/images/header/comment.png" class="comment">
-          <a-button type="primary" @click="handleWrite">
+          <!-- <img src="~/assets/images/header/comment.png" class="comment"> -->
+          <!-- <a-button type="primary" @click="handleWrite">
             写文章
-          </a-button>
+          </a-button> -->
           <div class="msg">
             欢迎来到交付中心门户
           </div>
@@ -188,6 +188,7 @@ export default {
       }
     },
     handleWrite () {
+      this.$utils.openNewWindow(`/draft/editor/new?t=wiki&wikiId=${this.wikiId}`)
       this.$utils.openNewWindow('/draft/editor/new?t=article')
       // this.$router.push('/draft/editor/new?t=article')
     },
@@ -235,8 +236,8 @@ export default {
       // this.$utils.openNewWindow(`/search/${this.searchVal}`)
     },
     handleLogin () {
-      // location.href = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
-      location.href = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
+      location.href = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
+      // location.href = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
     },
     handleGoto () {
       this.$router.push('/user')

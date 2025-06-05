@@ -1,5 +1,5 @@
 <template>
-  <g-card class="half-card" title="AI学习天地">
+  <g-card class="half-card" title="AI学习天地" :go-to="() =>handleGoto('/article?tagId=1042840')">
     <template>
       <a-spin :spinning="loading">
         <div v-if="aiList.length > 0" class="info-content">

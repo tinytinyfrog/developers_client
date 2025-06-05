@@ -1,5 +1,5 @@
 <template>
-  <g-card class="half-card" title="优秀案例" :go-to="e => handleGoto(`/wiki/1052949`)">
+  <g-card class="half-card" title="优秀案例" :go-to="e => handleGoto(`/wiki?wikiId=1052949`)">
     <template>
       <a-spin :spinning="loading">
         <div class="info-content">

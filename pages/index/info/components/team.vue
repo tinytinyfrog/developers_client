@@ -5,7 +5,7 @@
         <a-input-search placeholder="请输入关键字进行搜索" style="width: 320px" />
       </div>
       <div v-if="teamList.length > 0" class="team-list">
-        <div v-for="(item,index) of teamList" :key="index" class="team-item">
+        <div v-for="(item,index) of teamList" :key="index" class="team-item" @click="e =>handleGoto(`/info/${item.id}?type=team`)">
           <img :src="item.imageUrl">
           <div class="team-project">
             {{ item.honorsOwner }}
@@ -69,6 +69,9 @@ export default {
     this.fetchTeamList()
   },
   methods: {
+    handleGoto (path) {
+      this.$router.push(path)
+    },
     fetchTeamList () {
       const params = {
         pageSize: this.pageSize,
@@ -101,6 +104,7 @@ export default {
         column-gap:20px;
         row-gap:20px;
       .team-item {
+      cursor:pointer;
       width: calc((100% - (20px * 3)) / 4);;
       height: 445px;
       border: 1px solid rgb(206, 223, 244);
