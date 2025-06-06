@@ -84,12 +84,14 @@ export default {
     const current = 1
     const loading = false
     const inputValue = undefined
+    const total = 0
     return {
       expertList,
       pageSize,
       current,
       loading,
-      inputValue
+      inputValue,
+      total
     }
   },
   watch: {

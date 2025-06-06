@@ -153,7 +153,7 @@
 </template>
 
 <script>
-import { Avatar } from 'ant-design-vue'
+import { Avatar, Icon } from 'ant-design-vue'
 // import { Popover, Icon, Avatar, Rate, Affix } from 'ant-design-vue'
 import ByteViewer from '@/pages/components/byte-viewer/index.vue'
 import { generateDirectory } from '@/lib/utils'
@@ -165,7 +165,7 @@ export default {
   components: {
     ByteViewer,
     // Popover,
-    // Icon,
+    Icon,
     Avatar
     // Rate,
     // CollectMark,

@@ -17,7 +17,7 @@ const infoApi = ($axios) => {
       })
     },
     getHonorDetail (params) {
-      return $axios.post('developers-server/rest/config/honors-detail', params).then((res) => {
+      return $axios.post('rest/config/honors-detail', params).then((res) => {
         return _get(res, 'data.data', [])
       })
     }

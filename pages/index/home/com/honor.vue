@@ -5,7 +5,7 @@
         <div v-if="honorList.length > 0" class="honor">
           <a-carousel>
             <div v-for="(item,index) of honorList" :key="index" class="honor-list" :class="[item.child.length === 3 ? 'honor-around' : 'honor-start']">
-              <div v-for="(k,i) of item.child" :key="i" class="honor-item">
+              <div v-for="(k,i) of item.child" :key="i" class="honor-item" @click="e => handleGoto(`/info/${k.id}?type=team`)">
                 <div>
                   <img class="img" :src="k.imageUrl">
                 </div>
@@ -74,6 +74,7 @@ export default {
         height: 300px;
         padding: 16px 0px;
         padding-bottom: 10px;
+        cursor: pointer;
         .img {
           width: 180px;
           height: 222px;

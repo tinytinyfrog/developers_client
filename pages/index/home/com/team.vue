@@ -5,7 +5,7 @@
         <div v-if="teamList.length>0" class="team team-bg">
           <el-carousel type="card" height="445px" style="width:840px">
             <el-carousel-item v-for="(item,index) of teamList" :key="index">
-              <div class="team-item">
+              <div class="team-item" @click="e => handleGoto(`/info/${item.id}?type=team`)">
                 <img :src="item.imageUrl">
                 <div class="team-project">
                   {{ item.honorsOwner }}
@@ -73,6 +73,7 @@ export default {
       box-shadow: 0px 4px 32px 0px rgba(87, 130, 183, 0.2);
       background: rgb(255, 255, 255);
       padding: 18px;
+      cursor: pointer;
         img {
           width: 100%;
           height: 278px;

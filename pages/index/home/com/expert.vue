@@ -5,7 +5,7 @@
         <div v-if="expertList.length > 0" class="expert">
           <a-carousel>
             <div v-for="(item,index) of expertList" :key="index" class="expert-list">
-              <div v-for="(k,i) of item.child" :key="i" class="expert-item">
+              <div v-for="(k,i) of item.child" :key="i" class="expert-item" @click="e => handleGoto(`/info/${k.id}?type=expert`)">
                 <div class="expert-img">
                   <img class="img" :src="k.imageUrl">
                   <img class="medal" src="~/assets/images/home/medal.png">
@@ -97,6 +97,7 @@ export default {
       padding: 16px;
       column-gap:20px;
       height: 116px;
+      cursor:pointer;
        .expert-img {
          position: relative;
             .img {
