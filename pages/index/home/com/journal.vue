@@ -26,7 +26,7 @@
             </div> -->
           </a-carousel>
         </div>
-        <div v-else>
+        <div v-else class="journal journal-empty">
           <a-empty />
         </div>
       </a-spin>
@@ -127,4 +127,10 @@ export default {
 
     }
   }
+  .journal-empty {
+       height: 352px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
   </style>

@@ -25,7 +25,7 @@
             </div>
           </a-carousel>
         </div>
-        <div v-else>
+        <div v-else class="expert expert-empty">
           <a-empty />
         </div>
       </a-spin>
@@ -133,4 +133,10 @@ export default {
      }
     }
   }
+  .expert-empty {
+       height: 348px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
   </style>

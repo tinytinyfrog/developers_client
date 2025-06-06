@@ -6,17 +6,17 @@
           <div class="block">
             <div v-if="aiList[0]" class="block-item" @click="e => handleGoto(`/article/${aiList[0].id}`)">
               <div>
-                <img class="img" src="~/assets/images/home/bg1.png">
+                <img class="img" :src="(!aiList[0].headImg && !(aiList[0].headImg === '[]')) ? getImgUrl(aiList[0].headImg) :default1Img">
               </div>
-              <div class="content">
+              <div class="content" :title="aiList[0] && aiList[0].title">
                 {{ aiList[0] && aiList[0].introduction }}
               </div>
             </div>
             <div v-if="aiList[1]" class="block-item" @click="e => handleGoto(`/article/${aiList[1].id}`)">
               <div>
-                <img class="img" src="~/assets/images/home/bg2.png">
+                <img class="img" :src="(!aiList[1].headImg && !(aiList[1].headImg === '[]')) ? getImgUrl(aiList[1].headImg) :default2Img">
               </div>
-              <div class="content">
+              <div class="content" :title="aiList[1] && aiList[1].title">
                 {{ aiList[1] && aiList[1].introduction }}
               </div>
             </div>
@@ -29,8 +29,8 @@
                     {{ item.categoryDesc }}
                   </a-tag>
                 </div>
-                <div class="content" :title="item.content">
-                  {{ item.introduction }}
+                <div class="content" :title="item.introduction">
+                  {{ item.title }}
                 </div>
               </div>
             </div>
@@ -44,6 +44,8 @@
   </g-card>
 </template>
 <script lang="js" name="AiPOST">
+const default1Img = require('@/assets/images/home/bg1.png')
+const default2Img = require('@/assets/images/home/bg2.png')
 export default {
   name: 'AiPost',
   data () {
@@ -51,7 +53,9 @@ export default {
     const loading = false
     return {
       aiList,
-      loading
+      loading,
+      default1Img,
+      default2Img
     }
   },
 
@@ -62,9 +66,21 @@ export default {
     handleGoto (path) {
       this.$router.push(path)
     },
+    getImgUrl (urlList) {
+      console.log(urlList)
+      if (!(typeof urlList === 'string')) {
+        return ''
+      }
+      const urls = JSON.parse(urlList)
+      if (urls.length > 0) {
+        return urls[0]?.url
+      } else {
+        return ''
+      }
+    },
     fetchAiPostList () {
       const params = {
-        pageSize: 8, pageNo: 1, filter: { category: 'ARTICLE', tagIds: [1042840] }
+        pageSize: 7, pageNo: 1, filter: { category: 'ARTICLE', tagIds: [1042840] }
       }
       this.loading = true
       this.$api.getPostList(params).then((res) => {
@@ -177,6 +193,7 @@ export default {
         .block {
           display: flex;
           column-gap: 20px;
+          margin: 10px 0px 28px 0px;
           .block-item {
             width: calc((100% - (20px * 1)) / 2);
             border-radius: 4px;
@@ -189,7 +206,6 @@ export default {
               width: 118px;
               height: 118px;
             }
-            margin-bottom: 28px;
             .content {
               flex: 1;
               color: rgb(40, 40, 40);

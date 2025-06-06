@@ -2,7 +2,7 @@
   <g-card class="full-card" title="优秀团队" :go-to="e => handleGoto(`/info?type=team`)">
     <template>
       <a-spin :spinning="loading">
-        <div v-if="teamList.length>0" class="team">
+        <div v-if="teamList.length>0" class="team team-bg">
           <el-carousel type="card" height="445px" style="width:840px">
             <el-carousel-item v-for="(item,index) of teamList" :key="index">
               <div class="team-item">
@@ -17,7 +17,7 @@
             </el-carousel-item>
           </el-carousel>
         </div>
-        <div v-else>
+        <div v-else class="team team-empty">
           <a-empty />
         </div>
       </a-spin>
@@ -62,7 +62,6 @@ export default {
    .team {
     margin: 0px 38px 38px 38px;
     height: 535px;
-    background-image: url('@/assets/images/home/team-bg.png');
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,5 +93,13 @@ export default {
           -webkit-box-orient: vertical;
         }
     }
+  }
+  .team-bg {
+    background-image: url('@/assets/images/home/team-bg.png');
+  }
+  .team-empty {
+    display:flex;
+    justify-content: center;
+    align-items:center;
   }
   </style>

@@ -21,7 +21,7 @@
             </div>
           </a-carousel>
         </div>
-        <div v-else>
+        <div v-else class="map map-empty">
           <a-empty />
         </div>
       </template>
@@ -103,5 +103,10 @@ export default {
     overflow: hidden;
 }
 
+  }
+  .map-empty {
+    display:flex;
+    justify-content: center;
+    align-items:center;
   }
 </style>

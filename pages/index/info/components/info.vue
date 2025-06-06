@@ -110,7 +110,6 @@ export default {
         return ''
       }
       const urls = JSON.parse(urlList)
-
       if (urls.length > 0) {
         return urls[0]?.url
       } else {

@@ -9,7 +9,7 @@
           <img :src="item.imageUrl" class="honor-img">
           <div class="honor-mask">
             <div>
-              <div class="mask-item" @click="e =>handleGoto(`/info/${item.id}?type=honor`)">
+              <div class="mask-item">
                 {{ item.title }}
               </div>
               <div class="mask-summary">
@@ -17,7 +17,7 @@
               </div>
             </div>
             <div class="mask-button">
-              <a-button type="primary" shape="round">
+              <a-button type="primary" shape="round" @click="e =>handleGoto(`/info/${item.id}?type=honor`)">
                 查看详情
               </a-button>
             </div>

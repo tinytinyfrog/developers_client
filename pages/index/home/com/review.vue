@@ -1,28 +1,33 @@
 <template>
   <g-card class="half-card" title="事故复盘" :go-to="e => handleGoto(`/wiki?wikiId=1052942`)">
     <template>
-      <div class="info-content">
-        <div v-for="(item,index) of reviewList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/${item.postsId}?wikiId=1052942`)">
-          <div class="item-left">
-            <div class="review-icon">
-              <img src="~/assets/images/home/warning.png" class="img">
+      <a-spin :spinning="loading">
+        <div v-if="reviewList.length > 0" class="info-content">
+          <div v-for="(item,index) of reviewList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/${item.postsId}?wikiId=1052942`)">
+            <div class="item-left">
+              <div class="review-icon">
+                <img src="~/assets/images/home/warning.png" class="img">
+              </div>
+              <div class="content-warning" :title="item.postsTitle">
+                {{ item.postsTitle }}
+              </div>
             </div>
-            <div class="content-warning" :title="item.postsTitle">
-              {{ item.postsTitle }}
-            </div>
-          </div>
-          <div class="item-right">
-            <a-avatar style="width:20px;height:20px" :src="item.authorAvatar ||defaultImg" />
-            <div class="name">
-              {{ item.authorNickname || '-' }}
-            </div>
-            <div class="divier" />
-            <div>
-              {{ item. createAtString }}
+            <div class="item-right">
+              <a-avatar style="width:20px;height:20px" :src="item.authorAvatar ||defaultImg" />
+              <div class="name">
+                {{ item.authorNickname || '-' }}
+              </div>
+              <div class="divier" />
+              <div>
+                {{ item. createAtString }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <div v-else class="info-content info-empty">
+          <a-empty />
+        </div>
+      </a-spin>
     </template>
   </g-card>
 </template>
@@ -180,5 +185,10 @@ export default {
               }
           }
 
+      }
+      .info-empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
   </style>

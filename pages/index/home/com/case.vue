@@ -2,7 +2,7 @@
   <g-card class="half-card" title="优秀案例" :go-to="e => handleGoto(`/wiki?wikiId=1052949`)">
     <template>
       <a-spin :spinning="loading">
-        <div class="info-content">
+        <div v-if="caseList.length > 0" class="info-content">
           <div v-for="(item,index) of caseList" :key="index" class="info-item" @click="e => handleGoto(`/wiki/${item.postsId}?wikiId=1052949`)">
             <div class="item-left">
               <div class="case-icon">
@@ -23,6 +23,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div v-else class="info-content info-empty">
+          <a-empty />
         </div>
       </a-spin>
     </template>
@@ -183,4 +186,9 @@ export default {
         }
 
     }
+    .info-empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 </style>

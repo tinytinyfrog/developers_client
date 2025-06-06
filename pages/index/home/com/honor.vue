@@ -16,7 +16,7 @@
             </div>
           </a-carousel>
         </div>
-        <div v-else>
+        <div v-else class="honor honor-empty">
           <a-empty />
         </div>
       </a-spin>
@@ -96,4 +96,11 @@ export default {
         justify-content: start;
        }
   }
+
+  .honor-empty {
+       height: 348px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     </style>

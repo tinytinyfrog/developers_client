@@ -1,18 +1,19 @@
 <template>
   <g-card class="half-card" title="沙龙" :go-to="e => handleGoto(`/info?type=salon`)">
     <template>
-      <div v-if="salonList.length > 0" class="salon">
-        <a-carousel>
-          <div v-for="(item,index) of salonList" :key="index" class="salon-list">
-            <div v-for="(k,i) of item.child" :key="i" class="salon-item">
-              <div>
-                <img class="img" :src="k.coverImageUrl">
-              </div>
-              <div class="text">
-                {{ k.summary }}
+      <a-spin :spinning="loading">
+        <div v-if="salonList.length > 0" class="salon">
+          <a-carousel>
+            <div v-for="(item,index) of salonList" :key="index" class="salon-list">
+              <div v-for="(k,i) of item.child" :key="i" class="salon-item">
+                <div>
+                  <img class="img" :src="k.coverImageUrl">
+                </div>
+                <div class="text">
+                  {{ k.summary }}
+                </div>
               </div>
             </div>
-          </div>
           <!-- <div class="salon-list">
             <div v-for="(item,index) of salonList" :key="index" class="salon-item">
               <div>
@@ -23,8 +24,12 @@
               </div>
             </div>
           </div> -->
-        </a-carousel>
-      </div>
+          </a-carousel>
+        </div>
+        <div v-else class="salon salon-empty">
+          <a-empty />
+        </div>
+      </a-spin>
     </template>
   </g-card>
 </template>
@@ -120,5 +125,11 @@ export default {
         }
 
       }
+    }
+    .salon-empty {
+       height: 352px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     </style>
