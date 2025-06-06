@@ -27,7 +27,7 @@
                   <img class="img" :src="k.avatar">
                 </div>
                 <div class="text">
-                  <div class="name" :title=" k.nickname || '-' ">
+                  <div class="name" :title=" k.nickname || '-' " @click="e => handleOpen(k)">
                     {{ k.nickname || '-' }}
                   </div>
                   <div class="info">
@@ -90,6 +90,13 @@ export default {
     },
     handleGoto (path) {
       this.$router.push(path)
+    },
+    handleOpen (item) {
+      if (!item.userCode) {
+        this.$message.warning('用户不存在！')
+        return
+      }
+      this.$utils.openNewWindow(`/user/${item.userCode}`)
     },
     fetchUserStatistics () {
       const params = {
@@ -160,9 +167,10 @@ export default {
         font-size: 18px;
         font-weight: 400;
         width:80px;
-                    white-space: nowrap; /* 防止文本换行 */
-                    overflow: hidden; /* 隐藏溢出的内容 */
-                    text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
+        white-space: nowrap; /* 防止文本换行 */
+        overflow: hidden; /* 隐藏溢出的内容 */
+        text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
+        cursor:pointer;
        }
        .info {
         color: rgb(89, 89, 89);
