@@ -25,6 +25,19 @@
       </template>
     </div>
     <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
+    <div v-if="article.attachmentName" class="attach-info">
+      <div>附件:</div>
+      <div class="attach-item">
+        <div class="attach-name" @click="e => handleDownload(article)">
+          {{ article.attachmentName }}
+        </div>
+        <a-tooltip title="预览">
+          <div class="attach-preview" @click="e => handlePreview(article)">
+            <a-icon type="eye" />
+          </div>
+        </a-tooltip>
+      </div>
+    </div>
     <div v-if="showCurPage" class="cut-page-container">
       <span>
         <a-button v-if="prePage" type="link" @click="onNewArticle(prePage)">
@@ -238,6 +251,18 @@ export default {
     }
   },
   methods: {
+    base64Encode (str) {
+      const encoder = new TextEncoder()
+      const uint8Array = encoder.encode(str)
+      const base64String = btoa(String.fromCharCode.apply(null, uint8Array))
+      return base64String
+    },
+    handleDownload (item) {
+      window.open(item.attachmentUrl)
+    },
+    handlePreview (item) {
+      window.open('https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' + window.encodeURIComponent(this.base64Encode(item.attachmentUrl)))
+    },
     computePage () {
       let list = []
       this.menuList.forEach((item) => {
@@ -414,6 +439,23 @@ export default {
     }
     .folow-btn {
       width: 80px;
+    }
+  }
+  .attach-info {
+    margin: 40px 0px;
+    .attach-item {
+      display: flex;
+      column-gap: 8px;
+      margin-top: 4px;
+      align-items: center;
+      .attach-name {
+        color: #0070ff;
+        cursor: pointer;
+      }
+      .attach-preview {
+        color: #0070ff;
+        cursor: pointer;
+      }
     }
   }
   .wiki-list {

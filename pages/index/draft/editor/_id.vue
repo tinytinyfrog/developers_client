@@ -28,6 +28,46 @@
             <Button type="primary" ghost @click="onConfirmModal">
               发布
             </Button>
+            <a-upload
+              v-show="fileList.length === 0 || uploading "
+              action="/developers-server/rest/file/file/upload"
+              accept=".docx,.doc,.xls,.ppt,.pdf"
+              :show-upload-list="false"
+              :headers="{token}"
+              :file-list="fileList"
+              @change="handleUploadChange"
+            >
+              <Button type="primary" :loading="uploading">
+                上传附件
+              </Button>
+            </a-upload>
+            <a-popover v-if="fileList.length > 0 && !uploading">
+              <a-badge :count="fileList.length">
+                <a-icon type="file" style="font-size: 20px; cursor: pointer;" />
+              </a-badge>
+              <template #content>
+                <div style="padding:10px 0px;  display:flex;justify-content: space-between; column-gap: 10px;">
+                  <div
+                    style="color:rgba(0, 0, 0, 0.85); flex: 1;
+                    width: 250px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;"
+                    :title="fileList[0].name"
+                  >
+                    {{ fileList[0].name }}
+                  </div>
+                  <div style="width: 50px;">
+                    <a-tooltip title="删除">
+                      <a-icon style="color:red; cursor:pointer;" type="delete" @click="handleDeleteFile" />
+                    </a-tooltip>
+                    <a-tooltip title="预览">
+                      <a-icon style="margin-right: 4px; color: #0070ff; cursor:pointer;" type="eye" @click="handlePreview" />
+                    </a-tooltip>
+                  </div>
+                </div>
+              </template>
+            </a-popover>
           </a-space>
         </div>
       </div>
@@ -147,6 +187,7 @@ import { Select, Button, Switch, Modal, Input } from 'ant-design-vue'
 import { generateDirectory, userRoleStatus } from '@/lib/utils'
 import _get from 'lodash/get'
 import dayjs from 'dayjs'
+import cookieUtils from '../../../../lib/cookie-utils'
 import ByteMarkdownEditor from '~/pages/components/byte-markdown-editor/index.vue'
 import RichEditor from '~/pages/components/rich-editor/index.vue'
 const SelectOption = Select.Option
@@ -173,6 +214,7 @@ export default {
     const userRole = userRoleStatus(store)
     const id = route.params.id // 文章或问题id
     const { t, wikiId } = route.query
+    let fileList = []
     let content = {
       title: '',
       tags: [],
@@ -187,8 +229,9 @@ export default {
       if (content && content.authorId) {
         isSelf = userId === content.authorId
       }
+      fileList = [{ name: content.attachmentName, url: content.attachmentUrl }]
     }
-    console.log(content)
+    console.log(content, fileList)
     const tagGroup = store.state.tag.tagGroup
     return {
       id,
@@ -207,7 +250,8 @@ export default {
       selectTags: content.tags?.map(tag => tag.name) || [],
       selectTagIds: content.tags?.map(tag => tag.id) || [],
       markdownContent: content.markdownContent,
-      htmlContent: content.htmlContent || '<p data-we-empty-p=""><br></p>'
+      htmlContent: content.htmlContent || '<p data-we-empty-p=""><br></p>',
+      fileList
     }
   },
   data () {
@@ -269,7 +313,9 @@ export default {
       referralCategoryList: [],
       draftId: '',
       draftList: '',
-      draftTimer: 0
+      draftTimer: 0,
+      token: cookieUtils.getToken(),
+      uploading: false
     }
   },
   computed: {
@@ -307,6 +353,34 @@ export default {
     }
   },
   methods: {
+    base64Encode (str) {
+      const encoder = new TextEncoder()
+      const uint8Array = encoder.encode(str)
+      const base64String = btoa(String.fromCharCode.apply(null, uint8Array))
+      return base64String
+    },
+    handlePreview () {
+      window.open('https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' + window.encodeURIComponent(this.base64Encode(this.fileList[0].url || this.fileList[0].response.data)))
+    },
+    handleUploadChange (info) {
+      console.log(info, 'info')
+      if (info.file.status === 'uploading') {
+        this.uploading = true
+      }
+      this.fileList = info.fileList
+      if (info.file.status === 'done') {
+        this.$message.success('上传成功')
+        this.uploading = false
+      }
+      if (info.file.status === 'error') {
+        this.$message.error('上传失败')
+        this.uploading = false
+        this.fileList = []
+      }
+    },
+    handleDeleteFile () {
+      this.fileList = []
+    },
     checkoutLogin () {
       if (this.userRole.noLogin) {
         this.$message.warning('请先登录')
@@ -469,7 +543,9 @@ export default {
         htmlContent: this.htmlContent,
         headImg: this.getArticleImgs(),
         id: this.content?.id,
-        markdownContent: this.markdownContent
+        markdownContent: this.markdownContent,
+        attachmentUrl: this.fileList[0] ? this.fileList[0].response.data : undefined,
+        attachmentName: this.fileList[0] ? this.fileList[0].name : undefined
       }).then((res) => {
         if (res.success) {
           this.clearDraft()
@@ -509,7 +585,9 @@ export default {
         tagIds: this.selectTagIds,
         originalTitle: this.originalTitle.trim(),
         originalUrl: this.originalUrl.trim(),
-        originalAuthor: this.originalAuthor.trim()
+        originalAuthor: this.originalAuthor.trim(),
+        attachmentUrl: this.fileList[0] ? this.fileList[0].response.data : undefined,
+        attachmentName: this.fileList[0] ? this.fileList[0].name : undefined
       }).then((res) => {
         if (res.success) {
           if (draft) {
@@ -559,7 +637,9 @@ export default {
         tagIds: this.selectTagIds,
         originalTitle: this.originalTitle.trim(),
         originalUrl: this.originalUrl.trim(),
-        originalAuthor: this.originalAuthor.trim()
+        originalAuthor: this.originalAuthor.trim(),
+        attachmentUrl: this.fileList[0] ? this.fileList[0].response.data : undefined,
+        attachmentName: this.fileList[0] ? this.fileList[0].name : undefined
       }).then((res) => {
         if (res.success) {
           if (draft) {
