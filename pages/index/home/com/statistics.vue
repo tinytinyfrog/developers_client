@@ -96,7 +96,7 @@ export default {
           {
             child: [
               {
-                label: '咨询广场',
+                label: '资讯广场',
                 count: res?.informationCount || 0,
                 icon: infoImg
               },
