@@ -112,7 +112,7 @@ export default {
       fullUrl: '',
       scrollThrottle: throttle(this.handleScroll, 350),
       miniPath: 'pages/index/index.html',
-      hideFooter: this.$route.path === '/login'
+      hideFooter: this.$route.path === '/login' || this.$route.path === '/auth'
     }
   },
   computed: {

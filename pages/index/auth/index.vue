@@ -1,12 +1,17 @@
 <template>
-  <div>
-    login callback pages
-  </div>
+  <a-spin :spinning="true" tip="登录中...">
+    <div class="auth-container" />
+  </a-spin>
 </template>
 <script lang="tsx">
 import cookieUtils from '@/lib/cookie-utils'
 export default {
   name: 'Oauth',
+  data () {
+    return {
+      loading: false
+    }
+  },
   watch: {
     $route (to) {
       console.log('路由监听进来了')
@@ -29,6 +34,7 @@ export default {
         code: this.$route.query.code
 
       }
+      this.loading = true
       this.$api.oauth2LoginCallback(param)
         .then((res) => {
           let userInfo
@@ -52,12 +58,18 @@ export default {
             setTimeout(() => {}, 3000)
           }
         }).catch((e) => {
-
+          this.$message.error(e)
+          this.$router.push('/login')
+        }).finally(() => {
+          this.loading = false
         })
     }
   }
 }
 </script>
-<style scoped>
-
+<style scope lang="less">
+  .auth-container {
+    width: 100%;
+    height: 100vh;
+  }
 </style>
