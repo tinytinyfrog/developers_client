@@ -97,7 +97,7 @@ export default {
             child: [
               {
                 label: '咨询广场',
-                count: res?.newsCount || 0,
+                count: res?.informationCount || 0,
                 icon: infoImg
               },
               {

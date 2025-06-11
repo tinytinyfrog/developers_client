@@ -26,7 +26,7 @@
     </div>
     <GWxOauth :show.sync="showLogin" @email-login="emailLogin = true" />
     <GLogin :show.sync="emailLogin" @qrcode-login="showLogin = true" /> -->
-    <GFooter />
+    <GFooter v-if="!hideFooter" />
   </div>
 </template>
 
@@ -43,7 +43,7 @@ import Tags from './index/components/tags'
 
 const tagsWhite = ['/faq', '/article']
 /// /\/wiki\/.*\/?$/,
-const hideHeadReg = [/\/auth/, /\/draft\/editor\/.*\/?$/] // 白名单
+const hideHeadReg = [/\/auth/, /\/login/, /\/draft\/editor\/.*\/?$/] // 白名单
 
 export default {
   name: 'Home',
@@ -111,7 +111,8 @@ export default {
       showTagFilter: true,
       fullUrl: '',
       scrollThrottle: throttle(this.handleScroll, 350),
-      miniPath: 'pages/index/index.html'
+      miniPath: 'pages/index/index.html',
+      hideFooter: this.$route.path === '/login'
     }
   },
   computed: {
