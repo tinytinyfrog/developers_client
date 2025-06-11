@@ -306,7 +306,7 @@ export default {
       titleMap: {
         article: '文章标题',
         qa: '问题',
-        wiki: 'wiki目录',
+        wiki: 'wiki标题',
         referral: 'JD 标题'
       },
       activeCategoryIndex: -1,
@@ -391,14 +391,15 @@ export default {
     },
     onConfirmModal () {
       if (this.type === 'wiki') {
-        this.$confirm({
-          title: '确认发布当前文章为 wiki 一级目录？',
-          onText: '确认',
-          cancelText: '继续编辑',
-          onOk: () => {
-            this.onPublish()
-          }
-        })
+        // this.$confirm({
+        //   title: '确认发布当前文章为 wiki 一级目录？',
+        //   onText: '确认',
+        //   cancelText: '继续编辑',
+        //   onOk: () => {
+        //     this.onPublish()
+        //   }
+        // })
+        this.onPublish()
         return
       }
       if (this.type === 'referral') {
@@ -556,6 +557,7 @@ export default {
           setTimeout(() => {
             window.history.back()
           }, 1000)
+          window.location.replace('/')
         } else {
           this.$notification.error({
             duration: 2,

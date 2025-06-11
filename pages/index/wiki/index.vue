@@ -206,7 +206,7 @@ export default {
       this.tagIndex = item.value
     },
     handleWrite () {
-      this.$utils.openNewWindow('/draft/editor/new?t=wiki')
+      this.$utils.openNewWindow(`/draft/editor/new?t=wiki&wikiId=${this.$route.query.wikiId}`)
     //  this.$utils.openNewWindow('/draft/editor/new?t=article')
       // this.$router.push('/draft/editor/new?t=article')
     },
