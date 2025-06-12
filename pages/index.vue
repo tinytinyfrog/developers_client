@@ -133,6 +133,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.$store.state, 'store')
     // if (!this.$store.state.user.userInfo) {
     //   console.log(this.$store.state.user, 'STORE USER')
     //   cookieUtils.clearToken()

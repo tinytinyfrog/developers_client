@@ -41,7 +41,7 @@
 </template>
 <script>
 import cookieUtils from '@/lib/cookie-utils'
-import autofit from 'autofit.js'
+// import autofit from 'autofit.js'
 export default {
   data () {
     const form = this.$form.createForm(this, {
@@ -54,14 +54,14 @@ export default {
       loading: false
     }
   },
-  beforeMount () {
-    autofit.init({
-      el: '.login-container'
-    })
-  },
-  beforeDestroy () {
-    autofit.off()
-  },
+  //   beforeMount () {
+  //     autofit.init({
+  //       el: '.login-container'
+  //     })
+  //   },
+  //   beforeDestroy () {
+  //     autofit.off()
+  //   },
   methods: {
     async handleLogin () {
       this.loading = true
@@ -104,7 +104,7 @@ export default {
 <style scoped lang="less">
     .login-container {
         width: 100%;
-        height: 100%;
+        height: 100vh;
         background: url('@/assets/images/login/bg.png');
         background-size: contain;
        .login-header {

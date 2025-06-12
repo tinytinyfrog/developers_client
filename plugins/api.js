@@ -14,6 +14,7 @@ export default ({ $axios, req, $cookies }, inject) => {
       console.log('****singleServer****:', config.baseURL)
     }
     config.httpsAgent = agent
+    console.log(cookieUtils.getToken(req), 'token', new Date())
     config.headers.common.Token = cookieUtils.getToken(req)
   })
   inject('api', api($axios))
