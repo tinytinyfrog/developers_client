@@ -5,7 +5,7 @@
         <div v-if="journalList.length > 0" class="journal">
           <a-carousel>
             <div v-for="(item,index) of journalList" :key="index" class="journal-list">
-              <div v-for="(k,i) of item.child" :key="i" class="journal-item">
+              <div v-for="(k,i) of item.child" :key="i" class="journal-item" @click="e => handleGoto(`/info/${k.id}?type=journal`)">
                 <div>
                   <img class="img" :src="k.coverImageUrl">
                 </div>
