@@ -62,6 +62,7 @@ const userApi = ($axios) => {
      */
     async getUserInfo () {
       return await $axios.post('/rest/user/info', {}, {}).then((res) => {
+        console.log(res.data, '-->res')
         return _get(res, 'data.data', null)
       })
     },
