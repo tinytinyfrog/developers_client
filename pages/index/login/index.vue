@@ -14,7 +14,7 @@
           欢迎来到交付中心门户，登录以继续
         </div>
         <div class="login-form">
-          <a-form :form="form" :label-col="{ span:24 }" :wrapper-col="{ span: 24 }" @submit="handleSubmit">
+          <a-form :form="form" :label-col="{ span:24 }" :wrapper-col="{ span: 24 }">
             <a-form-item label="账号">
               <a-input
                 v-decorator="['email', { rules: [{ required: true, message: '请输入账号' }] }]"
@@ -54,12 +54,12 @@ export default {
       loading: false
     }
   },
-  mounted () {
+  beforeMount () {
     autofit.init({
       el: '.login-container'
     })
   },
-  beforeMount () {
+  beforeDestroy () {
     autofit.off()
   },
   methods: {
@@ -78,7 +78,7 @@ export default {
               duration: 2,
               message: '登录成功！'
             })
-            location.href = location.origin + '/home'
+            this.$router.push('/home')
           } else {
             cookieUtils.clearToken()
             this.errorMessage = data.message

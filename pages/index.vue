@@ -133,10 +133,10 @@ export default {
     }
   },
   mounted () {
-    if (!this.$store.state.user.userInfo) {
-      console.log(this.$store.state.user, 'STORE USER')
-      cookieUtils.clearToken()
-    }
+    // if (!this.$store.state.user.userInfo) {
+    //   console.log(this.$store.state.user, 'STORE USER')
+    //   cookieUtils.clearToken()
+    // }
     window.addEventListener('scroll', this.scrollThrottle)
     // this.wxOauth()
   },
