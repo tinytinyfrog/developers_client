@@ -2514,6 +2514,11 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
+autofit.js@^3.2.8:
+  version "3.2.8"
+  resolved "https://registry.yarnpkg.com/autofit.js/-/autofit.js-3.2.8.tgz#78017861ec8f048dc44b659101da3671c7b6219c"
+  integrity sha512-albZNwDIXvcRneEDyZLW3uAIOH0cUQG/TnCGQ7jpfnL0gPn/+1ZNVRuEz3ZuzZvVkQ4HQRplGHjUeMRtPNxjLQ==
+
 autoprefixer@^9.6.1:
   version "9.8.8"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-9.8.8.tgz#fd4bd4595385fa6f06599de749a4d5f7a474957a"

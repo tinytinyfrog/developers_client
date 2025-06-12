@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div id="login-container" class="login-container">
     <div class="login-header">
       <img class="logo" src="~/assets/images/header/logo.png" alt="">
       <a-divider type="vertical" class="a-divider" />
@@ -41,6 +41,7 @@
 </template>
 <script>
 import cookieUtils from '@/lib/cookie-utils'
+import autofit from 'autofit.js'
 export default {
   data () {
     const form = this.$form.createForm(this, {
@@ -52,6 +53,14 @@ export default {
       form,
       loading: false
     }
+  },
+  mounted () {
+    autofit.init({
+      el: '.login-container'
+    })
+  },
+  beforeMount () {
+    autofit.off()
   },
   methods: {
     async handleLogin () {
@@ -95,7 +104,7 @@ export default {
 <style scoped lang="less">
     .login-container {
         width: 100%;
-        height: 100vh;
+        height: 100%;
         background: url('@/assets/images/login/bg.png');
         background-size: contain;
        .login-header {
