@@ -142,20 +142,20 @@ export default {
           type: 1
         },
         {
-          title: '最热',
+          title: '最火',
           type: 2,
           prop: 'sortByViews'
         },
         {
-          title: '官方',
+          title: '推荐',
           type: 3,
           prop: 'official'
-        },
-        {
-          title: '加精',
-          type: 4,
-          prop: 'marrow'
         }
+        // {
+        //   title: '加精',
+        //   type: 4,
+        //   prop: 'marrow'
+        // }
       ])
     }
   },

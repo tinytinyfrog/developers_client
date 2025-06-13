@@ -27,11 +27,11 @@
                   <img class="img" :src="k.avatar">
                 </div>
                 <div class="text">
-                  <div class="name" :title=" k.nickname || '-' " @click="e => handleOpen(k)">
+                  <div class="name" :title="k.nickname || '-' " @click="e => handleOpen(k)">
                     {{ k.nickname || '-' }}
                   </div>
                   <div class="info">
-                    工号：{{ k.userCode || '-' }}
+                    擅长领域：{{ k.userCode || '-' }}
                   </div>
                   <div class="info">
                     部门：{{ k.deptName|| '-' }}
@@ -92,11 +92,11 @@ export default {
       this.$router.push(path)
     },
     handleOpen (item) {
-      if (!item.userCode) {
+      if (!item.userId) {
         this.$message.warning('用户不存在！')
         return
       }
-      this.$utils.openNewWindow(`/user/${item.userCode}`)
+      this.$utils.openNewWindow(`/user/${item.userId}`)
     },
     fetchUserStatistics () {
       const params = {

@@ -34,7 +34,7 @@ const memberImg = require('@/assets/images/home/member.png')
 const viewImg = require('@/assets/images/home/view.png')
 const dayImg = require('@/assets/images/home/today.png')
 const postImg = require('@/assets/images/home/post.png')
-const devloperImg = require('@/assets/images/home/devlopment.png')
+// const devloperImg = require('@/assets/images/home/devlopment.png')
 const infoImg = require('@/assets/images/home/info.png')
 const wikiImg = require('@/assets/images/home/wiki.png')
 export default {
@@ -81,15 +81,20 @@ export default {
           {
             child: [
               {
+                label: '知识库',
+                count: res?.wikiCount || 0,
+                icon: wikiImg
+              },
+              {
                 label: '帖子数',
                 count: res?.articleCount || 0,
                 icon: postImg
-              },
-              {
-                label: '开发平台&通用框架',
-                count: res?.platformOpsPostCount || 0,
-                icon: devloperImg
               }
+              // {
+              //   label: '开发平台&通用框架',
+              //   count: res?.platformOpsPostCount || 0,
+              //   icon: devloperImg
+              // }
 
             ]
           },
@@ -99,11 +104,6 @@ export default {
                 label: '资讯广场',
                 count: res?.informationCount || 0,
                 icon: infoImg
-              },
-              {
-                label: '知识库',
-                count: res?.wikiCount || 0,
-                icon: wikiImg
               }
 
             ]

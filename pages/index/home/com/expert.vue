@@ -11,13 +11,13 @@
                   <img class="medal" src="~/assets/images/home/medal.png">
                 </div>
                 <div class="text">
-                  <div class="name">
-                    {{ k.honorsOwner || '-' }}
+                  <div class="name" :title="`${ k.honorsOwner || '-' }(${k.userCode || '-' })`">
+                    {{ `${ k.honorsOwner || '-' }(${k.userCode || '-' })` }}
                   </div>
-                  <div class="info">
-                    工号：{{ k.userCode || '-' }}
+                  <div class="info" :title="k.honorsDomain || '-' ">
+                    擅长领域：{{ k.honorsDomain || '-' }}
                   </div>
-                  <div class="info">
+                  <div class="info" :title=" k.honorsDept|| '-' ">
                     部门：{{ k.honorsDept|| '-' }}
                   </div>
                 </div>
@@ -120,16 +120,20 @@ export default {
         color: rgb(40, 40, 40);
         font-size: 18px;
         font-weight: 400;
-        width:60px;
-                    white-space: nowrap; /* 防止文本换行 */
-                    overflow: hidden; /* 隐藏溢出的内容 */
-                    text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
+        width:160px;
+        white-space: nowrap; /* 防止文本换行 */
+        overflow: hidden; /* 隐藏溢出的内容 */
+        text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
        }
        .info {
         color: rgb(89, 89, 89);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 400;
         margin-top: 4px;
+        width:120px;
+        white-space: nowrap; /* 防止文本换行 */
+        overflow: hidden; /* 隐藏溢出的内容 */
+        text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
        }
      }
     }

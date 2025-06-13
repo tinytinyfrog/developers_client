@@ -245,7 +245,7 @@ export default {
       originalAuthor: content.originalAuthor || '',
       originalUrl: content.originalUrl || '',
       isOriginal: !content.originalUrl,
-      isMarkDown: id === 'new' || !!content.markdownContent,
+      isMarkDown: !!content.markdownContent,
       articleTitle: content.title,
       selectTags: content.tags?.map(tag => tag.name) || [],
       selectTagIds: content.tags?.map(tag => tag.id) || [],

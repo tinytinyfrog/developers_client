@@ -54,14 +54,14 @@ export default {
       loading: false
     }
   },
-  //   beforeMount () {
-  //     autofit.init({
-  //       el: '.login-container'
-  //     })
-  //   },
-  //   beforeDestroy () {
-  //     autofit.off()
-  //   },
+  // mounted () {
+  //   autofit.init({
+  //     el: '.login-container'
+  //   })
+  // },
+  // beforeDestroy () {
+  //   autofit.off()
+  // },
   methods: {
     async handleLogin () {
       this.loading = true
