@@ -195,6 +195,8 @@ export default {
       this.loadData()
       if (this.menuList.length > 0) {
         this.menuIndex = this.menuList.findIndex(item => item.path === to.fullPath)
+      } else {
+        this.menuIndex = -1
       }
     },
     '$store.state.menu.menuList' (menu) {
@@ -207,6 +209,8 @@ export default {
       this.menuList = menuList
       if (this.menuList.length > 0) {
         this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+      } else {
+        this.menuIndex = -1
       }
     }
   },
@@ -226,6 +230,8 @@ export default {
         this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
         console.log('menuIndex', this.menuList, this.$route.tagId, this.menuIndex)
       }
+    } else {
+      this.menuIndex = -1
     }
   },
   beforeDestroy () {

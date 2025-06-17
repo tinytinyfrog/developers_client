@@ -17,8 +17,8 @@
             </div>
           </div>
         </div>
-        <div class="header-right">
-          <div class="more" @click="e => handleGoto(`/article`)">
+        <div v-if="articleIndexPath" class="header-right">
+          <div class="more" @click="e => handleGoto(`${articleIndexPath}`)">
             更多 >
             <div />
           </div>
@@ -69,6 +69,11 @@ const recommonImg = require('@/assets/images/home/recommond.png')
 export default {
   name: 'Post',
   data () {
+    let articleIndexPath = ''
+    const res = this.$store.state.menu.menuList.filter(i => i.path === '/article')
+    if (res?.length > 0 && res[0].children) {
+      articleIndexPath = res[0].children[0].path
+    }
     const activeIndex = 0
     const loading = false
     const tabList = [{
@@ -90,7 +95,8 @@ export default {
       activeIndex,
       tabList,
       postList,
-      loading
+      loading,
+      articleIndexPath
     }
   },
   watch: {
@@ -101,6 +107,12 @@ export default {
     },
     monthValue (val) {
       this.fetchUserStatistics()
+    },
+    '$store.state.menu.menuList' (menu) {
+      const res = menu.filter(i => i.path === '/article')
+      if (res?.length > 0 && res[0].children) {
+        this.articleIndexPath = res[0].children[0].path
+      }
     }
   },
   beforeMount () {

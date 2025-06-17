@@ -108,6 +108,8 @@ export default {
       if (this.menuList.length > 0) {
         this.activeIndex = this.menuList.findIndex(item => item.path === to.fullPath)
         console.log(this.activeIndex, 'coming')
+      } else {
+        this.activeIndex = -1
       }
     },
     '$store.state.menu.menuList' (menu) {
@@ -117,24 +119,33 @@ export default {
         menuList = res[0].children
       }
       this.menuList = menuList
+      console.log(this.menuList, 'ddd')
       if (this.menuList.length > 0) {
         this.activeIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+      } else {
+        this.activeIndex = -1
       }
     }
   },
   mounted () {
     const res = this.$store.state.menu.menuList.filter(i => i.path === '/info')
+    console.log(res, 'dddres')
     if (res?.length > 0 && res[0].children) {
       this.menuList = res[0].children
       if (this.menuList.length > 0) {
         this.activeIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
       }
+    } else {
+      this.activeIndex = -1
     }
   },
   methods: {
     handleClick (item, index) {
       this.$router.push(item.path)
       this.activeIndex = index
+    },
+    handleBackHome () {
+      this.$router.push('/home')
     }
   }
 }
