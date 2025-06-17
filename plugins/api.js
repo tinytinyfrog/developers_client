@@ -16,6 +16,12 @@ export default ({ $axios, req, $cookies }, inject) => {
     config.httpsAgent = agent
     console.log(cookieUtils.getToken(req), 'token', new Date())
     config.headers.common.Token = cookieUtils.getToken(req)
+    if (config.method === 'get') {
+      // 获取当前时间的时间戳
+      const timestamp = new Date().getTime()
+      // 将时间戳添加到URL的查询参数中
+      config.url += (config.url.includes('?') ? '&' : '?') + `_t=${timestamp}`
+    }
   })
   inject('api', api($axios))
 }

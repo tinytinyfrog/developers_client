@@ -4,7 +4,7 @@
       <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="activeIndex === index ? 'active-menu':''" @click="e => handleClick(item,index)">
         <img :src="item.icon">
         <div>
-          {{ item.label }}
+          {{ item.menuName }}
         </div>
       </div>
     </div>
@@ -27,50 +27,50 @@ import Team from './components/team.vue'
 import Talent from './components/talent.vue'
 import Salon from './components/salon.vue'
 import Journal from './components/journal.vue'
-const honorImg = require('@/assets/images/info/honor.png')
-const expertImg = require('@/assets/images/info/expert.png')
-const teamImg = require('@/assets/images/info/team.png')
-const demandImg = require('@/assets/images/info/demand.png')
-const talentImg = require('@/assets/images/info/talent.png')
+// const honorImg = require('@/assets/images/info/honor.png')
+// const expertImg = require('@/assets/images/info/expert.png')
+// const teamImg = require('@/assets/images/info/team.png')
+// const demandImg = require('@/assets/images/info/demand.png')
+// const talentImg = require('@/assets/images/info/talent.png')
 
-const menuList = [{
-  label: '活动新闻',
-  path: '/info?type=news',
-  icon: honorImg,
-  id: 'news'
-}, {
-  label: '专家墙',
-  path: '/info?type=expert',
-  icon: expertImg,
-  id: 'expert'
-}, {
-  label: '荣誉墙',
-  path: '/info?type=honor',
-  icon: demandImg,
-  id: 'honor'
+// const menuList = [{
+//   label: '活动新闻',
+//   path: '/info?type=news',
+//   icon: honorImg,
+//   id: 'news'
+// }, {
+//   label: '专家墙',
+//   path: '/info?type=expert',
+//   icon: expertImg,
+//   id: 'expert'
+// }, {
+//   label: '荣誉墙',
+//   path: '/info?type=honor',
+//   icon: demandImg,
+//   id: 'honor'
 
-}, {
-  label: '优秀团队',
-  path: '/info?type=team',
-  icon: teamImg,
-  id: 'team'
+// }, {
+//   label: '优秀团队',
+//   path: '/info?type=team',
+//   icon: teamImg,
+//   id: 'team'
 
-}, {
-  label: '贡献达人',
-  path: '/info?type=talent',
-  icon: talentImg,
-  id: 'talent'
-}, {
-  label: '沙龙',
-  path: '/info?type=salon',
-  icon: talentImg,
-  id: 'salon'
-}, {
-  label: '月刊',
-  path: '/info?type=journal',
-  icon: talentImg,
-  id: 'journal'
-}]
+// }, {
+//   label: '贡献达人',
+//   path: '/info?type=talent',
+//   icon: talentImg,
+//   id: 'talent'
+// }, {
+//   label: '沙龙',
+//   path: '/info?type=salon',
+//   icon: talentImg,
+//   id: 'salon'
+// }, {
+//   label: '月刊',
+//   path: '/info?type=journal',
+//   icon: talentImg,
+//   id: 'journal'
+// }]
 export default {
   name: 'InfoPage',
   components: {
@@ -85,6 +85,7 @@ export default {
   data () {
     const activeIndex = 0
     const infoList = []
+    const menuList = []
     return {
       menuList,
       activeIndex,
@@ -93,18 +94,30 @@ export default {
   },
   watch: {
     '$route' (to) {
-      console.log(to, 'to')
-      const { type } = to.query
       if (this.menuList.length > 0) {
-        this.activeIndex = this.menuList.findIndex(item => item.id === type)
+        this.activeIndex = this.menuList.findIndex(item => item.path === to.fullPath)
         console.log(this.activeIndex, 'coming')
+      }
+    },
+    '$store.state.menu.menuList' (menu) {
+      let menuList = []
+      const res = menu.filter(i => i.path === '/info')
+      if (res?.length > 0 && res[0].children) {
+        menuList = res[0].children
+      }
+      this.menuList = menuList
+      if (this.menuList.length > 0) {
+        this.activeIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
       }
     }
   },
   mounted () {
-    if (this.menuList.length > 0) {
-      this.activeIndex = this.menuList.findIndex(item => item.id === this.$route.query.type)
-      console.log(this.activeIndex, 'coming')
+    const res = this.$store.state.menu.menuList.filter(i => i.path === '/info')
+    if (res?.length > 0 && res[0].children) {
+      this.menuList = res[0].children
+      if (this.menuList.length > 0) {
+        this.activeIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+      }
     }
   },
   methods: {

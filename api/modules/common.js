@@ -55,6 +55,11 @@ const commonApi = ($axios) => {
       return $axios.post('/rest/config/page', params).then((res) => {
         return _get(res, 'data.data', '')
       })
+    },
+    getRoleMenuList (params) {
+      return $axios.get(`/rest/accredit/role-menu-tree/${params.roleId}`).then((res) => {
+        return _get(res, 'data.data', '')
+      })
     }
   }
 }

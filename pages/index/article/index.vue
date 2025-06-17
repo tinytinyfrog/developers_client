@@ -1,14 +1,14 @@
 <template>
   <div class="page-article-container ">
     <div class="info-menu">
-      <div v-for="(item,index) of tagList" :key="index" class="menu-item" :class="tagIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+      <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
         <div>
-          {{ item.name }}
+          {{ item.menuName }}
         </div>
       </div>
     </div>
     <!-- <div class="tag-list">
-      <div v-for="(item,index) of tagList" :key="index" class="tag-item" :class="[tagIndex === index ?'active-tag':'']" @click="e => handleGoto(item)">
+      <div v-for="(item,index) of menuList" :key="index" class="tag-item" :class="[tagIndex === index ?'active-tag':'']" @click="e => handleGoto(item)">
         {{ item.name }}
       </div>
     </div> -->
@@ -71,6 +71,11 @@ export default {
     //   const tags = store.state.tag.tags
     //   tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
     // }
+    let menuList = []
+    const res = store.state.menu.menuList.filter(i => i.path === '/article')
+    if (res?.length > 0 && res[0].children) {
+      menuList = res[0].children
+    }
     const data = {
       // q,
       finished: false,
@@ -94,7 +99,7 @@ export default {
         category: 'ARTICLE',
         tagIds
       },
-      tagList: []
+      menuList
     }
     await Promise.all([
       $api.getTopicList({
@@ -121,9 +126,6 @@ export default {
       }),
       $api.getNoticeList().then((list) => {
         data.noticeData.list = list
-      }),
-      $api.getTagsByRef().then((list) => {
-        data.tagList = list
       })
     ])
     return data
@@ -134,7 +136,7 @@ export default {
       userInfo,
       loading: false,
       currentTagIndex: 0,
-      tagIndex: -1,
+      menuIndex: -1,
       titleTags: Object.freeze([
         {
           title: '最新',
@@ -181,9 +183,21 @@ export default {
 
       this.clearStatus()
       this.loadData()
-      if (this.tagList.length > 0) {
-        this.tagIndex = this.tagList.findIndex(item => item.id === Number(tagId))
-        console.log('tagIndex', this.tagList, typeof tagId, this.tagIndex)
+      if (this.menuList.length > 0) {
+        this.menuIndex = this.menuList.findIndex(item => item.path === to.fullPath)
+        console.log('menuIndex', this.menuList, typeof tagId, this.menuIndex)
+      }
+    },
+    '$store.state.menu.menuList' (menu) {
+      console.log(menu, 'menu')
+      let menuList = []
+      const res = menu.filter(i => i.path === '/article')
+      if (res?.length > 0 && res[0].children) {
+        menuList = res[0].children
+      }
+      this.menuList = menuList
+      if (this.menuList.length > 0) {
+        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
       }
     }
   },
@@ -196,9 +210,13 @@ export default {
       this.clearStatus()
       this.loadData()
     })
-    if (this.tagList.length > 0) {
-      this.tagIndex = this.tagList.findIndex(item => item.id === Number(this.$route.query.tagId))
-      console.log('tagIndex', this.tagList, this.$route.tagId, this.tagIndex)
+    const res = this.$store.state.menu.menuList.filter(i => i.path === '/article')
+    if (res?.length > 0 && res[0].children) {
+      this.menuList = res[0].children
+      if (this.menuList.length > 0) {
+        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+        console.log('menuIndex', this.menuList, this.$route.tagId, this.menuIndex)
+      }
     }
   },
   beforeDestroy () {

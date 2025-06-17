@@ -3,7 +3,7 @@
     <div class="info-menu">
       <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
         <div>
-          {{ item.name }}
+          {{ item.menuName }}
         </div>
       </div>
     </div>
@@ -71,6 +71,11 @@ export default {
     //   const tags = store.state.tag.tags
     //   tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
     // }
+    let menuList = []
+    const res = store.state.menu.menuList.filter(i => i.path === '/platform')
+    if (res?.length > 0 && res[0].children) {
+      menuList = res[0].children
+    }
     const data = {
       // q,
       finished: false,
@@ -94,7 +99,7 @@ export default {
         category: 'PLATFORM',
         tagIds
       },
-      menuList: []
+      menuList
     }
     await Promise.all([
       $api.getTopicList({
@@ -121,10 +126,6 @@ export default {
       }),
       $api.getNoticeList().then((list) => {
         data.noticeData.list = list
-      }),
-      $api.getPlatformTag({ category: 'PLATFORM' }).then((list) => {
-        console.log(list, 'list')
-        data.menuList = list
       })
     ])
     return data
@@ -182,7 +183,19 @@ export default {
       this.clearStatus()
       this.loadData()
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(item => item.id === Number(platformId))
+        this.menuIndex = this.menuList.findIndex(item => item.path === to.fullPath)
+      }
+    },
+    '$store.state.menu.menuList' (menu) {
+      console.log(menu, 'menu')
+      let menuList = []
+      const res = menu.filter(i => i.path === '/platform')
+      if (res?.length > 0 && res[0].children) {
+        menuList = res[0].children
+      }
+      this.menuList = menuList
+      if (this.menuList.length > 0) {
+        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
       }
     }
   },
@@ -195,9 +208,13 @@ export default {
       this.clearStatus()
       this.loadData()
     })
-    if (this.menuList.length > 0) {
-      this.menuIndex = this.menuList.findIndex(item => item.id === Number(this.$route.query.platformId))
-      console.log('menuIndex', this.menuList, this.$route.query.platformId, this.menuIndex)
+    const res = this.$store.state.menu.menuList.filter(i => i.path === '/platform')
+    if (res?.length > 0 && res[0].children) {
+      this.menuList = res[0].children
+      if (this.menuList.length > 0) {
+        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+        console.log('menuIndex', this.menuList, this.$route.tagId, this.menuIndex)
+      }
     }
   },
   beforeDestroy () {
@@ -210,7 +227,7 @@ export default {
       // this.$router.push('/draft/editor/new?t=article')
     },
     handleGoto (item) {
-      this.$router.push(`/platform?platformId=${item.id}`)
+      this.$router.push(item.path)
     },
     clearStatus () {
       this.pageNo = 1
