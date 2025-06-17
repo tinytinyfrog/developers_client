@@ -240,7 +240,7 @@ export default {
       // this.$router.push('/draft/editor/new?t=article')
     },
     handleGoto (item) {
-      this.$router.push(`/article?tagId=${item.id}`)
+      this.$router.push(item.path)
     },
     handleBackHome () {
       this.$router.push('/home')
