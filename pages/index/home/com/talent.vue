@@ -31,7 +31,7 @@
                     {{ k.nickname || '-' }}
                   </div>
                   <div class="info">
-                    擅长领域：{{ k.userCode || '-' }}
+                    工号：{{ k.userCode || '-' }}
                   </div>
                   <div class="info">
                     部门：{{ k.deptName|| '-' }}

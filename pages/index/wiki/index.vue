@@ -1,44 +1,41 @@
 <template>
   <div>
     <div class="page-wiki-container ">
-      <div class="info-menu">
-        <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
-          <div>
-            {{ item.menuName }}
-          </div>
-        </div>
-      </div>
-      <!-- <div class="tag-list">
-      <div v-for="(item,index) of menuList" :key="index" class="tag-item" :class="[menuIndex === index ?'active-tag':'']" @click="e => handleGoto(item)">
-        {{ item.name }}
-      </div>
-    </div> -->
-      <div class="wiki-content">
-        <!-- <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentmenuIndex" /> -->
-        <div class="wiki-content-header">
-          <div class="wiki-filter">
-            <div v-for="(item,index) of tagList" :key="index" class="wiki-tag" :class="tagIndex === item.value ? 'active-tag':''" @click="e =>{ handleTag(item)}">
-              {{ item.label }}
+      <template v-if="menuIndex >= 0">
+        <div class="info-menu">
+          <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+            <div>
+              {{ item.menuName }}
             </div>
           </div>
-          <a-button v-if="userInfo && userInfo.role === 'ADMIN'" type="primary" @click="handleWrite">
-            写wiki
-          </a-button>
         </div>
-        <div v-infinite-scroll="loadData" class="home-list-box">
-          <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
+        <div class="wiki-content">
+          <!-- <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentmenuIndex" /> -->
+          <div class="wiki-content-header">
+            <div class="wiki-filter">
+              <div v-for="(item,index) of tagList" :key="index" class="wiki-tag" :class="tagIndex === item.value ? 'active-tag':''" @click="e =>{ handleTag(item)}">
+                {{ item.label }}
+              </div>
+            </div>
+            <a-button v-if="userInfo && userInfo.role === 'ADMIN'" type="primary" @click="handleWrite">
+              写wiki
+            </a-button>
+          </div>
+          <div v-infinite-scroll="loadData" class="home-list-box">
+            <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
+          </div>
+          <g-empty :list="wikiList" :finished="finished" :loading="loading" />
         </div>
-        <g-empty :list="wikiList" :finished="finished" :loading="loading" />
+      </template>
+      <div v-else class="page-wiki-empty-container">
+        <a-result status="403" sub-title="对不起,你没访问权限">
+          <template #extra>
+            <a-button type="primary" @click="handleBackHome">
+              返回首页
+            </a-button>
+          </template>
+        </a-result>
       </div>
-    <!-- <CommonSlider>
-      <slider-sign-in />
-      <SliderBanner />
-      <slider-my-achievement :my-achievement="myAchievement" />
-      <slider-list :slider-data="noticeData" />
-      <slider-honor-list :honor="honor" />
-      <SliderRecommend :recommend="randomArticle" />
-      <slider-tags />
-    </CommonSlider> -->
     </div>
   </div>
 </template>
@@ -51,22 +48,11 @@ import WikiItem from '../components/wiki-item.vue'
 export default {
   name: 'WikiHome',
   components: {
-    // HomeTitle,
     WikiItem
-    // CommonSlider,
-    // SliderList,
-    // SliderSignIn,
-    // SliderRecommend,
-    // SliderMyAchievement,
-    // SliderHonorList,
-    // SliderBanner
   },
   async asyncData ({ $api, store, route }) {
     const { wikiId } = route.query
-    // if (category && !tagId) {
-    //   const tags = store.state.tag.tags
-    //   tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
-    // }
+
     let menuList = []
     const res = store.state.menu.menuList.filter(i => i.path === '/wiki')
     if (res?.length > 0 && res[0].children) {
@@ -116,7 +102,7 @@ export default {
       userInfo,
       loading: false,
       currentmenuIndex: 0,
-      menuIndex: -1,
+      menuIndex: 99999,
       wikiList: [],
       titleTags: Object.freeze([
         {
@@ -172,10 +158,6 @@ export default {
     },
     '$route' (to) {
       const { wikiId } = to.query
-      // this.filter.tagIds = [tagId]
-      // this.filter.sortByViews = null
-      // this.filter.official = null
-      // this.filter.marrow = null
       this.filter = {
         wikiId
       }
@@ -199,18 +181,8 @@ export default {
       }
     }
   },
-  // beforeMount () {
-  //   this.fetchWikiTag()
-  // },
   mounted () {
     this.loadData()
-    // EventBus.$on('G_Tags', (tagIds) => {
-    //   this.filter = Object.assign(this.filter, {
-    //     tagIds
-    //   })
-    //   this.clearStatus()
-    //   this.loadData()
-    // })
     const res = this.$store.state.menu.menuList.filter(i => i.path === '/wiki')
     if (res?.length > 0 && res[0].children) {
       this.menuList = res[0].children
@@ -228,8 +200,6 @@ export default {
     },
     handleWrite () {
       this.$utils.openNewWindow(`/draft/editor/new?t=wiki&wikiId=${this.$route.query.wikiId}`)
-    //  this.$utils.openNewWindow('/draft/editor/new?t=article')
-      // this.$router.push('/draft/editor/new?t=article')
     },
     handleGoto (item) {
       this.$router.push(item.path)
@@ -238,6 +208,9 @@ export default {
       this.pageNo = 1
       this.finished = false
       this.loading = false
+    },
+    handleBackHome () {
+      this.$router.push('/home')
     },
     loadData () {
       if (this.loading || this.finished) { return }
@@ -423,6 +396,10 @@ export default {
         }
       }
     }
+  }
+  .page-wiki-empty-container{
+    widows: 100%;
+    margin: 0 auto;
   }
 }
 @media screen and (max-width: 1000px) {

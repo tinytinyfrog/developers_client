@@ -11,7 +11,7 @@
         @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)"
       />
       <span class="nick-name g-hover" @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)">{{ article.authorNickname }}</span><g-space />
-      <!-- <span><Icon type="eye" /> {{ article.views }}</span><g-space /> -->
+      <span v-if="article.topic"><Icon type="bulb" /> {{ article.topic }}</span><g-space />
       <span><Icon type="dashboard" /> {{ article.createAt | formatDate('YYYY-MM-DD') }}</span>
       <!-- <template v-if="canEdit && !isWiki && !isMobile">
         <g-space />
@@ -25,6 +25,9 @@
       </template> -->
     </div>
     <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
+    <div v-if="article.coverImageUrl || article.imageUrl" style="margin-bottom: 20px;">
+      <img :src="article.coverImageUrl || article.imageUrl">
+    </div>
     <div v-if="article.attachmentName" class="attach-info">
       <div>附件:</div>
       <div class="attach-item">
@@ -224,7 +227,7 @@ export default {
       return false
     },
     articleCtx () {
-      return this.article.markdownContent || this.article.htmlContent
+      return this.$route.query.type === 'team' ? this.article.summary : this.article.markdownContent || this.article.htmlContent
     },
     showCurPage () {
       return this.menus.some(item => item.postsId === this.article.id)

@@ -1,28 +1,39 @@
 <template>
   <div class="page-article-container ">
-    <div class="info-menu">
-      <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
-        <div>
-          {{ item.menuName }}
+    <template v-if="menuIndex >= 0">
+      <div class="info-menu">
+        <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+          <div>
+            {{ item.menuName }}
+          </div>
         </div>
       </div>
-    </div>
-    <!-- <div class="tag-list">
+      <!-- <div class="tag-list">
       <div v-for="(item,index) of menuList" :key="index" class="tag-item" :class="[tagIndex === index ?'active-tag':'']" @click="e => handleGoto(item)">
         {{ item.name }}
       </div>
     </div> -->
-    <div class="article-content">
-      <div class="article-header">
-        <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
-        <a-button v-if="userInfo" type="primary" @click="handleWrite">
-          写文章
-        </a-button>
+      <div class="article-content">
+        <div class="article-header">
+          <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
+          <a-button v-if="userInfo" type="primary" @click="handleWrite">
+            写文章
+          </a-button>
+        </div>
+        <div v-infinite-scroll="loadData" class="home-list-box">
+          <ArticleItem v-for="(item, index) in articleList" :key="index" :article="item" />
+        </div>
+        <g-empty :list="articleList" :finished="finished" :loading="loading" />
       </div>
-      <div v-infinite-scroll="loadData" class="home-list-box">
-        <ArticleItem v-for="(item, index) in articleList" :key="index" :article="item" />
-      </div>
-      <g-empty :list="articleList" :finished="finished" :loading="loading" />
+    </template>
+    <div v-else class="page-article-empty-container">
+      <a-result status="403" sub-title="对不起,你没访问权限">
+        <template #extra>
+          <a-button type="primary" @click="handleBackHome">
+            返回首页
+          </a-button>
+        </template>
+      </a-result>
     </div>
     <!-- <CommonSlider>
       <slider-sign-in />
@@ -136,7 +147,7 @@ export default {
       userInfo,
       loading: false,
       currentTagIndex: 0,
-      menuIndex: -1,
+      menuIndex: 999999,
       titleTags: Object.freeze([
         {
           title: '最新',
@@ -230,6 +241,9 @@ export default {
     },
     handleGoto (item) {
       this.$router.push(`/article?tagId=${item.id}`)
+    },
+    handleBackHome () {
+      this.$router.push('/home')
     },
     clearStatus () {
       this.pageNo = 1
@@ -387,6 +401,10 @@ export default {
         }
       }
     }
+  }
+  .page-article-empty-container{
+    widows: 100%;
+    margin: 0 auto;
   }
 }
 @media screen and (max-width: 1000px) {

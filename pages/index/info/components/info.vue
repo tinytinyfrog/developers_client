@@ -19,7 +19,7 @@
             <div class="info-bottom">
               <div class="bottom-left">
                 <img src="~/assets/images/info/info.png" class="bottom-img">
-                {{ item.categoryDesc }}
+                {{ item.topic }}
               </div>
               <div class="info-divier" />
               <div>时间：{{ item.createAtString }}</div>

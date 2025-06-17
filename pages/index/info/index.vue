@@ -1,21 +1,32 @@
 <template>
   <div class="info-container">
-    <div class="info-menu">
-      <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="activeIndex === index ? 'active-menu':''" @click="e => handleClick(item,index)">
-        <img :src="item.icon">
-        <div>
-          {{ item.menuName }}
+    <template v-if="activeIndex >= 0">
+      <div class="info-menu">
+        <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="activeIndex === index ? 'active-menu':''" @click="e => handleClick(item,index)">
+          <img :src="item.icon">
+          <div>
+            {{ item.menuName }}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="info-content">
-      <Info v-if="activeIndex === 0" />
-      <Expert v-if="activeIndex === 1" />
-      <Honor v-if="activeIndex === 2" />
-      <Team v-if="activeIndex === 3" />
-      <Talent v-if="activeIndex === 4" />
-      <Salon v-if="activeIndex === 5" />
-      <Journal v-if="activeIndex === 6" />
+      <div class="info-content">
+        <Info v-if="activeIndex === 0" />
+        <Expert v-if="activeIndex === 1" />
+        <Honor v-if="activeIndex === 2" />
+        <Team v-if="activeIndex === 3" />
+        <Talent v-if="activeIndex === 4" />
+        <Salon v-if="activeIndex === 5" />
+        <Journal v-if="activeIndex === 6" />
+      </div>
+    </template>
+    <div v-else class="info-empty-container">
+      <a-result status="403" sub-title="对不起,你没访问权限">
+        <template #extra>
+          <a-button type="primary" @click="handleBackHome">
+            返回首页
+          </a-button>
+        </template>
+      </a-result>
     </div>
   </div>
 </template>
@@ -83,7 +94,7 @@ export default {
     Journal
   },
   data () {
-    const activeIndex = 0
+    const activeIndex = 999999
     const infoList = []
     const menuList = []
     return {
@@ -167,6 +178,10 @@ export default {
      height: calc(100vh - 140px);
      padding: 20px 28px;
      overflow: auto;
+    }
+    .info-empty-container{
+      widows: 100%;
+      margin: 0 auto;
     }
  }
 </style>

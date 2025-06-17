@@ -56,15 +56,15 @@ export default {
       }
       this.loading = true
       this.$api.getHonorList(params).then((res) => {
-        if (res.length <= 6) {
+        if (res.length <= 4) {
           this.expertList = [{
             child: res
           }]
         } else {
           this.expertList = [{
-            child: res.splice(0, 6)
+            child: res.splice(0, 4)
           }, {
-            child: res.splice(0, 6)
+            child: res.splice(0, 4)
           }]
         }
       }).finally(() => {
@@ -88,7 +88,7 @@ export default {
       padding: 26px 16px;
       row-gap: 14px;
      .expert-item {
-      width: calc((100% - (14px * 2)) / 3);
+      width: calc((100% - (14px * 1)) / 2);
       display: flex;
       border: 1px solid rgb(255, 255, 255);
       border-radius: 8px;
@@ -127,10 +127,10 @@ export default {
        }
        .info {
         color: rgb(89, 89, 89);
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 400;
         margin-top: 4px;
-        width:120px;
+        width:180px;
         white-space: nowrap; /* 防止文本换行 */
         overflow: hidden; /* 隐藏溢出的内容 */
         text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
