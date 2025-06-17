@@ -236,6 +236,7 @@ export default {
 
   .child-container {
     // display: flex;
+    min-height: calc(100vh - 142px);
     height: 100%;
     width: 100%;
     // max-width: @max-width;
