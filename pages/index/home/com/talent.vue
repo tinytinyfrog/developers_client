@@ -121,7 +121,6 @@ export default {
           this.talentList = []
           return
         }
-        res = [...res, ...res, ...res]
         if (res.length <= 10) {
           this.talentList = [{
             child: res
