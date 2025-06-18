@@ -119,10 +119,10 @@ export default {
 </script>
 <style scoped lang="less">
      .statistics {
-    margin: 10px 24px;
+    margin: 30px 24px;
     padding: 16px 32px;
-   margin-bottom:30px;
-    height: 308px;
+    margin-bottom:30px;
+    height: 324px;
     background-image: url('~/assets/images/home/statistics-bg.png');
     .statistics-item {
       display: flex;
