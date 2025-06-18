@@ -124,7 +124,7 @@
     </div>
     <Affix v-if="!showMobileMenu" :offset-bottom="0">
       <div id="collect-mark-box" class="article-action-box">
-        <h3 v-if="!isMobile && !hideHeader" class="min-title g-hidden-line1">
+        <h3 v-if="!isMobile" class="min-title g-hidden-line1">
           {{ article.title }}
         </h3>
         <span v-auth="{handler: onApproval}" :class="{ 'g-main-color': hasLike }" class="action-box g-hover">
@@ -281,9 +281,9 @@ export default {
     },
     onComment () {
       location.href = '#article-comment'
-      setTimeout(() => {
-        location.href = '#article-comment'
-      })
+      // setTimeout(() => {
+      //   location.href = '#article-comment'
+      // })
     },
     setArticleScore (score) {
       this.$confirm({

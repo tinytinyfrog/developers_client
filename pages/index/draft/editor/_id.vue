@@ -588,7 +588,7 @@ export default {
         originalTitle: this.originalTitle.trim(),
         originalUrl: this.originalUrl.trim(),
         originalAuthor: this.originalAuthor.trim(),
-        attachmentUrl: this.fileList[0] ? this.fileList[0].response.data : undefined,
+        attachmentUrl: this.fileList[0] ? this.fileList[0].response ? this.fileList[0].response.data : this.fileList[0].url : undefined,
         attachmentName: this.fileList[0] ? this.fileList[0].name : undefined
       }).then((res) => {
         if (res.success) {
