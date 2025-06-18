@@ -138,6 +138,10 @@ export default {
     //   console.log(this.$store.state.user, 'STORE USER')
     //   cookieUtils.clearToken()
     // }
+    if (cookieUtils.getToken()) {
+      this.$store.dispatch('user/getUserInfo', this)
+    }
+
     window.addEventListener('scroll', this.scrollThrottle)
     // this.wxOauth()
   },

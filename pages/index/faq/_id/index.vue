@@ -151,7 +151,7 @@ export default {
   .page-question-detail {
     display: flex;
     width: 100vw;
-    justify-content: space-between;
+    justify-content: center;
     border-radius: @g-radius;
     box-sizing: border-box;
     min-height: 100vh;
