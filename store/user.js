@@ -12,10 +12,12 @@ const store = {
   },
   actions: {
     async getUserInfo ({ state, commit }, { $api, clear = false, ctx = null }) {
+      console.log(state.userInfo, `state---->${new Date()}`)
       if (state.userInfo && !clear) {
         return
       }
       return await $api.getUserInfo().then((data) => {
+        console.log(data, `data---->${new Date()}`)
         commit('insertUserInfo', data)
         if (process.client && !data) {
           cookieUtils.clearToken()
