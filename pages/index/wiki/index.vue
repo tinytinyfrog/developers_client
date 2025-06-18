@@ -1,41 +1,39 @@
 <template>
-  <div>
-    <div class="page-wiki-container ">
-      <template v-if="menuIndex >= 0">
-        <div class="info-menu">
-          <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
-            <div>
-              {{ item.menuName }}
-            </div>
+  <div class="page-wiki-container ">
+    <template v-if="menuIndex >= 0">
+      <div class="info-menu">
+        <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+          <div>
+            {{ item.menuName }}
           </div>
         </div>
-        <div class="wiki-content">
-          <!-- <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentmenuIndex" /> -->
-          <div class="wiki-content-header">
-            <div class="wiki-filter">
-              <div v-for="(item,index) of tagList" :key="index" class="wiki-tag" :class="tagIndex === item.value ? 'active-tag':''" @click="e =>{ handleTag(item)}">
-                {{ item.label }}
-              </div>
-            </div>
-            <a-button v-if="userInfo && userInfo.role === 'ADMIN'" type="primary" @click="handleWrite">
-              写wiki
-            </a-button>
-          </div>
-          <div v-infinite-scroll="loadData" class="home-list-box">
-            <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
-          </div>
-          <g-empty :list="wikiList" :finished="finished" :loading="loading" />
-        </div>
-      </template>
-      <div v-else class="page-wiki-empty-container">
-        <a-result status="403" sub-title="对不起,你没访问权限">
-          <template #extra>
-            <a-button type="primary" @click="handleBackHome">
-              返回首页
-            </a-button>
-          </template>
-        </a-result>
       </div>
+      <div class="wiki-content">
+        <!-- <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentmenuIndex" /> -->
+        <div class="wiki-content-header">
+          <div class="wiki-filter">
+            <div v-for="(item,index) of tagList" :key="index" class="wiki-tag" :class="tagIndex === item.value ? 'active-tag':''" @click="e =>{ handleTag(item)}">
+              {{ item.label }}
+            </div>
+          </div>
+          <a-button v-if="userInfo && userInfo.role === 'ADMIN'" type="primary" @click="handleWrite">
+            写wiki
+          </a-button>
+        </div>
+        <div v-infinite-scroll="loadData" class="home-list-box">
+          <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
+        </div>
+        <g-empty :list="wikiList" :finished="finished" :loading="loading" />
+      </div>
+    </template>
+    <div v-else class="page-wiki-empty-container">
+      <a-result status="403" sub-title="对不起,你没访问权限">
+        <template #extra>
+          <a-button type="primary" @click="handleBackHome">
+            返回首页
+          </a-button>
+        </template>
+      </a-result>
     </div>
   </div>
 </template>
