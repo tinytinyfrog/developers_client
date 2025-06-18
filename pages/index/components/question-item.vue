@@ -1,6 +1,6 @@
 <template>
   <div class="home-question-item">
-    <div class="question-item" @click="onNative(`/faq/${question.id}`)">
+    <div class="question-item" @click="onNative(`/${question.category === 'WIKI' ? 'wiki':'faq'}/${question.id}`)">
       <div class="other-msg">
         <p class="vice-title-message">
           <GUserPopover :user-id="question.authorId">
