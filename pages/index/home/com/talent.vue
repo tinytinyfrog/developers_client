@@ -204,7 +204,7 @@ export default {
     }
   }
   .talent-empty {
-    height:  348px;
+    height:  384px;
     display: flex;
     justify-content: center;
     align-items: center;

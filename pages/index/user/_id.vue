@@ -74,19 +74,19 @@
           <TabPane key="article" class="tabs-content" force-render>
             <span slot="tab">
               <span>文章</span>
-              <span class="achievement-num">{{ userInfo.articleNumb }}</span>
+              <!-- <span class="achievement-num">{{ userInfo.articleNumb }}</span> -->
             </span>
             <ArticleItem v-for="(item, index) in articleList" :key="index" :article="item" />
             <g-empty :list="articleList" :finished="articleFinished" :loading="articleLoading" />
           </TabPane>
-          <TabPane key="qa">
+          <!-- <TabPane key="qa">
             <span slot="tab">
               <span>QA</span>
               <span class="achievement-num">{{ userInfo.faqNumb }}</span>
             </span>
             <QuestionItem v-for="(item, index) in questionList" :key="index" :question="item" />
             <g-empty :list="questionList" :finished="qFinished" :loading="qLoading" />
-          </TabPane>
+          </TabPane> -->
           <TabPane v-if="oneSelf" key="message" tab="通知">
             <notice-block v-for="(item, index) in messageList" :key="index" :message.sync="item" @mark="handleMark" />
             <g-empty :list="messageList" :finished="mFinished" :loading="mLoading" />
@@ -153,7 +153,7 @@ import { Button, Tabs, Empty, Icon } from 'ant-design-vue'
 import SliderBox from '@/pages/components/slider-box'
 import EventBus from '@/lib/event-bus'
 import ArticleItem from '../components/article-item.vue'
-import QuestionItem from '../components/question-item.vue'
+// import QuestionItem from '../components/question-item.vue'
 import { replaceUrlByQuery } from '../../../lib/utils'
 import MyDynamic from './components/my-dynamic'
 import NoticeBlock from './components/notice-block.vue'
@@ -166,7 +166,7 @@ export default {
   components: {
     SliderBox,
     ArticleItem,
-    QuestionItem,
+    // QuestionItem,
     NoticeBlock,
     Button,
     Tabs,
