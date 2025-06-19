@@ -132,15 +132,21 @@ export default {
       deep: true
     }
   },
+  created () {
+    if (cookieUtils.getToken()) {
+      console.log(this.$store.state, 'store')
+      this.$store.dispatch('user/getUserInfo', this)
+    }
+  },
   mounted () {
     console.log(this.$store.state, 'store')
     // if (!this.$store.state.user.userInfo) {
     //   console.log(this.$store.state.user, 'STORE USER')
     //   cookieUtils.clearToken()
     // }
-    if (cookieUtils.getToken()) {
-      this.$store.dispatch('user/getUserInfo', this)
-    }
+    // if (cookieUtils.getToken()) {
+    //   this.$store.dispatch('user/getUserInfo', this)
+    // }
 
     window.addEventListener('scroll', this.scrollThrottle)
     // this.wxOauth()
