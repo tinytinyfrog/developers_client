@@ -115,7 +115,7 @@ export default {
     styleResources: {
       less: './assets/**/*.less'
     },
-    transpile: ['ant-design-vue'],
+    transpile: ['ant-design-vue','autofit.js'],
     // analyze: true,
     optimization: {
       splitChunks: {
