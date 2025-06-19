@@ -430,8 +430,14 @@ export default {
       this.originalTitle = article.originalTitle
       this.originalUrl = article.originalUrl
       this.originalAuthor = article.originalAuthor
-      this.markdownContent = article.markdownContent
-      this.htmlContent = article.htmlContent
+      if (article.markdownContent) {
+        this.markdownContent = article.markdownContent
+        this.isMarkDown = true
+      }
+      if (article.htmlContent) {
+        this.htmlContent = article.htmlContent
+        this.isMarkDown = false
+      }
       if (article.originalUrl) {
         this.isOriginal = false
       }
