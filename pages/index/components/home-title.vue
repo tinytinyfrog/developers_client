@@ -34,7 +34,6 @@ export default {
     height: @tab-height;
     line-height: @tab-height;
     box-sizing: border-box;
-    border-bottom: 1px solid @border-5-color;
     padding-left: @g-padding * 2;
     .title-tag {
       color: #4e5969;

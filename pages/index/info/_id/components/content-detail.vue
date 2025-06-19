@@ -26,7 +26,7 @@
     </div>
     <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
     <div v-if="article.coverImageUrl || article.imageUrl" style="margin-bottom: 20px;">
-      <img :src="article.coverImageUrl || article.imageUrl">
+      <img :src="article.coverImageUrl || article.imageUrl" style="width: 100%;">
     </div>
     <div v-if="article.attachmentName" class="attach-info">
       <div>附件:</div>

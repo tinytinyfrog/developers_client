@@ -9,14 +9,14 @@
           </div>
         </div>
       </div>
-      <div class="info-content">
-        <Info v-if="activeIndex === 0" />
-        <Expert v-if="activeIndex === 1" />
-        <Honor v-if="activeIndex === 2" />
-        <Team v-if="activeIndex === 3" />
-        <Talent v-if="activeIndex === 4" />
-        <Salon v-if="activeIndex === 5" />
-        <Journal v-if="activeIndex === 6" />
+      <div v-if="menuList.length > 0" class="info-content">
+        <Info v-if="menuList[activeIndex].path === '/info?type=news'" />
+        <Expert v-if="menuList[activeIndex].path === '/info?type=expert'" />
+        <Honor v-if="menuList[activeIndex].path === '/info?type=honor'" />
+        <Team v-if="menuList[activeIndex].path === '/info?type=team'" />
+        <Talent v-if="menuList[activeIndex].path === '/info?type=talent'" />
+        <Salon v-if="menuList[activeIndex].path === '/info?type=salon'" />
+        <Journal v-if="menuList[activeIndex].path === '/info?type=journal'" />
       </div>
     </template>
     <div v-else class="info-empty-container">
@@ -107,7 +107,6 @@ export default {
     '$route' (to) {
       if (this.menuList.length > 0) {
         this.activeIndex = this.menuList.findIndex(item => item.path === to.fullPath)
-        console.log(this.activeIndex, 'coming')
       } else {
         this.activeIndex = -1
       }
@@ -129,7 +128,6 @@ export default {
   },
   mounted () {
     const res = this.$store.state.menu.menuList.filter(i => i.path === '/info')
-    console.log(res, 'dddres')
     if (res?.length > 0 && res[0].children) {
       this.menuList = res[0].children
       if (this.menuList.length > 0) {

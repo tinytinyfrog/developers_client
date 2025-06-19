@@ -341,6 +341,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       padding-right: 8px;
+      border-bottom: 1px solid #f2f2f2;
     }
   }
   .loading {
