@@ -13,9 +13,9 @@
       <span class="nick-name g-hover" @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)">{{ article.authorNickname }}</span><g-space />
       <span><Icon type="eye" /> {{ article.views }}</span><g-space />
       <span><Icon type="dashboard" /> {{ article.createAt | formatDate('YYYY-MM-DD') }}</span>
-      <template v-if="canEdit && !isWiki && !isMobile">
+      <template v-if="canEdit && !isMobile">
         <g-space />
-        <router-link class="g-main-color" :to="{path: `/draft/editor/${article.id}?t=article`}">
+        <router-link class="g-main-color" :to="{path: `/draft/editor/${article.id}?t=${isWiki ? 'wiki' :'article'}`}">
           编辑
         </router-link>
         <g-space />

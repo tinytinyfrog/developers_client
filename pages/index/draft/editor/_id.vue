@@ -229,7 +229,7 @@ export default {
       if (content && content.authorId) {
         isSelf = userId === content.authorId
       }
-      fileList = [{ name: content.attachmentName, url: content.attachmentUrl }]
+      fileList = content.attachmentName && content.attachmentUrl ? [{ name: content.attachmentName, url: content.attachmentUrl }] : []
     }
     console.log(content, fileList)
     const tagGroup = store.state.tag.tagGroup
