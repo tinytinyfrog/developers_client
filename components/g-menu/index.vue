@@ -20,6 +20,7 @@
 
 <script>
 import EventBus from '@/lib/event-bus'
+import cookieUtils from '@/lib/cookie-utils'
 export default {
   name: 'GMenu',
   components: {
@@ -224,7 +225,7 @@ export default {
       this.current = e.key
     },
     fetchMenuList () {
-      this.$api.getRoleMenuList({ roleId: this.$store.state.user.userInfo ? this.$store.state.user.userInfo.roleId : '-1' }).then((res) => {
+      this.$api.getRoleMenuList({ roleId: cookieUtils.getToken() ? this.$store.state.user.userInfo.roleId : '-1' }).then((res) => {
         this.userMenu = res.map((item) => {
           item.children = item.children.filter(i => i.isSelect === 1)
           return item
