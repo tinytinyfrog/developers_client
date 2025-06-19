@@ -205,17 +205,16 @@ export default {
         cancelText: '取消',
         onCancel: () => {},
         onOk: () => {
-          console.log('coming')
           this.$api.logout({
             token: cookieUtils.getToken()
+          }).then((res) => {
+            cookieUtils.clearToken()
+            // await this.$store.dispatch('user/getUserInfo', {
+            //   $api: this.$api,
+            //   clear: true
+            // })
+            location.href = location.origin + '/login'
           })
-          cookieUtils.clearToken()
-          this.$store.dispatch('user/clearUserInfo')
-          // await this.$store.dispatch('user/getUserInfo', {
-          //   $api: this.$api,
-          //   clear: true
-          // })
-          location.href = '/'
         }
       })
     },
@@ -241,9 +240,9 @@ export default {
     },
     handleLogin () {
       // this.$router.push('/login')
-      // location.href = location.origin + '/login'
+      location.href = location.origin + '/login'
       // location.href = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
-      location.href = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
+      // location.href = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
     },
     handleGoto () {
       this.$router.push('/user')

@@ -41,7 +41,7 @@
 </template>
 <script>
 import cookieUtils from '@/lib/cookie-utils'
-// import autofit from 'autofit.js'
+import autofit from 'autofit.js'
 export default {
   data () {
     const form = this.$form.createForm(this, {
@@ -54,14 +54,15 @@ export default {
       loading: false
     }
   },
-  // mounted () {
-  //   autofit.init({
-  //     el: '.login-container'
-  //   })
-  // },
-  // beforeDestroy () {
-  //   autofit.off()
-  // },
+  mounted () {
+    autofit.init({
+      renderDom: '#login-container',
+      resize: true
+    })
+  },
+  beforeDestroy () {
+    autofit.off()
+  },
   methods: {
     async handleLogin () {
       this.loading = true
