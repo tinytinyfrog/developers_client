@@ -14,7 +14,7 @@ export default ({ $axios, req, $cookies }, inject) => {
       console.log('****singleServer****:', config.baseURL)
     }
     config.httpsAgent = agent
-    console.log(cookieUtils.getToken(req), 'token', new Date())
+    console.log(cookieUtils.getToken(req), 'token---------->', new Date())
     config.headers.common.Token = cookieUtils.getToken(req)
     if (config.method === 'get') {
       // 获取当前时间的时间戳

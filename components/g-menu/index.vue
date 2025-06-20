@@ -129,8 +129,11 @@ export default {
   },
   watch: {
     // 路由状态变更
-    '$store.state.user.userInfo' (userInfo) {
+    '$store.state.user.userInfo' (userInfo, old) {
       this.userInfo = userInfo
+      if (userInfo && (userInfo.roleId) !== old.roleId) {
+        this.fetchMenuList()
+      }
     },
     '$route' (to) {
       console.log('coimings')
@@ -225,7 +228,7 @@ export default {
       this.current = e.key
     },
     fetchMenuList () {
-      this.$api.getRoleMenuList({ roleId: cookieUtils.getToken() ? this.$store.state.user.userInfo.roleId : '-1' }).then((res) => {
+      this.$api.getRoleMenuList({ roleId: cookieUtils.getToken() ? this.$store.state.user.userInfo ? this.$store.state.user.userInfo.roleId : '-1' : '-1' }).then((res) => {
         this.userMenu = res.map((item) => {
           item.children = item.children.filter(i => i.isSelect === 1)
           return item

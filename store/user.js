@@ -7,6 +7,7 @@ const store = {
   },
   mutations: {
     insertUserInfo (state, userInfo) {
+      console.log('insert store', state, userInfo)
       state.userInfo = userInfo
     }
   },

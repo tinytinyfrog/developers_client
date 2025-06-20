@@ -74,12 +74,12 @@ export default {
           if (data.data) {
             cookieUtils.setToken(data.data)
             this.errorMessage = ''
-            this.$store.dispatch('user/getUserInfo', this)
+            // this.$store.dispatch('user/getUserInfo', this)
             this.$notification.success({
               duration: 2,
               message: '登录成功！'
             })
-            this.$router.push('/home')
+            this.$router.push('/')
           } else {
             cookieUtils.clearToken()
             this.errorMessage = data.message

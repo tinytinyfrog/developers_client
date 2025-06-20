@@ -133,13 +133,14 @@ export default {
     }
   },
   created () {
-    if (cookieUtils.getToken()) {
-      console.log(this.$store.state, 'store')
-      this.$store.dispatch('user/getUserInfo', this)
-    }
+    console.log(this.$store.state, 'store')
+    // if (cookieUtils.getToken()) {
+    //   console.log(this.$store.state, 'store')
+    //   this.$store.dispatch('user/getUserInfo', this)
+    // }
   },
   mounted () {
-    console.log(this.$store.state, 'store')
+    // console.log(this.$store.state, 'store')
     // if (!this.$store.state.user.userInfo) {
     //   console.log(this.$store.state.user, 'STORE USER')
     //   cookieUtils.clearToken()
