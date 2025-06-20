@@ -204,17 +204,16 @@ export default {
         okText: '确认',
         cancelText: '取消',
         onCancel: () => {},
-        onOk: () => {
+        onOk: async () => {
           this.$api.logout({
             token: cookieUtils.getToken()
-          }).then((res) => {
-            cookieUtils.clearToken()
-            // await this.$store.dispatch('user/getUserInfo', {
-            //   $api: this.$api,
-            //   clear: true
-            // })
-            location.href = location.origin + '/login'
           })
+          cookieUtils.clearToken()
+          await this.$store.dispatch('user/getUserInfo', {
+            $api: this.$api,
+            clear: true
+          })
+          location.href = '/login'
         }
       })
     },

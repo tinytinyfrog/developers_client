@@ -140,15 +140,10 @@ export default {
     // }
   },
   mounted () {
-    // console.log(this.$store.state, 'store')
-    // if (!this.$store.state.user.userInfo) {
-    //   console.log(this.$store.state.user, 'STORE USER')
-    //   cookieUtils.clearToken()
-    // }
-    // if (cookieUtils.getToken()) {
-    //   this.$store.dispatch('user/getUserInfo', this)
-    // }
-
+    console.log(this.$store.state, 'store')
+    if (!this.$store.state.user.userInfo) {
+      cookieUtils.clearToken()
+    }
     window.addEventListener('scroll', this.scrollThrottle)
     // this.wxOauth()
   },
