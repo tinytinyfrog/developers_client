@@ -141,9 +141,9 @@ export default {
   },
   mounted () {
     console.log(this.$store.state, 'store')
-    if (!this.$store.state.user.userInfo) {
-      cookieUtils.clearToken()
-    }
+    // if (!this.$store.state.user.userInfo) {
+    //   cookieUtils.clearToken()
+    // }
     window.addEventListener('scroll', this.scrollThrottle)
     // this.wxOauth()
   },
