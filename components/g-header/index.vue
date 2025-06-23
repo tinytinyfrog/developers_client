@@ -33,6 +33,9 @@
                 <a-menu-item>
                   <a href="javascript:;" @click="handleGoto">个人中心</a>
                 </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;" @click="handleChangePwd">修改密码</a>
+                </a-menu-item>
                 <a-menu-item v-if="userInfo && ['ADMIN', 'SUPER_ADMIN'].includes(userInfo.role) ">
                   <span @click="handleOpenAdmin">后台管理</span>
                 </a-menu-item>
@@ -50,11 +53,41 @@
         </template>
       </div>
     </div>
+    <Modal v-model="showChangePwd" title="修改密码" @on-ok="handleSubmit">
+      <a-form :form="form" :label-col="{ span:24 }" :wrapper-col="{ span: 24 }">
+        <a-form-item label="旧密码">
+          <a-input
+            v-decorator="['oldPassword', { rules: [{ required: true, message: '请输入旧密码' }] }]"
+            placeholder="请输入旧密码"
+          />
+        </a-form-item>
+        <a-form-item label="新密码">
+          <a-input-password
+            v-decorator="['newPassword', { rules: [{ required: true, message: '请输入新密码' }] }]"
+            placeholder="请输入新密码"
+          />
+        </a-form-item>
+        <a-form-item label="确认密码">
+          <a-input-password
+            v-decorator="['newPassword1', { rules: [{ required: true, message: '请确认新密码' },{validator:validatePwd}] }]"
+            placeholder="请确认新密码"
+          />
+        </a-form-item>
+      </a-form>
+      <div slot="footer" class="login-footer-box">
+        <Button type="dashed" @click="showChangePwd = false">
+          取消
+        </Button>
+        <Button type="primary" :loading="loading" @click="handleSubmit">
+          确认
+        </Button>
+      </div>
+    </Modal>
   </header>
 </template>
 
 <script>
-import { Input, Avatar, Button } from 'ant-design-vue'
+import { Input, Avatar, Button, Modal } from 'ant-design-vue'
 import EventBus from '@/lib/event-bus'
 import cookieUtils from '@/lib/cookie-utils'
 
@@ -66,6 +99,7 @@ export default {
     // Popover,
     // Icon,
     // Badge,
+    Modal,
     Avatar,
     InputSearch
   },
@@ -92,7 +126,14 @@ export default {
     }
     const userInfo = this.$store.state.user.userInfo
     const { q = '' } = this.$route.query
+    const form = this.$form.createForm(this, {
+      password: undefined,
+      email: undefined
+    })
     return {
+      form,
+      loading: false,
+      showChangePwd: false,
       searchVal: q,
       activeIndex,
       navBars,
@@ -163,6 +204,52 @@ export default {
   methods: {
     goToLogin () {
       EventBus.$emit('GLOGIN')
+    },
+    handleChangePwd () {
+      this.showChangePwd = true
+    },
+    validatePwd (rule, value, callback) {
+      /* eslint-disable */
+      if (!value) {
+        callback('请确认密码')
+      }
+      if (value && value !== this.form.getFieldValue('newPassword')) {
+        callback('密码不一致')
+      }
+      callback()
+    },
+    async handleSubmit () {
+      this.loading = true
+      try {
+        const value = await this.form.validateFields()
+        this.$api.updatePwd({
+          ...value
+        }).then(async (data) => {
+          if (data.code === 0) {
+            // this.$store.dispatch('user/getUserInfo', this)
+            this.$notification.success({
+              duration: 2,
+              message: '修改成功，请重新登录'
+            })
+            this.showChangePwd = false
+            cookieUtils.clearToken()
+            await this.$store.dispatch('user/getUserInfo', {
+              $api: this.$api,
+              clear: true
+            })
+            location.href = '/login'
+          } else {
+            this.$notification.error({
+              duration: 2,
+              message: data.message
+            })
+          }
+        })
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.loading = false
+      }
     },
     getPopContainer () {
       return document.getElementById('g-header-container')

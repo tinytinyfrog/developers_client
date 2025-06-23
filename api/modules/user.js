@@ -16,6 +16,13 @@ const userApi = ($axios) => {
         return _get(res, 'data', {})
       })
     },
+    async updatePwd (params) {
+      params.oldPassword = CryptoJS.MD5(params.oldPassword).toString()
+      params.newPassword = CryptoJS.MD5(params.newPassword).toString()
+      return await $axios.post('/rest/user/update-pwd', params).then((res) => {
+        return _get(res, 'data', {})
+      })
+    },
     /**
      * 微信小程序生成二维码
      * @param {*} params
