@@ -6,7 +6,7 @@
           <div class="block">
             <div v-if="aiList[0]" class="block-item" @click="e => handleGoto(`/article/${aiList[0].id}`)">
               <div>
-                <img class="img" :src="(!aiList[0].headImg && !(aiList[0].headImg === '[]')) ? getImgUrl(aiList[0].headImg) :default1Img">
+                <img class="img" :src="(aiList[0].headImg && (aiList[0].headImg !== '[]')) ? getImgUrl(aiList[0].headImg) :default1Img">
               </div>
               <div class="content" :title="aiList[0] && aiList[0].title">
                 {{ aiList[0] && aiList[0].introduction }}
@@ -14,7 +14,7 @@
             </div>
             <div v-if="aiList[1]" class="block-item" @click="e => handleGoto(`/article/${aiList[1].id}`)">
               <div>
-                <img class="img" :src="(!aiList[1].headImg && !(aiList[1].headImg === '[]')) ? getImgUrl(aiList[1].headImg) :default2Img">
+                <img class="img" :src="(aiList[1].headImg && (aiList[1].headImg !== '[]')) ? getImgUrl(aiList[1].headImg) :default2Img">
               </div>
               <div class="content" :title="aiList[1] && aiList[1].title">
                 {{ aiList[1] && aiList[1].introduction }}
@@ -67,7 +67,7 @@ export default {
       this.$router.push(path)
     },
     getImgUrl (urlList) {
-      console.log(urlList)
+      console.log(urlList, 'getImgUrl')
       if (!(typeof urlList === 'string')) {
         return ''
       }
