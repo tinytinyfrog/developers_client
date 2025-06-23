@@ -54,7 +54,7 @@ export default {
       this.$api.getCaseList().then((res) => {
         console.log(res, 'res')
         if (res?.nodeList.length > 0)
-          this.caseList = res.nodeList
+          this.caseList = res.nodeList.slice(0, 8)
       }).finally(() => {
         this.loading = false
       })

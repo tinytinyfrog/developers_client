@@ -35,6 +35,7 @@
               :show-upload-list="false"
               :headers="{token}"
               :file-list="fileList"
+              multiple
               @change="handleUploadChange"
             >
               <Button type="primary" :loading="uploading">
@@ -46,8 +47,9 @@
                 <a-icon type="file" style="font-size: 20px; cursor: pointer;" />
               </a-badge>
               <template #content>
-                <div style="padding:10px 0px;  display:flex;justify-content: space-between; column-gap: 10px;">
+                <div v-for="(item,index) of fileList" :key="index" style="padding:10px 0px;  display:flex;justify-content: space-between; column-gap: 10px;">
                   <div
+
                     style="color:rgba(0, 0, 0, 0.85); flex: 1;
                     width: 250px;
                     white-space: nowrap;
@@ -55,14 +57,14 @@
                     text-overflow: ellipsis;"
                     :title="fileList[0].name"
                   >
-                    {{ fileList[0].name }}
+                    {{ item.name }}
                   </div>
                   <div style="width: 50px;">
                     <a-tooltip title="删除">
-                      <a-icon style="color:red; cursor:pointer;" type="delete" @click="handleDeleteFile" />
+                      <a-icon style="color:red; cursor:pointer;" type="delete" @click="e => handleDeleteFile(item,index)" />
                     </a-tooltip>
                     <a-tooltip title="预览">
-                      <a-icon style="margin-right: 4px; color: #0070ff; cursor:pointer;" type="eye" @click="handlePreview" />
+                      <a-icon style="margin-right: 4px; color: #0070ff; cursor:pointer;" type="eye" @click="e => handlePreview(item)" />
                     </a-tooltip>
                   </div>
                 </div>
@@ -229,7 +231,7 @@ export default {
       if (content && content.authorId) {
         isSelf = userId === content.authorId
       }
-      fileList = content.attachmentName && content.attachmentUrl ? [{ name: content.attachmentName, url: content.attachmentUrl }] : []
+      fileList = JSON.parse(content.attachmentJson)
     }
     console.log(content, fileList)
     const tagGroup = store.state.tag.tagGroup
@@ -378,8 +380,8 @@ export default {
         this.fileList = []
       }
     },
-    handleDeleteFile () {
-      this.fileList = []
+    handleDeleteFile (item, index) {
+      this.fileList.splice(index, 1)
     },
     checkoutLogin () {
       if (this.userRole.noLogin) {
@@ -551,8 +553,12 @@ export default {
         headImg: this.getArticleImgs(),
         id: this.content?.id,
         markdownContent: this.markdownContent,
-        attachmentUrl: this.fileList[0] ? this.fileList[0].response.data : undefined,
-        attachmentName: this.fileList[0] ? this.fileList[0].name : undefined
+        attachmentJson: JSON.stringify(this.fileList.map((item) => {
+          return {
+            name: item.name,
+            url: item.url || item.response.data
+          }
+        }))
       }).then((res) => {
         if (res.success) {
           this.clearDraft()
@@ -594,8 +600,12 @@ export default {
         originalTitle: this.originalTitle.trim(),
         originalUrl: this.originalUrl.trim(),
         originalAuthor: this.originalAuthor.trim(),
-        attachmentUrl: this.fileList[0] ? this.fileList[0].response ? this.fileList[0].response.data : this.fileList[0].url : undefined,
-        attachmentName: this.fileList[0] ? this.fileList[0].name : undefined
+        attachmentJson: JSON.stringify(this.fileList.map((item) => {
+          return {
+            name: item.name,
+            url: item.url || item.response.data
+          }
+        }))
       }).then((res) => {
         if (res.success) {
           if (draft) {
@@ -646,8 +656,12 @@ export default {
         originalTitle: this.originalTitle.trim(),
         originalUrl: this.originalUrl.trim(),
         originalAuthor: this.originalAuthor.trim(),
-        attachmentUrl: this.fileList[0] ? this.fileList[0].response.data : undefined,
-        attachmentName: this.fileList[0] ? this.fileList[0].name : undefined
+        attachmentJson: JSON.stringify(this.fileList.map((item) => {
+          return {
+            name: item.name,
+            url: item.url || item.response.data
+          }
+        }))
       }).then((res) => {
         if (res.success) {
           if (draft) {

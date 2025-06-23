@@ -25,14 +25,14 @@
       </template>
     </div>
     <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
-    <div v-if="article.attachmentName" class="attach-info">
+    <div v-if="article.attachmentJson" class="attach-info">
       <div>附件:</div>
-      <div class="attach-item">
-        <div class="attach-name" @click="e => handleDownload(article)">
-          {{ article.attachmentName }}
+      <div v-for="(item,index) of JSON.parse(article.attachmentJson)" :key="index" class="attach-item">
+        <div class="attach-name" @click="e => handleDownload(item)">
+          {{ item.name }}
         </div>
         <a-tooltip title="预览">
-          <div class="attach-preview" @click="e => handlePreview(article)">
+          <div class="attach-preview" @click="e => handlePreview(item)">
             <a-icon type="eye" />
           </div>
         </a-tooltip>
@@ -258,10 +258,11 @@ export default {
       return base64String
     },
     handleDownload (item) {
-      window.open(item.attachmentUrl)
+      window.open(item.url)
     },
     handlePreview (item) {
-      window.open('https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' + window.encodeURIComponent(this.base64Encode(item.attachmentUrl)))
+      console.log(item, 'dsfds')
+      window.open('https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' + window.encodeURIComponent(this.base64Encode(item.url)))
     },
     computePage () {
       let list = []

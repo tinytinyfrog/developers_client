@@ -54,7 +54,7 @@ export default {
       this.$api.getReviewList().then((res) => {
         console.log(res, 'res')
         if (res?.nodeList.length > 0)
-          this.reviewList = res.nodeList
+          this.reviewList = res.nodeList.slice(0, 8)
       }).finally(() => {
         this.loading = false
       })
