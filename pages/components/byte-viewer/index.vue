@@ -1,6 +1,10 @@
 <template>
   <div id="byte-viewer-container" class="byte-viewer-container">
-    <Viewer v-if="markdownContent" :plugins="plugins" :value="markdownContent" />
+    <Viewer
+      v-if="markdownContent"
+      :plugins="plugins"
+      :value="markdownContent"
+    />
   </div>
 </template>
 
@@ -57,7 +61,9 @@ export default {
   methods: {
     insertCopyBtn () {
       try {
-        const preList = document.getElementsByClassName('markdown-body')[0].getElementsByTagName('pre')
+        const preList = document
+          .getElementsByClassName('markdown-body')[0]
+          .getElementsByTagName('pre')
         for (let i = 0; i < preList.length; i++) {
           const copyBtn = document.createElement('span')
           copyBtn.setAttribute('class', 'copy-code-btn')
@@ -83,6 +89,6 @@ export default {
 
 <style lang="less">
 .byte-viewer-container {
-  @import '../byte-markdown-editor/theme.less';
+  @import "../byte-markdown-editor/theme.less";
 }
 </style>

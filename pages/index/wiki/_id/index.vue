@@ -5,11 +5,21 @@
     </div>
     <div v-if="article && ctxType && !loading" class="node-detail">
       <template v-if="ctxType === 'ARTICLE'">
-        <ContentDetail :show-mobile-menu="showMobileMenu" is-wiki :article="article" :menu-list="menuList" />
+        <ContentDetail
+          :show-mobile-menu="showMobileMenu"
+          is-wiki
+          :article="article"
+          :menu-list="menuList"
+        />
         <CommentList :article="article" />
       </template>
       <template v-if="ctxType === 'FAQ'">
-        <QuestionDetail :show-mobile-menu="showMobileMenu" is-wiki :question="article" :menu-list="menuList" />
+        <QuestionDetail
+          :show-mobile-menu="showMobileMenu"
+          is-wiki
+          :question="article"
+          :menu-list="menuList"
+        />
         <FaqCommentList :article="article" />
       </template>
     </div>
@@ -55,7 +65,7 @@ export default {
     }
   },
   watch: {
-    '$route' () {
+    $route () {
       const nodeId = this.$route.params.id
       if (nodeId && nodeId !== this.nodeId) {
         this.nodeId = nodeId
@@ -82,7 +92,10 @@ export default {
           this.ctxType = item.postsCategory
         }
       })
-      const method = this.ctxType === 'ARTICLE' ? this.$api.getArticleDetail : this.$api.getQuestionDetail
+      const method =
+        this.ctxType === 'ARTICLE'
+          ? this.$api.getArticleDetail
+          : this.$api.getQuestionDetail
       await method(this.nodeId).then((res) => {
         article = res
       })
@@ -97,7 +110,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '~/pages/components/byte-markdown-editor/theme.less';
+@import "~/pages/components/byte-markdown-editor/theme.less";
 .page-wiki-node-detail {
   width: 60%;
   min-height: 100vh;

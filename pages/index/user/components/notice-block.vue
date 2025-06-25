@@ -1,12 +1,21 @@
 <template>
-  <div v-if="info" class="cm-page-notice-block g-flex-between" @click="handleNotice(info)">
+  <div
+    v-if="info"
+    class="cm-page-notice-block g-flex-between"
+    @click="handleNotice(info)"
+  >
     <div class="g-flex-between">
       <img class="user-header" :src="info.senderAvatar" alt="">
       <div>
         <p class="user-nickname">
-          <span class="nickname g-hover" @click.prevent.stop="$utils.openUserCenter(info.sender)">{{ info.senderName }}</span>
+          <span
+            class="nickname g-hover"
+            @click.prevent.stop="$utils.openUserCenter(info.sender)"
+          >{{ info.senderName }}</span>
           <span class="notice-action">{{ noticeMap[message.type] }}</span>
-          <span v-if="info.type !== 'FOLLOW_USER'" class="nickname g-hover">{{ info.title }}</span>
+          <span v-if="info.type !== 'FOLLOW_USER'" class="nickname g-hover">{{
+            info.title
+          }}</span>
         </p>
         <p class="msg-time">
           <Icon type="dashboard" />
@@ -14,7 +23,12 @@
         </p>
       </div>
     </div>
-    <Button v-if="info.read === 'NO'" class="read-btn" type="link" @click.stop.prevent="onMarkRead">
+    <Button
+      v-if="info.read === 'NO'"
+      class="read-btn"
+      type="link"
+      @click.stop.prevent="onMarkRead"
+    >
       标记为已读
     </Button>
     <span v-if="info.read === 'NO'" class="notice-point" />
@@ -108,7 +122,7 @@ export default {
     margin-bottom: 4px;
   }
   .msg-time {
-    font-size:12px;
+    font-size: 12px;
   }
   .notice-point {
     position: absolute;

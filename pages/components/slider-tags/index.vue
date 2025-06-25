@@ -1,5 +1,9 @@
 <template>
-  <g-sidebar v-if="$store.state.tag.tags.length" title="推荐标签" background-color="#fff">
+  <g-sidebar
+    v-if="$store.state.tag.tags.length"
+    title="推荐标签"
+    background-color="#fff"
+  >
     <div class="recommend-tags-container">
       <span
         v-for="(tag, key) in $store.state.tag.tags.slice(0, 8)"
@@ -32,8 +36,7 @@ export default {
     color: @font-color-second;
     font-size: 13px;
     padding: 3px 6px;
-    background-color: @g-bg-blue
-  ;
+    background-color: @g-bg-blue;
     border-radius: @g-radius;
     box-sizing: border-box;
     width: (@sidebar-width - 20px) / 2 - 20px;

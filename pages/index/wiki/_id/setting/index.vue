@@ -14,7 +14,11 @@
           <div class="input-form">
             <div class="input-item">
               <span class="label">知识库名称：</span>
-              <a-input v-model="wiki.name" placeholder="请输入知识库名称" :disabled="disabled" />
+              <a-input
+                v-model="wiki.name"
+                placeholder="请输入知识库名称"
+                :disabled="disabled"
+              />
             </div>
             <div class="input-item">
               <span class="label">知识库名称：</span>
@@ -24,7 +28,9 @@
                     v-for="(item, index) in categoryList"
                     :key="index"
                     class="tag-category"
-                    :class="{'active-category': activeCategoryIndex === index}"
+                    :class="{
+                      'active-category': activeCategoryIndex === index,
+                    }"
                     @click="activeCategoryIndex = index"
                   >{{ item.name }}</span>
                 </div>
@@ -64,7 +70,10 @@
         <h4 class="desc-title">
           其它信息<span class="g-sub-title">（更新日志等）</span>
         </h4>
-        <ByteMarkdownEditor :markdown-content="markdownContent" @change="handleMarkdownChange" />
+        <ByteMarkdownEditor
+          :markdown-content="markdownContent"
+          @change="handleMarkdownChange"
+        />
       </a-tab-pane>
       <a-tab-pane key="2" tab="协作者" force-render>
         <UserList :wiki-id="wikiId" />
@@ -117,7 +126,11 @@ export default {
     delWiki () {
       this.$confirm({
         title: '确认要删除当前知识库吗？',
-        content: h => <div style="color: #606a78;">警告：删除该知识库后，知识库下所有内容也将删除，清谨慎操作</div>,
+        content: h => (
+          <div style="color: #606a78;">
+            警告：删除该知识库后，知识库下所有内容也将删除，清谨慎操作
+          </div>
+        ),
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
@@ -159,32 +172,34 @@ export default {
         this.loading = false
         return
       }
-      this.$api.updateWiki({
-        id,
-        name,
-        summary,
-        headImg,
-        show,
-        desc: this.markdownContent,
-        categoryId: categoryList[activeCategoryIndex].id
-      }).then((res) => {
-        this.loading = false
-        if (res.success) {
-          this.$message.success('更新成功')
-          setTimeout(() => {
-            location.reload()
-          }, 1500)
-        } else {
-          this.$message.error(res.message)
-        }
-      })
+      this.$api
+        .updateWiki({
+          id,
+          name,
+          summary,
+          headImg,
+          show,
+          desc: this.markdownContent,
+          categoryId: categoryList[activeCategoryIndex].id
+        })
+        .then((res) => {
+          this.loading = false
+          if (res.success) {
+            this.$message.success('更新成功')
+            setTimeout(() => {
+              location.reload()
+            }, 1500)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
     }
   }
 }
 </script>
 
 <style lang="less">
-@import '~/pages/components/byte-markdown-editor/theme.less';
+@import "~/pages/components/byte-markdown-editor/theme.less";
 .page-wiki-setting {
   padding: @g-padding @g-padding * 2;
   .wiki-base-info {
@@ -234,7 +249,7 @@ export default {
               margin-left: 0;
             }
             &:last-child {
-              border-bottom-width: 0
+              border-bottom-width: 0;
             }
             &:hover {
               color: @g-active-color;

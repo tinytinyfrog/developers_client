@@ -1,14 +1,10 @@
 <template>
   <div class="page-wiki-container g-margin-top">
     <div v-if="canEdit" class="wiki-title-box">
-      <h3 class="wiki-title">
-        知识库
-      </h3>
+      <h3 class="wiki-title">知识库</h3>
       <div class="action">
         <a-space>
-          <a-checkbox :checked="myWiki" @change="onChange">
-            我的
-          </a-checkbox>
+          <a-checkbox :checked="myWiki" @change="onChange"> 我的 </a-checkbox>
           <a-button type="primary" icon="plus" ghost @click="showDrawer = true">
             添加知识库
           </a-button>
@@ -16,52 +12,58 @@
       </div>
     </div>
     <div class="wiki-list-box">
-      <CreateWiki :category-list="categoryList" :show-drawer.sync="showDrawer" />
-      <WikiList :category-list="categoryList" :wiki-type="myWiki ? 'self' : 'all'" />
+      <CreateWiki
+        :category-list="categoryList"
+        :show-drawer.sync="showDrawer"
+      />
+      <WikiList
+        :category-list="categoryList"
+        :wiki-type="myWiki ? 'self' : 'all'"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import _get from 'lodash/get'
-import { RULE_ENUM } from '@/lib/enum'
-import EventBus from '../../../lib/event-bus'
-import WikiList from './components/wiki-list'
-import CreateWiki from './components/create-wiki'
+import _get from "lodash/get";
+import { RULE_ENUM } from "@/lib/enum";
+import EventBus from "../../../lib/event-bus";
+import WikiList from "./components/wiki-list";
+import CreateWiki from "./components/create-wiki";
 export default {
-  name: 'PageWiki',
+  name: "PageWiki",
   components: {
     WikiList,
-    CreateWiki
+    CreateWiki,
   },
-  data () {
-    const perm = _get(this, '$store.state.user.userInfo.perm', 0)
-    let role = _get(this, '$store.state.user.userInfo.role', '')
-    role = role && role !== 'USER'
+  data() {
+    const perm = _get(this, "$store.state.user.userInfo.perm", 0);
+    let role = _get(this, "$store.state.user.userInfo.role", "");
+    role = role && role !== "USER";
     return {
       myWiki: false,
       showDrawer: false,
       categoryList: [],
-      canEdit: role || ((perm & RULE_ENUM.WIKI) === RULE_ENUM.WIKI)
-    }
+      canEdit: role || (perm & RULE_ENUM.WIKI) === RULE_ENUM.WIKI,
+    };
   },
-  mounted () {
-    this.getWikiCategoryList()
+  mounted() {
+    this.getWikiCategoryList();
   },
   methods: {
-    onChange () {
-      this.myWiki = !this.myWiki
+    onChange() {
+      this.myWiki = !this.myWiki;
       this.$nextTick(() => {
-        EventBus.$emit('on-update-wiki')
-      })
+        EventBus.$emit("on-update-wiki");
+      });
     },
-    getWikiCategoryList () {
+    getWikiCategoryList() {
       this.$api.getWikiCategoryList().then((list) => {
-        this.categoryList = list
-      })
-    }
-  }
-}
+        this.categoryList = list;
+      });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

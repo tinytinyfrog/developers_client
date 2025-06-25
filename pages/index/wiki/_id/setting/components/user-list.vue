@@ -18,7 +18,12 @@
             {{ d.nickname }}
           </a-select-option>
         </a-select>
-        <a-button class="add-collaborator-btn" type="primary" ghost @click="addCoordination">
+        <a-button
+          class="add-collaborator-btn"
+          type="primary"
+          ghost
+          @click="addCoordination"
+        >
           添加
         </a-button>
       </div>
@@ -52,7 +57,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'UserList',
   props: {
@@ -98,19 +102,21 @@ export default {
     addCoordination () {
       if (this.addLoading) return
       this.addLoading = true
-      this.$api.addWikiCollaborator({
-        wikiId: this.wikiId,
-        userId: this.currentUser.id
-      }).then((res) => {
-        this.addLoading = false
-        if (res.success) {
-          this.$message.success('添加成功')
-          this.clearState()
-          this.getUserList()
-        } else {
-          this.$message.error(res.message)
-        }
-      })
+      this.$api
+        .addWikiCollaborator({
+          wikiId: this.wikiId,
+          userId: this.currentUser.id
+        })
+        .then((res) => {
+          this.addLoading = false
+          if (res.success) {
+            this.$message.success('添加成功')
+            this.clearState()
+            this.getUserList()
+          } else {
+            this.$message.error(res.message)
+          }
+        })
     },
     handleSearch (val) {
       this.teamer = val
@@ -135,24 +141,28 @@ export default {
       }
     },
     onDelete (data) {
-      this.$api.delWikiCollaborator({
-        wikiId: this.wikiId,
-        userId: data.userId
-      }).then((res) => {
-        if (res.success) {
-          this.$message.success('删除成功')
-          this.getUserList()
-        } else {
-          this.$message.error(res.message)
-        }
-      })
+      this.$api
+        .delWikiCollaborator({
+          wikiId: this.wikiId,
+          userId: data.userId
+        })
+        .then((res) => {
+          if (res.success) {
+            this.$message.success('删除成功')
+            this.getUserList()
+          } else {
+            this.$message.error(res.message)
+          }
+        })
     },
     getUserList () {
-      this.$api.getWikiCollaboratorList({
-        wikiId: this.wikiId
-      }).then((users) => {
-        this.dataSource = [...users]
-      })
+      this.$api
+        .getWikiCollaboratorList({
+          wikiId: this.wikiId
+        })
+        .then((users) => {
+          this.dataSource = [...users]
+        })
     }
   }
 }

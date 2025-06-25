@@ -1,6 +1,15 @@
 <template>
-  <a-affix :offset-top="0" class="wiki-menu-entry" :class="{'menu-affix-block': showMobileMenu }" @touchmove.stop.prevent="() => {}">
-    <div ref="wikiMenu" class="wiki-detail-menu" :class="{'hide-menu': !showMobileMenu}">
+  <a-affix
+    :offset-top="0"
+    class="wiki-menu-entry"
+    :class="{ 'menu-affix-block': showMobileMenu }"
+    @touchmove.stop.prevent="() => {}"
+  >
+    <div
+      ref="wikiMenu"
+      class="wiki-detail-menu"
+      :class="{ 'hide-menu': !showMobileMenu }"
+    >
       <!-- <a-affix v-if="wikiInfo" :target="() => this.$refs.wikiMenu">
         <div class="base-menu-info">
           <div ref="wikiInfo" class="wiki-info">
@@ -57,7 +66,7 @@
             :default-open="checkOpen(wiki.children, index)"
             @on-update-menu="$emit('on-update')"
           >
-            <template slot-scope="{open}">
+            <template slot-scope="{ open }">
               <draggable
                 v-model="wiki.children"
                 :delay="200"
@@ -89,42 +98,42 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
-import EventBus from '@/lib/event-bus'
-import MenuParent from './menu-parent-item'
-import MenuChildren from './menu-children-item'
+import draggable from "vuedraggable";
+import EventBus from "@/lib/event-bus";
+import MenuParent from "./menu-parent-item";
+import MenuChildren from "./menu-children-item";
 export default {
-  name: 'WikiMenu',
+  name: "WikiMenu",
   components: {
     MenuParent,
     MenuChildren,
-    draggable
+    draggable,
   },
   props: {
     menuList: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     wikiInfo: {
       type: Object,
-      default: () => null
+      default: () => null,
     },
     canEdit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showMobileMenu: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isCollaborator: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
-    const { id, nodeId } = this.$route.params
-    const { isMobile } = this.$store.state.globalData
+  data() {
+    const { id, nodeId } = this.$route.params;
+    const { isMobile } = this.$store.state.globalData;
     return {
       isMobile,
       top: 0,
@@ -132,24 +141,24 @@ export default {
       nodeId,
       hasArticle: false,
       wikiMenu: this.menuList,
-      showEditWiki: false
-    }
+      showEditWiki: false,
+    };
   },
   watch: {
-    $route () {
-      const { nodeId } = this.$route.params
-      this.nodeId = nodeId
+    $route() {
+      const { nodeId } = this.$route.params;
+      this.nodeId = nodeId;
     },
-    menuList (list) {
-      this.wikiMenu = list
-      console.log(list.length, 'ddd')
+    menuList(list) {
+      this.wikiMenu = list;
+      console.log(list.length, "ddd");
       // if (list?.length > 0 && (/\/wiki\/.*\/?$/).test(this.$route.path)) {
       //   console.log(`/wiki/${this.$route.params.id}/${list[0]?.postsId}`, 'coming')
       //   this.$router.push(`/wiki/${this.$route.params.id}/${list[0]?.postsId}`)
       // }
-    }
+    },
   },
-  mounted () {
+  mounted() {
     // if (this.menuList?.length > 0) {
     //   if ((/\/wiki\/.*\/?$/).test(this.$route.path)) {
     //     console.log(`/wiki/${this.$route.params.id}/${this.menuList[0]?.postsId}`, 'coming')
@@ -159,71 +168,71 @@ export default {
     // }
   },
   methods: {
-    openWikiDetail () {
-      EventBus.$emit('G_UPDATE_MENU', false)
-      this.$router.push(`/wiki/${this.wikiId}`)
+    openWikiDetail() {
+      EventBus.$emit("G_UPDATE_MENU", false);
+      this.$router.push(`/wiki/${this.wikiId}`);
     },
-    handleMarkdownChange (text) {
-      this.markdownContent = text
+    handleMarkdownChange(text) {
+      this.markdownContent = text;
     },
-    settingWiki () {
-      this.showEditWiki = false
-      this.$router.push(`/wiki/${this.wikiId}/setting`)
+    settingWiki() {
+      this.showEditWiki = false;
+      this.$router.push(`/wiki/${this.wikiId}/setting`);
     },
-    addWikiMenu () {
-      this.showEditWiki = false
-      this.$router.push(`/draft/editor/new?t=wiki&wikiId=${this.wikiId}`)
+    addWikiMenu() {
+      this.showEditWiki = false;
+      this.$router.push(`/draft/editor/new?t=wiki&wikiId=${this.wikiId}`);
     },
-    goBackWikiList () {
-      location.replace('/wiki')
+    goBackWikiList() {
+      location.replace("/wiki");
     },
-    getChildrenParamsByNodeId (nodeId) {
+    getChildrenParamsByNodeId(nodeId) {
       const params = {
-        nodeId
-      }
+        nodeId,
+      };
       for (let i = 0; i < this.wikiMenu.length; i++) {
-        const wikiItem = this.wikiMenu[i]
-        const children = wikiItem.children
+        const wikiItem = this.wikiMenu[i];
+        const children = wikiItem.children;
         for (let k = 0; k < children.length; k++) {
-          const node = children[k]
+          const node = children[k];
           if (+nodeId === node.nodeId) {
-            params.parentNodeId = wikiItem.nodeId
-            params.prevBrotherNodeId = k > 0 ? children[k - 1].nodeId : null
-            break
+            params.parentNodeId = wikiItem.nodeId;
+            params.prevBrotherNodeId = k > 0 ? children[k - 1].nodeId : null;
+            break;
           }
         }
       }
-      return params
+      return params;
     },
-    getParentParamsByNodeId (nodeId) {
+    getParentParamsByNodeId(nodeId) {
       const params = {
         nodeId,
-        parentNodeId: null
-      }
+        parentNodeId: null,
+      };
       for (let i = 0; i < this.wikiMenu.length; i++) {
-        const wikiItem = this.wikiMenu[i]
+        const wikiItem = this.wikiMenu[i];
         if (+nodeId === wikiItem.nodeId) {
-          params.prevBrotherNodeId = i > 0 ? this.wikiMenu[i - 1].nodeId : null
-          break
+          params.prevBrotherNodeId = i > 0 ? this.wikiMenu[i - 1].nodeId : null;
+          break;
         }
       }
-      return params
+      return params;
     },
-    onChildrenEnd (e) {
-      const nodeId = e.clone.dataset.id
-      const params = this.getChildrenParamsByNodeId(nodeId)
-      this.$api.wikiMoveNodeById(params)
+    onChildrenEnd(e) {
+      const nodeId = e.clone.dataset.id;
+      const params = this.getChildrenParamsByNodeId(nodeId);
+      this.$api.wikiMoveNodeById(params);
     },
-    onParentEnd (e) {
-      const nodeId = e.clone.dataset.id
-      const params = this.getParentParamsByNodeId(nodeId)
-      this.$api.wikiMoveNodeById(params)
+    onParentEnd(e) {
+      const nodeId = e.clone.dataset.id;
+      const params = this.getParentParamsByNodeId(nodeId);
+      this.$api.wikiMoveNodeById(params);
     },
-    checkOpen (list) {
-      return list.some(item => item.postsId === +this.nodeId)
-    }
-  }
-}
+    checkOpen(list) {
+      return list.some((item) => item.postsId === +this.nodeId);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -263,7 +272,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: @g-padding @g-padding * 2 @g-padding 0;
-    background-color: #F8F8FF;
+    background-color: #f8f8ff;
     .info-box {
       display: flex;
       align-items: center;

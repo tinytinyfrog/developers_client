@@ -4,13 +4,17 @@
       <div class="card-header">
         <div class="talent-header">
           <div>
-            <a-select v-model="monthValue" style="width: 120px;">
-              <a-select-option v-for="(item,index) of months" :key="index" :value="item">
+            <a-select v-model="monthValue" style="width: 120px">
+              <a-select-option
+                v-for="(item, index) of months"
+                :key="index"
+                :value="item"
+              >
                 {{ item }}
               </a-select-option>
             </a-select>
           </div>
-          <div class="more" @click="e => handleGoto(`/info?type=talent`)">
+          <div class="more" @click="(e) => handleGoto(`/info?type=talent`)">
             更多 >
             <div />
           </div>
@@ -21,19 +25,27 @@
       <a-spin :spinning="loading">
         <div v-if="talentList.length > 0" class="talent">
           <a-carousel>
-            <div v-for="(item,index) of talentList" :key="index" class="talent-list">
-              <div v-for="(k,i) of item.child" :key="i" class="talent-item">
+            <div
+              v-for="(item, index) of talentList"
+              :key="index"
+              class="talent-list"
+            >
+              <div v-for="(k, i) of item.child" :key="i" class="talent-item">
                 <div>
                   <img class="img" :src="k.avatar">
                 </div>
-                <div class="name" :title="k.nickname || '-' " @click="e => handleOpen(k)">
-                  {{ k.nickname || '-' }}
+                <div
+                  class="name"
+                  :title="k.nickname || '-'"
+                  @click="(e) => handleOpen(k)"
+                >
+                  {{ k.nickname || "-" }}
                 </div>
                 <!-- <div class="info">
                   工号：{{ k.userCode || '-' }}
                 </div> -->
-                <div class="info" :title="k.deptName|| '-'">
-                  {{ k.deptName|| '-' }}
+                <div class="info" :title="k.deptName || '-'">
+                  {{ k.deptName || "-" }}
                 </div>
                 <!-- <div class="text">
                   <div class="name" :title="k.nickname || '-' " @click="e => handleOpen(k)">
@@ -137,25 +149,25 @@ export default {
   }
 }
 </script>
-    <style scoped lang="less">
-     .talent-header {
-              display: flex;
-              column-gap: 8px;
-              align-items: center;
-            }
-   .talent {
-    padding: 16px 22px;
-    width: 100%;
-    padding-bottom: 32px;
-    .talent-list {
-      background-image: url('~/assets/images/home/talent-bg.png');
-      height: 336px !important;
-      display: flex !important;
-      flex-wrap: wrap;
-      column-gap:14px;
-      padding: 26px 16px;
-      row-gap: 14px;
-     .talent-item {
+<style scoped lang="less">
+.talent-header {
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+}
+.talent {
+  padding: 16px 22px;
+  width: 100%;
+  padding-bottom: 32px;
+  .talent-list {
+    background-image: url("~/assets/images/home/talent-bg.png");
+    height: 336px !important;
+    display: flex !important;
+    flex-wrap: wrap;
+    column-gap: 14px;
+    padding: 26px 16px;
+    row-gap: 14px;
+    .talent-item {
       width: calc((100% - (14px * 4)) / 5);
       // display: flex;
       border: 1px solid rgb(255, 255, 255);
@@ -163,50 +175,50 @@ export default {
       box-shadow: 0px 4px 24px 0px rgba(0, 159, 255, 0.12);
       background: rgba(255, 255, 255, 0.6);
       padding: 12px;
-      column-gap:20px;
+      column-gap: 20px;
       height: 136px;
-       .img {
-         width: 60px;
-         height: 60px;
-         border-radius: 60px;
-         object-fit: cover;
-       }
-       .name {
+      .img {
+        width: 60px;
+        height: 60px;
+        border-radius: 60px;
+        object-fit: cover;
+      }
+      .name {
         color: rgb(40, 40, 40);
         margin-top: 4px;
         font-size: 16px;
         font-weight: 400;
-        width:80px;
+        width: 80px;
         white-space: nowrap; /* 防止文本换行 */
         overflow: hidden; /* 隐藏溢出的内容 */
         text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
-        cursor:pointer;
-       }
-       .info {
+        cursor: pointer;
+      }
+      .info {
         color: rgb(89, 89, 89);
         font-size: 14px;
         font-weight: 400;
         margin-top: 4px;
-        width:120px;
+        width: 120px;
         white-space: nowrap; /* 防止文本换行 */
         overflow: hidden; /* 隐藏溢出的内容 */
         text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
-        cursor:pointer;
-       }
-     }
+        cursor: pointer;
+      }
     }
+  }
 
-    ::v-deep .ant-carousel .slick-slide {
-      height: 336px;
-      // line-height: 160px;
-      // background: #364d79 !important;
-      overflow: hidden;
-    }
+  ::v-deep .ant-carousel .slick-slide {
+    height: 336px;
+    // line-height: 160px;
+    // background: #364d79 !important;
+    overflow: hidden;
   }
-  .talent-empty {
-    height:  384px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-    </style>
+}
+.talent-empty {
+  height: 384px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

@@ -5,9 +5,19 @@
       <span v-if="sliderData.more" class="more" @click="onMore">更多</span>
     </div>
     <div class="slider-list">
-      <router-link v-for="(item, index) in sliderData.list" :key="index" :to="`/article/${item.id}`" class="slider-item" target="_blank">
-        <span class="article-title g-hidden-line1 g-hover">{{ item.title }}</span>
-        <span v-if="showTime" class="article-time">{{ item.createAt | formatDate('YYYY/MM') }}</span>
+      <router-link
+        v-for="(item, index) in sliderData.list"
+        :key="index"
+        :to="`/article/${item.id}`"
+        class="slider-item"
+        target="_blank"
+      >
+        <span class="article-title g-hidden-line1 g-hover">{{
+          item.title
+        }}</span>
+        <span v-if="showTime" class="article-time">{{
+          item.createAt | formatDate("YYYY/MM")
+        }}</span>
       </router-link>
     </div>
   </div>
@@ -15,23 +25,23 @@
 
 <script>
 export default {
-  name: 'SliderCommonBox', // 1
+  name: "SliderCommonBox", // 1
   props: {
     sliderData: {
       type: Object,
-      default: null
+      default: null,
     },
     showTime: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   methods: {
-    onMore () {
-      location.href = this.sliderData.path
-    }
-  }
-}
+    onMore() {
+      location.href = this.sliderData.path;
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

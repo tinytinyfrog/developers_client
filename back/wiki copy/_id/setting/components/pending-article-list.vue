@@ -3,8 +3,11 @@
     <div v-for="(item, index) in checkList" :key="index" class="article-link">
       <a-space>
         <GUserPopover :user-id="item.userId">
-          <span class="display-align-center" @click.stop.prevent="$utils.openNewWindow(item.userId)">
-            <img class="user-header" :src="item.userAvatar" alt="">
+          <span
+            class="display-align-center"
+            @click.stop.prevent="$utils.openNewWindow(item.userId)"
+          >
+            <img class="user-header" :src="item.userAvatar" alt="" />
             <b>{{ item.userName }}</b>
           </span>
         </GUserPopover>
@@ -25,47 +28,49 @@
 
 <script>
 export default {
-  name: 'PendingArticleList',
+  name: "PendingArticleList",
   props: {
     wikiId: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
-  data () {
+  data() {
     return {
       checkList: [],
       finished: false,
       loading: false,
       pageNo: 1,
-      pageSize: 100
-    }
+      pageSize: 100,
+    };
   },
-  mounted () {
-    this.getPendingList()
+  mounted() {
+    this.getPendingList();
   },
   methods: {
-    getPendingList () {
-      if (this.finished || this.loading) return
-      this.loading = true
-      this.$api.getWikiNodeCheckRecordList({
-        filter: {
-          wikiId: this.wikiId
-        },
-        pageNo: this.pageNo,
-        pageSize: this.pageSize
-      }).then((list) => {
-        this.loading = false
-        this.finished = true
-        // list.forEach(item => {
-        //   item.
-        // })
-        this.checkList = list
-      })
+    getPendingList() {
+      if (this.finished || this.loading) return;
+      this.loading = true;
+      this.$api
+        .getWikiNodeCheckRecordList({
+          filter: {
+            wikiId: this.wikiId,
+          },
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+        })
+        .then((list) => {
+          this.loading = false;
+          this.finished = true;
+          // list.forEach(item => {
+          //   item.
+          // })
+          this.checkList = list;
+        });
     },
-    handleCheck () {}
-  }
-}
+    handleCheck() {},
+  },
+};
 </script>
 
 <style lang="less">

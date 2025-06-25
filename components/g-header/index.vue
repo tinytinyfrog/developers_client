@@ -3,10 +3,25 @@
     <div class="g-header-box">
       <div class="header-left">
         <div class="header-left-nav">
-          <img class="logo" src="~/assets/images/header/logo.png" alt="" @click="$router.push('/')">
+          <img
+            class="logo"
+            src="~/assets/images/header/logo.png"
+            alt=""
+            @click="$router.push('/')"
+          >
           <a-divider type="vertical" class="a-divider" />
-          <img class="intro-logo" src="~/assets/images/header/intro.png" alt="">
-          <InputSearch v-model="searchVal" placeholder="请输入关键字进行搜索" style="width: 320px" class="search" @search="onSearch" />
+          <img
+            class="intro-logo"
+            src="~/assets/images/header/intro.png"
+            alt=""
+          >
+          <InputSearch
+            v-model="searchVal"
+            placeholder="请输入关键字进行搜索"
+            style="width: 320px"
+            class="search"
+            @search="onSearch"
+          />
         </div>
         <!-- <span class="search-container">
           <InputSearch v-model="searchVal" placeholder="请输入关键字" style="width: 280px" @search="onSearch" />
@@ -26,7 +41,7 @@
           </Avatar>
           <div>
             <a-dropdown>
-              <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+              <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
                 {{ userInfo.nickname }} <a-icon type="down" />
               </a>
               <a-menu slot="overlay">
@@ -36,11 +51,15 @@
                 <a-menu-item>
                   <a href="javascript:;" @click="handleChangePwd">修改密码</a>
                 </a-menu-item>
-                <a-menu-item v-if="userInfo && ['ADMIN', 'SUPER_ADMIN'].includes(userInfo.role) ">
+                <a-menu-item
+                  v-if="
+                    userInfo && ['ADMIN', 'SUPER_ADMIN'].includes(userInfo.role)
+                  "
+                >
                   <span @click="handleOpenAdmin">后台管理</span>
                 </a-menu-item>
                 <a-menu-item>
-                  <span style="color:red" @click="logout">退出系统</span>
+                  <span style="color: red" @click="logout">退出系统</span>
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
@@ -54,22 +73,40 @@
       </div>
     </div>
     <Modal v-model="showChangePwd" title="修改密码" @on-ok="handleSubmit">
-      <a-form :form="form" :label-col="{ span:24 }" :wrapper-col="{ span: 24 }">
+      <a-form
+        :form="form"
+        :label-col="{ span: 24 }"
+        :wrapper-col="{ span: 24 }"
+      >
         <a-form-item label="旧密码">
           <a-input
-            v-decorator="['oldPassword', { rules: [{ required: true, message: '请输入旧密码' }] }]"
+            v-decorator="[
+              'oldPassword',
+              { rules: [{ required: true, message: '请输入旧密码' }] },
+            ]"
             placeholder="请输入旧密码"
           />
         </a-form-item>
         <a-form-item label="新密码">
           <a-input-password
-            v-decorator="['newPassword', { rules: [{ required: true, message: '请输入新密码' }] }]"
+            v-decorator="[
+              'newPassword',
+              { rules: [{ required: true, message: '请输入新密码' }] },
+            ]"
             placeholder="请输入新密码"
           />
         </a-form-item>
         <a-form-item label="确认密码">
           <a-input-password
-            v-decorator="['newPassword1', { rules: [{ required: true, message: '请确认新密码' },{validator:validatePwd}] }]"
+            v-decorator="[
+              'newPassword1',
+              {
+                rules: [
+                  { required: true, message: '请确认新密码' },
+                  { validator: validatePwd },
+                ],
+              },
+            ]"
             placeholder="请确认新密码"
           />
         </a-form-item>
@@ -182,7 +219,7 @@ export default {
     '$store.state.user.userInfo' (userInfo) {
       this.userInfo = userInfo
     },
-    '$route' (to) {
+    $route (to) {
       let hasNav = false
       let navIndex = 0
       this.navBars.forEach((item, index) => {
@@ -211,266 +248,272 @@ export default {
     validatePwd (rule, value, callback) {
       /* eslint-disable */
       if (!value) {
-        callback('请确认密码')
+        callback("请确认密码");
       }
-      if (value && value !== this.form.getFieldValue('newPassword')) {
-        callback('密码不一致')
+      if (value && value !== this.form.getFieldValue("newPassword")) {
+        callback("密码不一致");
       }
-      callback()
+      callback();
     },
-    async handleSubmit () {
-      this.loading = true
+    async handleSubmit() {
+      this.loading = true;
       try {
-        const value = await this.form.validateFields()
-        this.$api.updatePwd({
-          ...value
-        }).then(async (data) => {
-          if (data.code === 0) {
-            // this.$store.dispatch('user/getUserInfo', this)
-            this.$notification.success({
-              duration: 2,
-              message: '修改成功，请重新登录'
-            })
-            this.showChangePwd = false
-            cookieUtils.clearToken()
-            await this.$store.dispatch('user/getUserInfo', {
-              $api: this.$api,
-              clear: true
-            })
-            location.href = '/login'
-          } else {
-            this.$notification.error({
-              duration: 2,
-              message: data.message
-            })
-          }
-        })
+        const value = await this.form.validateFields();
+        this.$api
+          .updatePwd({
+            ...value,
+          })
+          .then(async (data) => {
+            if (data.code === 0) {
+              // this.$store.dispatch('user/getUserInfo', this)
+              this.$notification.success({
+                duration: 2,
+                message: "修改成功，请重新登录",
+              });
+              this.showChangePwd = false;
+              cookieUtils.clearToken();
+              await this.$store.dispatch("user/getUserInfo", {
+                $api: this.$api,
+                clear: true,
+              });
+              location.href = "/login";
+            } else {
+              this.$notification.error({
+                duration: 2,
+                message: data.message,
+              });
+            }
+          });
       } catch (e) {
-        console.log(e)
+        console.log(e);
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
-    getPopContainer () {
-      return document.getElementById('g-header-container')
+    getPopContainer() {
+      return document.getElementById("g-header-container");
     },
-    async onReadAll () {
+    async onReadAll() {
       // EventBus.$emit('G_MSG_ITEM_COUNT')
-      const res = await this.$api.markMessageStateAll()
+      const res = await this.$api.markMessageStateAll();
       if (res.success) {
-        this.getMessageCount()
-        EventBus.$emit('G_MSG_ITEM_COUNT')
+        this.getMessageCount();
+        EventBus.$emit("G_MSG_ITEM_COUNT");
       }
     },
-    getMessageCount () {
+    getMessageCount() {
       if (this.$store.state.user.userInfo) {
         this.$api.getMessageCount().then((count) => {
-          this.msgCount = count
-        })
+          this.msgCount = count;
+        });
       }
     },
-    handleSetting (action) {
-      this.showInfoItem = false
+    handleSetting(action) {
+      this.showInfoItem = false;
       if (action.method) {
-        this[action.method]()
+        this[action.method]();
       }
       if (action.path) {
-        this.$router.push(action.path)
+        this.$router.push(action.path);
       }
     },
-    handleWrite () {
-      this.$utils.openNewWindow(`/draft/editor/new?t=wiki&wikiId=${this.wikiId}`)
-      this.$utils.openNewWindow('/draft/editor/new?t=article')
+    handleWrite() {
+      this.$utils.openNewWindow(
+        `/draft/editor/new?t=wiki&wikiId=${this.wikiId}`
+      );
+      this.$utils.openNewWindow("/draft/editor/new?t=article");
       // this.$router.push('/draft/editor/new?t=article')
     },
-    logout () {
-      console.log('coming')
+    logout() {
+      console.log("coming");
       this.$confirm({
-        title: '确认需要退出吗？',
-        content: '要不再溜达溜达~',
-        okText: '确认',
-        cancelText: '取消',
+        title: "确认需要退出吗？",
+        content: "要不再溜达溜达~",
+        okText: "确认",
+        cancelText: "取消",
         onCancel: () => {},
         onOk: async () => {
           this.$api.logout({
-            token: cookieUtils.getToken()
-          })
-          cookieUtils.clearToken()
-          await this.$store.dispatch('user/getUserInfo', {
+            token: cookieUtils.getToken(),
+          });
+          cookieUtils.clearToken();
+          await this.$store.dispatch("user/getUserInfo", {
             $api: this.$api,
-            clear: true
-          })
-          location.href = '/login'
-        }
-      })
+            clear: true,
+          });
+          location.href = "/login";
+        },
+      });
     },
-    currentSearch (type) {
-      EventBus.$emit('G_SEARCH', {
+    currentSearch(type) {
+      EventBus.$emit("G_SEARCH", {
         type,
-        value: this.searchVal
-      })
-      const newUrl = `/${type}/${this.searchVal}`
-      const stateObject = 0
-      const title = type
-      history.replaceState(stateObject, title, newUrl)
+        value: this.searchVal,
+      });
+      const newUrl = `/${type}/${this.searchVal}`;
+      const stateObject = 0;
+      const title = type;
+      history.replaceState(stateObject, title, newUrl);
     },
-    onSearch () {
-      if (!this.searchVal) { return }
-      const url = location.href
-      if (/\/search\/.+/.test(url)) {
-        this.currentSearch('search')
-        return
+    onSearch() {
+      if (!this.searchVal) {
+        return;
       }
-      this.$router.push(`/search/${this.searchVal}`)
+      const url = location.href;
+      if (/\/search\/.+/.test(url)) {
+        this.currentSearch("search");
+        return;
+      }
+      this.$router.push(`/search/${this.searchVal}`);
       // this.$utils.openNewWindow(`/search/${this.searchVal}`)
     },
-    handleLogin () {
+    handleLogin() {
       // this.$router.push('/login')
-      location.href = location.origin + '/login'
+      location.href = location.origin + "/login";
       // location.href = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
       // location.href = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
     },
-    handleGoto () {
-      this.$router.push('/user')
+    handleGoto() {
+      this.$router.push("/user");
     },
-    handleOpenAdmin () {
-      window.open(location.origin + '/wiki-admin/#/admin/')
-    }
-  }
-}
+    handleOpenAdmin() {
+      window.open(location.origin + "/wiki-admin/#/admin/");
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-  .g-header-container {
-    min-height: @title-height;
-    width: 100%;
-    background-color: #fff;
-   // border-bottom: 1px solid @border-4-color;
-    transition: top 0.5s;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
-    z-index: 2;
-    .g-header-box {
+.g-header-container {
+  min-height: @title-height;
+  width: 100%;
+  background-color: #fff;
+  // border-bottom: 1px solid @border-4-color;
+  transition: top 0.5s;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+  z-index: 2;
+  .g-header-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // max-width: @max-width;
+    // min-width: @max-width;
+    // margin: 0 auto;
+    height: @title-height;
+    padding: 10px 17px;
+    .header-left {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      // max-width: @max-width;
-      // min-width: @max-width;
-      // margin: 0 auto;
-      height: @title-height;
-      padding: 10px 17px;
+      width: @content-max-width;
+      .header-left-nav {
+        display: flex;
+        align-items: center;
+      }
+      a {
+        display: inline-block;
+        color: @font-color-second;
+        outline: none;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 18px;
+        margin-right: 30px;
+      }
+    }
+    .a-divider {
+      background: rgb(128, 154, 255);
+      height: 38px;
+      margin: 0 16px;
+    }
+    .logo {
+      height: 50px;
+      width: 120px;
+      color: @g-main-color;
+      font-size: @font-first;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .intro-logo {
+      height: 50px;
+      width: 196px;
+      color: @g-main-color;
+      font-size: @font-first;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .search {
+      margin-left: 80px;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      column-gap: 16px;
+      .comment {
+        width: 16px;
+        height: 16px;
+      }
+      .msg {
+        color: rgb(41, 41, 41);
+        font-family: PingFang SC;
+        font-size: 14px;
+        font-weight: 400;
+      }
+      .a-avatar {
+        background-color: #0060ff;
+        color: #fff;
+      }
+      .header-right-nav {
+        padding: 0 10px;
+        font-size: @font-fourth;
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+      .message-notice {
+        font-size: @font-second;
+        cursor: pointer;
+        color: @g-main-color;
+      }
+      .ant-badge-count {
+        font-size: 12px !important;
+        width: 16px !important;
+        height: 16px !important;
+      }
+      .user-header {
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1000px) {
+  .g-header-container {
+    height: 50px;
+    min-height: 50px;
+    .g-header-box {
+      max-width: max-content;
+      min-width: 375px;
+      line-height: 50px;
+      padding-left: 12px;
+      height: 50px;
       .header-left {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: @content-max-width;
-        .header-left-nav {
-          display: flex;
-          align-items: center;
-        }
-        a {
-          display: inline-block;
-          color: @font-color-second;
-          outline: none;
-          text-decoration: none;
-          cursor: pointer;
-          font-size: 18px;
-          margin-right: 30px;
-        }
-      }
-      .a-divider {
-        background:rgb(128, 154, 255);
-        height: 38px;
-        margin: 0 16px;
-      }
-      .logo {
-        height: 50px;
-        width: 120px;
-        color: @g-main-color;
-        font-size: @font-first;
-        vertical-align: middle;
-        cursor: pointer;
-      }
-      .intro-logo {
-        height: 50px;
-        width: 196px;
-        color: @g-main-color;
-        font-size: @font-first;
-        vertical-align: middle;
-        cursor: pointer;
-      }
-      .search{
-        margin-left: 80px;
-      }
-      .header-right {
-        display: flex;
-        align-items: center;
-        column-gap:16px;
-        .comment {
-          width:16px;
-          height: 16px;
-        }
-        .msg {
-          color: rgb(41, 41, 41);
-          font-family: PingFang SC;
-          font-size: 14px;
-          font-weight: 400;
-        }
-        .a-avatar {
-          background-color:#0060FF;
-          color:#fff
-        }
-        .header-right-nav {
-          padding: 0 10px;
-          font-size: @font-fourth;
-          &:last-child {
-            padding-right: 0;
-          }
-        }
-        .message-notice {
-          font-size: @font-second;
-          cursor: pointer;
-          color: @g-main-color;
-        }
-        .ant-badge-count {
-          font-size: 12px !important;
-          width: 16px !important;
-          height: 16px !important;
-        }
-        .user-header {
+        .logo {
           width: 35px;
           height: 35px;
-          cursor: pointer;
+        }
+        a {
+          font-size: @font-third;
+          margin-right: 20px;
         }
       }
     }
-  }
-  @media screen and (max-width: 1000px) {
-    .g-header-container {
-      height: 50px;
-      min-height: 50px;
-      .g-header-box {
-        max-width: max-content;
-        min-width: 375px;
-        line-height: 50px;
-        padding-left: 12px;
-        height: 50px;
-        .header-left {
-          .logo {
-            width: 35px;
-            height: 35px;
-          }
-          a {
-            font-size: @font-third;
-            margin-right: 20px;
-          }
-        }
-      }
-      .header-right {
-        display: none !important;
-      }
-      .search-container {
-        display: none;
-      }
+    .header-right {
+      display: none !important;
+    }
+    .search-container {
+      display: none;
     }
   }
+}
 </style>

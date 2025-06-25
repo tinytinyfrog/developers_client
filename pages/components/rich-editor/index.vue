@@ -67,35 +67,36 @@ export default {
 </script>
 
 <style lang="less">
-  @import '../byte-markdown-editor/theme.less';
-  .common-rich-editor{
-    .w-e-toolbar {
-      border: 0 !important;
-      z-index: 2 !important;
-      background-color: #fbfbfb !important;
-      border-bottom: 1px solid @border-3-color !important;
-    }
-    .w-e-toolbar .w-e-menu i {
-      color: @font-color-first;
-    }
-    .w-e-menu {
-      width: 39px;
-      height: 33px !important;
-    }
-    .w-e-menu .w-e-panel-container {
-      box-shadow: none !important;
+@import "../byte-markdown-editor/theme.less";
+.common-rich-editor {
+  .w-e-toolbar {
+    border: 0 !important;
+    z-index: 2 !important;
+    background-color: #fbfbfb !important;
+    border-bottom: 1px solid @border-3-color !important;
+  }
+  .w-e-toolbar .w-e-menu i {
+    color: @font-color-first;
+  }
+  .w-e-menu {
+    width: 39px;
+    height: 33px !important;
+  }
+  .w-e-menu .w-e-panel-container {
+    box-shadow: none !important;
+    border: 1px solid @border-3-color;
+    .w-e-panel-tab-content textarea,
+    select {
       border: 1px solid @border-3-color;
-      .w-e-panel-tab-content textarea, select {
-        border: 1px solid @border-3-color;
-      }
-    }
-    .w-e-panel-container {
-      width: 600px !important;
-    }
-    .w-e-text-container {
-      min-height: calc(100vh - 92px) !important;
-      border: 0 !important;
-      z-index: 1 !important;
     }
   }
+  .w-e-panel-container {
+    width: 600px !important;
+  }
+  .w-e-text-container {
+    min-height: calc(100vh - 92px) !important;
+    border: 0 !important;
+    z-index: 1 !important;
+  }
+}
 </style>

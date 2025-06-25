@@ -1,25 +1,30 @@
 <template>
-  <g-sidebar v-if="$store.state.tag.tags.length" title="作者榜" background-color="#fff">
+  <g-sidebar
+    v-if="$store.state.tag.tags.length"
+    title="作者榜"
+    background-color="#fff"
+  >
     <div class="recommend-tags-container">
       <span
         v-for="(tag, key) in $store.state.tag.tags.slice(0, 16)"
         :key="key"
         class="recommend-tag"
         @click="handleTagSearch(tag)"
-      >{{ tag.name }}</span>
+        >{{ tag.name }}</span
+      >
     </div>
   </g-sidebar>
 </template>
 
 <script>
 export default {
-  name: 'SliderRecommendTags',
+  name: "SliderRecommendTags",
   methods: {
-    handleTagSearch ({ id, name }) {
-      window.open(`/tag/${id}?name=${encodeURIComponent(name)}`, '_blank')
-    }
-  }
-}
+    handleTagSearch({ id, name }) {
+      window.open(`/tag/${id}?name=${encodeURIComponent(name)}`, "_blank");
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

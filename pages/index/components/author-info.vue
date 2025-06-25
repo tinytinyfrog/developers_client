@@ -11,20 +11,26 @@
           @click.stop.prevent="$utils.openNewWindow(`/user/${authorInfo.id}`)"
         />
         <div class="detail-info">
-          <span class="nickname" @click.stop.prevent="$utils.openNewWindow(`/user/${articleInfo.authorId}`)">{{ authorInfo.nickname }} </span>
+          <span
+            class="nickname"
+            @click.stop.prevent="
+              $utils.openNewWindow(`/user/${articleInfo.authorId}`)
+            "
+          >{{ authorInfo.nickname }}
+          </span>
           <Button
-            v-auth="{handler: onFocus}"
+            v-auth="{ handler: onFocus }"
             type="primary"
             :loading="loading"
             :ghost="follow"
           >
-            {{ follow ? '已关注' : '关注' }}
+            {{ follow ? "已关注" : "关注" }}
           </Button>
         </div>
       </div>
       <p class="signature g-hidden-line2">
         <Tooltip :title="authorInfo.signature">
-          {{ authorInfo.signature || '这个人很懒~' }}
+          {{ authorInfo.signature || "这个人很懒~" }}
         </Tooltip>
       </p>
       <div class="achievement-infos">
@@ -39,7 +45,7 @@
           </p>
         </div>
         <div>
-          <p class="acht-item ">
+          <p class="acht-item">
             <span class="level">获赞 </span>
             <span class="level-number">{{ authorInfo.approvalNumb }}</span>
           </p>

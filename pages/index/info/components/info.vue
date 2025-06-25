@@ -2,15 +2,22 @@
   <a-spin :spinning="loading">
     <div>
       <div class="info-header">
-        <a-input-search v-model="inputValue" placeholder="请输入关键字进行搜索" style="width: 320px" />
+        <a-input-search
+          v-model="inputValue"
+          placeholder="请输入关键字进行搜索"
+          style="width: 320px"
+        />
       </div>
       <div v-if="infoList.length > 0">
-        <div v-for="(item,index) of infoList" :key="index" class="info-item">
+        <div v-for="(item, index) of infoList" :key="index" class="info-item">
           <div class="info-left">
             <img :src="item.coverImageUrl" class="info-img">
           </div>
           <div class="info-right">
-            <div class="info-title" @click="e =>handleGoto(`/info/${item.id}?type=news`)">
+            <div
+              class="info-title"
+              @click="(e) => handleGoto(`/info/${item.id}?type=news`)"
+            >
               {{ item.title }}
             </div>
             <div class="info-content">
@@ -122,76 +129,72 @@ export default {
 }
 </script>
 <style scoped lang="less">
-     .info-header {
-        margin-bottom: 10px;
-
-     }
-     .info-item {
-            display: flex;
-            column-gap: 24px;
-            padding: 18px 24px;
-            // background: rgb(247, 249, 253);
-            background:white;
-            margin-top: 10px;
-            .info-left {
-                .info-img {
-                    width: 228px;
-                    height: 146px;
-                }
-            }
-            .info-right {
-                .info-title {
-                    color: rgb(40, 40, 40);
-                    font-size: 18px;
-                    font-weight: 400;
-                    &:hover {
-                        color: #0070ff;
-                        cursor: pointer;
-                    }
-                }
-
-                .info-content {
-                    color: rgb(89, 89, 89);
-                    font-size: 14px;
-                    font-weight: 400;
-                    height: 70px;
-                    margin: 10px 0;
-                    display: -webkit-box;
-                    overflow: hidden; /* 隐藏溢出的内容 */
-                    -webkit-line-clamp: 4;
-                    -webkit-box-orient: vertical;
-                }
-                .info-bottom {
-                    color: rgb(40, 40, 40);
-                    font-size: 14px;
-                    font-weight: 400;
-                    display: flex;
-                    align-items: center;
-                    column-gap: 12px;
-                    .bottom-left {
-                        display: flex;
-                        align-items: center;
-                        column-gap: 4px;
-                        .bottom-img {
-                        width: 18px;
-                        height: 18px;
-
-                    }
-                    }
-                    .info-divier {
-                        height: 14px;
-                        width: 1px;
-                        background:  rgb(196, 196, 196);
-                    }
-                }
-
-            }
-        }
-    .info-pagination {
-        margin-top:24px;
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
+.info-header {
+  margin-bottom: 10px;
+}
+.info-item {
+  display: flex;
+  column-gap: 24px;
+  padding: 18px 24px;
+  // background: rgb(247, 249, 253);
+  background: white;
+  margin-top: 10px;
+  .info-left {
+    .info-img {
+      width: 228px;
+      height: 146px;
+    }
+  }
+  .info-right {
+    .info-title {
+      color: rgb(40, 40, 40);
+      font-size: 18px;
+      font-weight: 400;
+      &:hover {
+        color: #0070ff;
+        cursor: pointer;
+      }
     }
 
+    .info-content {
+      color: rgb(89, 89, 89);
+      font-size: 14px;
+      font-weight: 400;
+      height: 70px;
+      margin: 10px 0;
+      display: -webkit-box;
+      overflow: hidden; /* 隐藏溢出的内容 */
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+    }
+    .info-bottom {
+      color: rgb(40, 40, 40);
+      font-size: 14px;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      column-gap: 12px;
+      .bottom-left {
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+        .bottom-img {
+          width: 18px;
+          height: 18px;
+        }
+      }
+      .info-divier {
+        height: 14px;
+        width: 1px;
+        background: rgb(196, 196, 196);
+      }
+    }
+  }
+}
+.info-pagination {
+  margin-top: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

@@ -168,60 +168,60 @@ export default {
 </script>
 
 <style lang="less">
-@import '~/pages/components/byte-markdown-editor/theme.less';
-  .page-library-detail {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    border-radius: @g-radius;
+@import "~/pages/components/byte-markdown-editor/theme.less";
+.page-library-detail {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  border-radius: @g-radius;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding-bottom: 80px;
+  .page-library-info {
+    flex: 1;
+    max-width: @content-max-width;
     box-sizing: border-box;
-    min-height: 100vh;
-    padding-bottom: 80px;
-    .page-library-info {
-      flex: 1;
-      max-width: @content-max-width;
-      box-sizing: border-box;
-      margin-right: @g-padding * 2;
-    }
-    .slider-item {
-      margin-bottom: @g-margin;
-      border-radius: @g-radius;
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-    .directory-list {
-      position: sticky;
-      left: 0;
-      top: 0;
-      padding: 12px 12px 12px 5px;
-    }
-    .ant-anchor-link-title {
-      font-size: 13px;
-      color: @font-color-second;
-    }
-    .anchor-first-title {
-      >.ant-anchor-link-title {
-        font-weight: bold;
-        color: @font-color-first;
-        font-size: @font-fourth;
-      }
-    }
-    .ant-anchor-link-title-active {
-      color: @g-main-color !important;
-      font-weight: bold;
-    }
-    .ant-anchor-ink::before {
-      background-color: #fff;
-    }
-    .ant-anchor-ink-ball {
-      border-radius: 0 !important;
-      width: 4px !important;
-      height: 14px !important;
-      background-color: @g-main-color !important;
+    margin-right: @g-padding * 2;
+  }
+  .slider-item {
+    margin-bottom: @g-margin;
+    border-radius: @g-radius;
+    &:last-child {
+      margin-bottom: 0;
     }
   }
+  .directory-list {
+    position: sticky;
+    left: 0;
+    top: 0;
+    padding: 12px 12px 12px 5px;
+  }
+  .ant-anchor-link-title {
+    font-size: 13px;
+    color: @font-color-second;
+  }
+  .anchor-first-title {
+    > .ant-anchor-link-title {
+      font-weight: bold;
+      color: @font-color-first;
+      font-size: @font-fourth;
+    }
+  }
+  .ant-anchor-link-title-active {
+    color: @g-main-color !important;
+    font-weight: bold;
+  }
+  .ant-anchor-ink::before {
+    background-color: #fff;
+  }
+  .ant-anchor-ink-ball {
+    border-radius: 0 !important;
+    width: 4px !important;
+    height: 14px !important;
+    background-color: @g-main-color !important;
+  }
+}
 @media screen and (max-width: 1000px) {
   .page-library-detail {
     .page-library-info {

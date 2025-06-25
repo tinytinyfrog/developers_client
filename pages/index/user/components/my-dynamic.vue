@@ -1,5 +1,10 @@
 <template>
-  <Tabs class="dynamic-tabs" type="card" :default-active-key="tabIndex" @change="changeTabindex">
+  <Tabs
+    class="dynamic-tabs"
+    type="card"
+    :default-active-key="tabIndex"
+    @change="changeTabindex"
+  >
     <TabPane key="comment" class="tabs-content" force-render>
       <span slot="tab">
         评论
@@ -9,7 +14,13 @@
         v-for="(item, key) in comments"
         :key="key"
         class="comment-item"
-        @click="$utils.openNewWindow(`/${item.postsCategory === 'ARTICLE' ? 'article' : 'faq' }/${item.postsId}`)"
+        @click="
+          $utils.openNewWindow(
+            `/${item.postsCategory === 'ARTICLE' ? 'article' : 'faq'}/${
+              item.postsId
+            }`
+          )
+        "
       >
         <span>
           <span>我评论了</span>
@@ -24,7 +35,12 @@
         点赞
         <span class="achievement-num">{{ lTotal }}</span>
       </span>
-      <div v-for="(item, key) in likes" :key="key" class="comment-item" @click="$utils.openNewWindow(`/article/${item.postsId}`)">
+      <div
+        v-for="(item, key) in likes"
+        :key="key"
+        class="comment-item"
+        @click="$utils.openNewWindow(`/article/${item.postsId}`)"
+      >
         <span>
           <span>我点赞了</span>
           <span class="title">{{ item.postsTitle }}</span>
@@ -38,7 +54,12 @@
         关注
         <span class="achievement-num">{{ fTotal }}</span>
       </span>
-      <div v-for="(item, key) in focus" :key="key" class="comment-item" @click="$utils.openNewWindow(`/user/${item.id}`)">
+      <div
+        v-for="(item, key) in focus"
+        :key="key"
+        class="comment-item"
+        @click="$utils.openNewWindow(`/user/${item.id}`)"
+      >
         <span>
           <span>我关注了</span>
           <GUserPopover :user-id="item.id">
@@ -113,61 +134,69 @@ export default {
     getMyComments () {
       if (this.cLoading || this.cFinished) return
       this.cLoading = true
-      this.$api.getCommentList({
-        pageNo: this.cPageNo,
-        pageSize: this.pageSize
-      }).then((res) => {
-        if (res.list) {
-          this.cTotal = res.total
-          const list = res.list
-          this.cPageNo++
-          this.comments = [...this.comments, ...list]
-          this.cFinished = list.length < this.pageSize
-        }
-      }).finally(() => {
-        this.cLoading = false
-      })
+      this.$api
+        .getCommentList({
+          pageNo: this.cPageNo,
+          pageSize: this.pageSize
+        })
+        .then((res) => {
+          if (res.list) {
+            this.cTotal = res.total
+            const list = res.list
+            this.cPageNo++
+            this.comments = [...this.comments, ...list]
+            this.cFinished = list.length < this.pageSize
+          }
+        })
+        .finally(() => {
+          this.cLoading = false
+        })
     },
     getMyLike () {
       if (this.lLoading || this.lFinished) return
       this.lLoading = true
-      this.$api.getLikeList({
-        pageNo: this.lPageNo,
-        pageSize: this.pageSize
-      }).then((res) => {
-        if (res.list) {
-          this.lTotal = res.total
-          const list = res.list
-          this.lPageNo++
-          this.likes = [...this.likes, ...list]
-          this.lFinished = list.length < this.pageSize
-        }
-      }).finally(() => {
-        this.lLoading = false
-      })
+      this.$api
+        .getLikeList({
+          pageNo: this.lPageNo,
+          pageSize: this.pageSize
+        })
+        .then((res) => {
+          if (res.list) {
+            this.lTotal = res.total
+            const list = res.list
+            this.lPageNo++
+            this.likes = [...this.likes, ...list]
+            this.lFinished = list.length < this.pageSize
+          }
+        })
+        .finally(() => {
+          this.lLoading = false
+        })
     },
     getMyFocus () {
       if (this.fLoading || this.fFinished) return
       this.fLoading = true
-      this.$api.getFocusList({
-        filter: this.$store.state.user.userInfo.id,
-        pageNo: this.fPageNo,
-        pageSize: this.pageSize
-      }).then((res) => {
-        if (res.list) {
-          this.fTotal = res.total
-          const list = res.list
-          this.fPageNo++
-          this.focus = [...this.focus, ...list]
-          this.fFinished = list.length < this.pageSize
-        }
-      }).finally(() => {
-        this.fLoading = false
-      })
+      this.$api
+        .getFocusList({
+          filter: this.$store.state.user.userInfo.id,
+          pageNo: this.fPageNo,
+          pageSize: this.pageSize
+        })
+        .then((res) => {
+          if (res.list) {
+            this.fTotal = res.total
+            const list = res.list
+            this.fPageNo++
+            this.focus = [...this.focus, ...list]
+            this.fFinished = list.length < this.pageSize
+          }
+        })
+        .finally(() => {
+          this.fLoading = false
+        })
     }
   }
 }
-
 </script>
 <style lang="less" scoped>
 .dynamic-tabs {
@@ -175,7 +204,7 @@ export default {
   /deep/.ant-tabs-content {
     padding-top: 0 !important;
   }
-  /deep/.ant-tabs-left-content{
+  /deep/.ant-tabs-left-content {
     padding-left: @g-padding * 2 !important;
   }
   /deep/.ant-tabs-bar {

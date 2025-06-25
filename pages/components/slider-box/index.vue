@@ -1,10 +1,20 @@
 <template>
   <div v-if="sliderData.list.length" class="slider-common-box">
     <div class="title">
-      <span>{{ sliderData.title }}<span v-if="sliderData.total" class="total">（{{ sliderData.total }}）</span></span>
+      <span>{{ sliderData.title
+      }}<span
+        v-if="sliderData.total"
+        class="total"
+      >（{{ sliderData.total }}）</span></span>
     </div>
     <div class="slider-list">
-      <router-link v-for="(item, index) in sliderData.list" :key="index" class="slider-item" :to="{path: item.path}" target="_blank">
+      <router-link
+        v-for="(item, index) in sliderData.list"
+        :key="index"
+        class="slider-item"
+        :to="{ path: item.path }"
+        target="_blank"
+      >
         <GUserPopover :user-id="item.id">
           <img class="user-header" :src="item.avatar">
         </GUserPopover>

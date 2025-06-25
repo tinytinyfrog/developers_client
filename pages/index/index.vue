@@ -49,7 +49,8 @@ export default {
       redirect('/home')
     } else {
       // const url = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
-      const url = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
+      const url =
+        'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
       redirect(url)
       // location.href = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
     }
@@ -144,34 +145,46 @@ export default {
       this.currentTagIndex === 0 ? this.loadData() : this.loadFollowData()
     },
     loadData () {
-      if (this.loading || this.finished) { return }
+      if (this.loading || this.finished) {
+        return
+      }
       this.loading = true
-      this.$api.getTopicList({
-        filter: this.filter,
-        pageNo: this.pageNo,
-        pageSize: this.pageSize
-      }).then((list) => {
-        if (list) {
-          this.contentList = this.pageNo === 1 ? list : [...this.contentList, ...list]
-          this.pageNo++
-          this.finished = list.length < this.pageSize
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+      this.$api
+        .getTopicList({
+          filter: this.filter,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        })
+        .then((list) => {
+          if (list) {
+            this.contentList =
+              this.pageNo === 1 ? list : [...this.contentList, ...list]
+            this.pageNo++
+            this.finished = list.length < this.pageSize
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     loadFollowData () {
-      if (this.loading || this.finished) { return }
+      if (this.loading || this.finished) {
+        return
+      }
       this.loading = true
-      this.$api.getFollowArticleList(this.pageSize, this.pageNo).then((list) => {
-        if (list) {
-          this.contentList = this.pageNo === 1 ? list : [...this.contentList, ...list]
-          this.pageNo++
-          this.finished = list.length < this.pageSize
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+      this.$api
+        .getFollowArticleList(this.pageSize, this.pageNo)
+        .then((list) => {
+          if (list) {
+            this.contentList =
+              this.pageNo === 1 ? list : [...this.contentList, ...list]
+            this.pageNo++
+            this.finished = list.length < this.pageSize
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }

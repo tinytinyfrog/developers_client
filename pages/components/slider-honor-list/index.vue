@@ -1,9 +1,13 @@
 <template>
-  <g-sidebar v-if="honor && honor.list.length" :title="honor.title" background-color="#fff">
+  <g-sidebar
+    v-if="honor && honor.list.length"
+    :title="honor.title"
+    background-color="#fff"
+  >
     <router-link
       v-for="(item, index) in honor.list"
       :key="index"
-      :to="{path: `/user/${item.id}`}"
+      :to="{ path: `/user/${item.id}` }"
       class="user-honor-list g-bg-hover"
       target="_blank"
     >
@@ -13,26 +17,26 @@
           <span class="title">{{ item.nickname }}</span>
           <span class="honor-level"> · V{{ item.level }}</span>
         </div>
-        <span class="honor-job">{{ item.job || '划水专员~' }}</span>
+        <span class="honor-job">{{ item.job || "划水专员~" }}</span>
       </div>
     </router-link>
   </g-sidebar>
 </template>
 
 <script>
-import { Avatar } from 'ant-design-vue'
+import { Avatar } from "ant-design-vue";
 export default {
-  name: 'SliderHonorList',
+  name: "SliderHonorList",
   components: {
-    Avatar
+    Avatar,
   },
   props: {
     honor: {
       type: Object,
-      default: null
-    }
-  }
-}
+      default: null,
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

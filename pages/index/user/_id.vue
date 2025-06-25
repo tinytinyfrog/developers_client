@@ -1,15 +1,24 @@
 <template>
-  <div v-if="userInfo" v-infinite-scroll="handleInfiniteScroll" class="page-user-container">
+  <div
+    v-if="userInfo"
+    v-infinite-scroll="handleInfiniteScroll"
+    class="page-user-container"
+  >
     <div class="page-user-info">
       <UserInfoBg />
       <div class="user-info-content">
         <div class="user-header-box">
-          <img class="user-header g-avatar-border" :src="userInfo.avatar" :alt="userInfo.nickname">
+          <img
+            class="user-header g-avatar-border"
+            :src="userInfo.avatar"
+            :alt="userInfo.nickname"
+          >
         </div>
         <div class="user-info-detail">
           <div class="g-display-flex user-info-intro">
             <h2 class="user-nickname">
-              {{ userInfo.nickname }} <span class="level-sup">LV{{ userInfo.level }}</span>
+              {{ userInfo.nickname }}
+              <span class="level-sup">LV{{ userInfo.level }}</span>
             </h2>
             <div class="user-info-item-box">
               <p class="user-info-item">
@@ -18,16 +27,16 @@
                     <span>加</span>
                     <span>入</span>
                     <span>时</span>
-                    <span>间</span>
-                  </span>：
-                  <span>{{ userInfo.createAt | formatDate('YYYY年MM月DD日') }}</span>
+                    <span>间</span> </span>：
+                  <span>{{
+                    userInfo.createAt | formatDate("YYYY年MM月DD日")
+                  }}</span>
                 </span>
                 <span class="info-item-line">
                   <span class="user-info-item-label">
                     <span>职</span>
-                    <span>业</span>
-                  </span>：
-                  <span>{{ userInfo.job || '划水专员' }}</span>
+                    <span>业</span> </span>：
+                  <span>{{ userInfo.job || "划水专员" }}</span>
                 </span>
               </p>
               <p class="user-info-item">
@@ -36,9 +45,10 @@
                     <span>个</span>
                     <span>人</span>
                     <span>简</span>
-                    <span>介</span>
-                  </span>：
-                  <span class="user-signature">{{ userInfo.signature ? userInfo.signature : '这个人太懒了~' }}</span>
+                    <span>介</span> </span>：
+                  <span class="user-signature">{{
+                    userInfo.signature ? userInfo.signature : "这个人太懒了~"
+                  }}</span>
                 </span>
               </p>
             </div>
@@ -56,13 +66,13 @@
             </Button>
             <Button
               v-else
-              v-auth="{handler: onFollowUser }"
+              v-auth="{ handler: onFollowUser }"
               class="user-info-edit-btn"
               type="primary"
               :ghost="hasFollow"
               :loading="followLoading"
             >
-              {{ hasFollow ? '已关注' : '关注' }}
+              {{ hasFollow ? "已关注" : "关注" }}
             </Button>
           </template>
         </div>
@@ -76,8 +86,16 @@
               <span>文章</span>
               <!-- <span class="achievement-num">{{ userInfo.articleNumb }}</span> -->
             </span>
-            <ArticleItem v-for="(item, index) in articleList" :key="index" :article="item" />
-            <g-empty :list="articleList" :finished="articleFinished" :loading="articleLoading" />
+            <ArticleItem
+              v-for="(item, index) in articleList"
+              :key="index"
+              :article="item"
+            />
+            <g-empty
+              :list="articleList"
+              :finished="articleFinished"
+              :loading="articleLoading"
+            />
           </TabPane>
           <!-- <TabPane key="qa">
             <span slot="tab">
@@ -88,8 +106,17 @@
             <g-empty :list="questionList" :finished="qFinished" :loading="qLoading" />
           </TabPane> -->
           <TabPane v-if="oneSelf" key="message" tab="通知">
-            <notice-block v-for="(item, index) in messageList" :key="index" :message.sync="item" @mark="handleMark" />
-            <g-empty :list="messageList" :finished="mFinished" :loading="mLoading" />
+            <notice-block
+              v-for="(item, index) in messageList"
+              :key="index"
+              :message.sync="item"
+              @mark="handleMark"
+            />
+            <g-empty
+              :list="messageList"
+              :finished="mFinished"
+              :loading="mLoading"
+            />
           </TabPane>
           <TabPane v-if="oneSelf" key="collect" tab="收藏">
             <div class="collection-list">
@@ -279,12 +306,14 @@ export default {
   },
   activated () {
     if (this.userId) return
-    this.$store.dispatch('user/getUserInfo', {
-      $api: this.$api,
-      clear: true
-    }).then((res) => {
-      this.userInfo = this.$store.state.user.userInfo
-    })
+    this.$store
+      .dispatch('user/getUserInfo', {
+        $api: this.$api,
+        clear: true
+      })
+      .then((res) => {
+        this.userInfo = this.$store.state.user.userInfo
+      })
   },
   methods: {
     goCollection (item) {
@@ -339,58 +368,76 @@ export default {
       this[loadMap[this.currentTabKey]]()
     },
     getArticleList () {
-      if (this.articleLoading || this.articleFinished) { return }
+      if (this.articleLoading || this.articleFinished) {
+        return
+      }
       this.articleLoading = true
-      this.$api.getTopicList({
-        filter: {
-          category: 'ARTICLE',
-          userId: this.userInfo.id
-        },
-        pageNo: this.articlePageNo,
-        pageSize: this.articlePageSize
-      }).then((list) => {
-        if (list) {
-          this.articleList = [...this.articleList, ...list]
-          this.articlePageNo++
-          this.articleFinished = list.length < this.articlePageSize
-        }
-      }).finally(() => {
-        this.articleLoading = false
-      })
+      this.$api
+        .getTopicList({
+          filter: {
+            category: 'ARTICLE',
+            userId: this.userInfo.id
+          },
+          pageNo: this.articlePageNo,
+          pageSize: this.articlePageSize
+        })
+        .then((list) => {
+          if (list) {
+            this.articleList = [...this.articleList, ...list]
+            this.articlePageNo++
+            this.articleFinished = list.length < this.articlePageSize
+          }
+        })
+        .finally(() => {
+          this.articleLoading = false
+        })
     },
     getQuestionList () {
-      if (this.qLoading || this.qFinished) { return }
+      if (this.qLoading || this.qFinished) {
+        return
+      }
       this.qLoading = true
-      this.$api.getTopicList({
-        pageNo: this.qPageNo,
-        pageSize: this.qPageSize,
-        filter: {
-          userId: this.userInfo.id,
-          category: 'FAQ'
-        }
-      }).then((list) => {
-        this.questionList = [...this.questionList, ...list]
-        this.qPageNo++
-        this.qFinished = list.length < this.qPageSize
-      }).finally(() => {
-        this.qLoading = false
-      })
+      this.$api
+        .getTopicList({
+          pageNo: this.qPageNo,
+          pageSize: this.qPageSize,
+          filter: {
+            userId: this.userInfo.id,
+            category: 'FAQ'
+          }
+        })
+        .then((list) => {
+          this.questionList = [...this.questionList, ...list]
+          this.qPageNo++
+          this.qFinished = list.length < this.qPageSize
+        })
+        .finally(() => {
+          this.qLoading = false
+        })
     },
     getMessageList () {
-      if (!this.oneSelf) { return }
-      if (this.mLoading || this.mFinished) { return }
+      if (!this.oneSelf) {
+        return
+      }
+      if (this.mLoading || this.mFinished) {
+        return
+      }
       this.mLoading = true
-      this.$api.getMessageList({
-        userId: this.userInfo.id,
-        pageNo: this.mPageNo,
-        pageSize: this.mPageSize
-      }).then((list) => {
-        this.mPageNo++
-        this.messageList = this.mPageNo === 1 ? [...list] : [...this.messageList, ...list]
-        this.mFinished = list.length < this.mPageSize
-      }).finally(() => {
-        this.mLoading = false
-      })
+      this.$api
+        .getMessageList({
+          userId: this.userInfo.id,
+          pageNo: this.mPageNo,
+          pageSize: this.mPageSize
+        })
+        .then((list) => {
+          this.mPageNo++
+          this.messageList =
+            this.mPageNo === 1 ? [...list] : [...this.messageList, ...list]
+          this.mFinished = list.length < this.mPageSize
+        })
+        .finally(() => {
+          this.mLoading = false
+        })
     },
     delCollect (collectId) {
       this.$confirm({
@@ -686,7 +733,8 @@ export default {
     }
     .dynamic-content {
       margin-right: 0;
-      /deep/.home-article-item-container, /deep/.home-question-item {
+      /deep/.home-article-item-container,
+      /deep/.home-question-item {
         padding-left: 0;
         padding-right: 0;
       }

@@ -1,10 +1,17 @@
 <template>
   <div class="page-question-container g-margin-top">
     <div class="question-content">
-      <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
+      <HomeTitle
+        :title-tags="titleTags"
+        :current-tag-index.sync="currentTagIndex"
+      />
       <div class="question-list-box">
         <div v-infinite-scroll="loadData">
-          <QuestionItem v-for="(item, index) in questionList" :key="index" :question="item" />
+          <QuestionItem
+            v-for="(item, index) in questionList"
+            :key="index"
+            :question="item"
+          />
         </div>
         <g-empty :list="questionList" :finished="finished" :loading="loading" />
       </div>
@@ -46,7 +53,9 @@ export default {
     let tagIds = tagId ? [tagId] : []
     if (category && !tagId) {
       const tags = store.state.tag.tags
-      tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
+      tagIds = tags
+        .filter(item => item.groupName === category)
+        .map(item => item.id)
     }
     const data = {
       q,
@@ -65,22 +74,28 @@ export default {
       }
     }
     await Promise.all([
-      $api.getTopicList({
-        filter: data.filter,
-        pageNo: data.pageNo,
-        pageSize: data.pageSize
-      }).then((list) => {
-        if (list) {
-          data.questionList = list
-          data.pageNo++
-          data.finished = list.length < data.pageSize
-        }
-      }).catch((e) => {
-        console.log(e)
-      }),
-      $api.getUserActionRecord().then((res) => {
-        data.myAchievement = res.data
-      }).catch(console.log),
+      $api
+        .getTopicList({
+          filter: data.filter,
+          pageNo: data.pageNo,
+          pageSize: data.pageSize
+        })
+        .then((list) => {
+          if (list) {
+            data.questionList = list
+            data.pageNo++
+            data.finished = list.length < data.pageSize
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        }),
+      $api
+        .getUserActionRecord()
+        .then((res) => {
+          data.myAchievement = res.data
+        })
+        .catch(console.log),
       $api.getRandomArticle().then((list) => {
         data.randomArticle.list = list
       })
@@ -109,7 +124,9 @@ export default {
   },
   watch: {
     currentTagIndex (nVal, oVal) {
-      if (nVal === oVal) { return }
+      if (nVal === oVal) {
+        return
+      }
       this.filter.solution = nVal === 0 ? null : nVal
       // EventBus.$emit('G_CLEAR_GROUP')
       this.clearStatus()
@@ -136,21 +153,27 @@ export default {
       this.loading = false
     },
     loadData () {
-      if (this.loading || this.finished) { return }
+      if (this.loading || this.finished) {
+        return
+      }
       this.loading = true
-      this.$api.getTopicList({
-        filter: this.filter,
-        pageNo: this.pageNo,
-        pageSize: this.pageSize
-      }).then((list) => {
-        if (list) {
-          this.questionList = this.pageNo === 1 ? list : [...this.questionList, ...list]
-          this.pageNo++
-          this.finished = list.length < this.pageSize
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+      this.$api
+        .getTopicList({
+          filter: this.filter,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        })
+        .then((list) => {
+          if (list) {
+            this.questionList =
+              this.pageNo === 1 ? list : [...this.questionList, ...list]
+            this.pageNo++
+            this.finished = list.length < this.pageSize
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }

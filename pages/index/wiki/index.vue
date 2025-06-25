@@ -1,8 +1,14 @@
 <template>
-  <div class="page-wiki-container ">
+  <div class="page-wiki-container">
     <template v-if="menuIndex >= 0">
       <div class="info-menu">
-        <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+        <div
+          v-for="(item, index) of menuList"
+          :key="index"
+          class="menu-item"
+          :class="menuIndex === index ? 'active-menu' : ''"
+          @click="(e) => handleGoto(item)"
+        >
           <div>
             {{ item.menuName }}
           </div>
@@ -12,16 +18,34 @@
         <!-- <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentmenuIndex" /> -->
         <div class="wiki-content-header">
           <div class="wiki-filter">
-            <div v-for="(item,index) of tagList" :key="index" class="wiki-tag" :class="tagIndex === item.value ? 'active-tag':''" @click="e =>{ handleTag(item)}">
+            <div
+              v-for="(item, index) of tagList"
+              :key="index"
+              class="wiki-tag"
+              :class="tagIndex === item.value ? 'active-tag' : ''"
+              @click="
+                (e) => {
+                  handleTag(item);
+                }
+              "
+            >
               {{ item.label }}
             </div>
           </div>
-          <a-button v-if="userInfo && userInfo.role === 'ADMIN'" type="primary" @click="handleWrite">
+          <a-button
+            v-if="userInfo && userInfo.role === 'ADMIN'"
+            type="primary"
+            @click="handleWrite"
+          >
             写wiki
           </a-button>
         </div>
         <div v-infinite-scroll="loadData" class="home-list-box">
-          <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
+          <WikiItem
+            v-for="(item, index) in wikiList"
+            :key="index"
+            :article="item"
+          />
         </div>
         <g-empty :list="wikiList" :finished="finished" :loading="loading" />
       </div>
@@ -84,13 +108,15 @@ export default {
     }
 
     await Promise.all([
-      $api.getWikiList({
-        pageNo: 1,
-        pageSize: 100,
-        filter: { categoryId: '' }
-      }).then((list) => {
-        data.menuList = list
-      })
+      $api
+        .getWikiList({
+          pageNo: 1,
+          pageSize: 100,
+          filter: { categoryId: '' }
+        })
+        .then((list) => {
+          data.menuList = list
+        })
     ])
     return data
   },
@@ -154,7 +180,7 @@ export default {
       this.clearStatus()
       this.loadData()
     },
-    '$route' (to) {
+    $route (to) {
       const { wikiId } = to.query
       this.filter = {
         wikiId
@@ -163,7 +189,9 @@ export default {
       this.clearStatus()
       this.loadData()
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(item => item.path === to.fullPath)
+        this.menuIndex = this.menuList.findIndex(
+          item => item.path === to.fullPath
+        )
       } else {
         this.menuIndex = -1
       }
@@ -177,7 +205,9 @@ export default {
       }
       this.menuList = menuList
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+        this.menuIndex = this.menuList.findIndex(
+          item => item.path === this.$route.fullPath
+        )
       } else {
         this.menuIndex = -1
       }
@@ -185,11 +215,15 @@ export default {
   },
   mounted () {
     this.loadData()
-    const res = this.$store.state.menu.menuList.filter(i => i.path === '/wiki')
+    const res = this.$store.state.menu.menuList.filter(
+      i => i.path === '/wiki'
+    )
     if (res?.length > 0 && res[0].children) {
       this.menuList = res[0].children
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+        this.menuIndex = this.menuList.findIndex(
+          item => item.path === this.$route.fullPath
+        )
       }
     } else {
       this.menuIndex = -1
@@ -203,7 +237,9 @@ export default {
       this.tagIndex = item.value
     },
     handleWrite () {
-      this.$utils.openNewWindow(`/draft/editor/new?t=wiki&wikiId=${this.$route.query.wikiId}`)
+      this.$utils.openNewWindow(
+        `/draft/editor/new?t=wiki&wikiId=${this.$route.query.wikiId}`
+      )
     },
     handleGoto (item) {
       this.$router.push(item.path)
@@ -217,30 +253,41 @@ export default {
       this.$router.push('/home')
     },
     loadData () {
-      if (this.loading || this.finished) { return }
+      if (this.loading || this.finished) {
+        return
+      }
       this.loading = true
-      this.$api.getWikiNodes({
-        filter: this.filter,
-        pageNo: this.pageNo,
-        pageSize: this.pageSize
-      }).then((list) => {
-        if (list) {
-          this.wikiList = this.pageNo === 1 ? list : [...this.wikiList, ...list]
-          this.pageNo++
-          this.finished = list.length < this.pageSize
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+      this.$api
+        .getWikiNodes({
+          filter: this.filter,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        })
+        .then((list) => {
+          if (list) {
+            this.wikiList =
+              this.pageNo === 1 ? list : [...this.wikiList, ...list]
+            this.pageNo++
+            this.finished = list.length < this.pageSize
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     fetchWikiTag () {
-      this.$api.getWikiTag({ wikiId: this.$route.query.wikiId, tags: [] }).then((res) => {
-        if (res.length > 0) {
-          this.tagList = res.map(i => ({ label: i.tagName, value: i.tagId }))
-        }
-        console.log(this.tagList, 'taglist', res)
-        this.tagList.unshift({ label: '全部', value: 0 })
-      })
+      this.$api
+        .getWikiTag({ wikiId: this.$route.query.wikiId, tags: [] })
+        .then((res) => {
+          if (res.length > 0) {
+            this.tagList = res.map(i => ({
+              label: i.tagName,
+              value: i.tagId
+            }))
+          }
+          console.log(this.tagList, 'taglist', res)
+          this.tagList.unshift({ label: '全部', value: 0 })
+        })
     }
   }
 }
@@ -255,30 +302,29 @@ export default {
   // justify-content: center;
   min-height: 100vh;
   .info-menu {
-        width:265px;
-        min-height: calc( 100vh - 140px);
-        background: rgb(246, 246, 246);
-        color: rgb(40, 40, 40);
-        font-family: PingFang SC;
-        font-size: 16px;
-        font-weight: 400;
-        border-right: 1px solid rgb(226, 232, 246);;
-        .menu-item {
-            padding: 16px 24px;
-            display: flex;
-            column-gap: 10px;
-            cursor: pointer;
-            img {
-                width: 18px;
-                height: 18px;
-            }
-        }
-        .active-menu {
-            background: #ffff;
-            border-left:  6px solid  rgb(0, 112, 255);
-        }
-
+    width: 265px;
+    min-height: calc(100vh - 140px);
+    background: rgb(246, 246, 246);
+    color: rgb(40, 40, 40);
+    font-family: PingFang SC;
+    font-size: 16px;
+    font-weight: 400;
+    border-right: 1px solid rgb(226, 232, 246);
+    .menu-item {
+      padding: 16px 24px;
+      display: flex;
+      column-gap: 10px;
+      cursor: pointer;
+      img {
+        width: 18px;
+        height: 18px;
+      }
     }
+    .active-menu {
+      background: #ffff;
+      border-left: 6px solid rgb(0, 112, 255);
+    }
+  }
   // .tag-list {
   //   background: #fff;
   //   border-radius: 8px;
@@ -304,36 +350,36 @@ export default {
   // }
   .wiki-content {
     // width: @content-max-width;
-    width:0;
-    flex:1;
+    width: 0;
+    flex: 1;
     height: 100%;
     background-color: #fff;
     border-radius: @g-radius;
     padding-bottom: 20px;
-    .wiki-content-header{
-      display:flex;
+    .wiki-content-header {
+      display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 8px;
-    .wiki-filter {
-      height: 58px;
-      border-bottom: 1px solid #f2f2f2;
-      display: flex;
-      flex:1;
-      .wiki-tag {
-        cursor: pointer;
-        color: #606a78;
-        font-size: 15px;
-        margin: 14px 6px;
-        padding: 3px 14px;
-        word-break: keep-all;
-        &:hover {
-          color: #004fc4 !important;
-          background-color: rgba(5, 105, 204, .05);
+      .wiki-filter {
+        height: 58px;
+        border-bottom: 1px solid #f2f2f2;
+        display: flex;
+        flex: 1;
+        .wiki-tag {
+          cursor: pointer;
+          color: #606a78;
+          font-size: 15px;
+          margin: 14px 6px;
+          padding: 3px 14px;
+          word-break: keep-all;
+          &:hover {
+            color: #004fc4 !important;
+            background-color: rgba(5, 105, 204, 0.05);
+          }
         }
       }
     }
-  }
     .active-tag {
       color: #fff !important;
       background-color: #004fc4;
@@ -401,7 +447,7 @@ export default {
       }
     }
   }
-  .page-wiki-empty-container{
+  .page-wiki-empty-container {
     widows: 100%;
     margin: 0 auto;
   }
@@ -410,7 +456,7 @@ export default {
   .page-article-container {
     .article-content {
       padding-bottom: 0;
-      margin-right:0;
+      margin-right: 0;
     }
   }
 }

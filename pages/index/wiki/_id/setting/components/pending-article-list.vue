@@ -3,7 +3,10 @@
     <div v-for="(item, index) in checkList" :key="index" class="article-link">
       <a-space>
         <GUserPopover :user-id="item.userId">
-          <span class="display-align-center" @click.stop.prevent="$utils.openNewWindow(item.userId)">
+          <span
+            class="display-align-center"
+            @click.stop.prevent="$utils.openNewWindow(item.userId)"
+          >
             <img class="user-header" :src="item.userAvatar" alt="">
             <b>{{ item.userName }}</b>
           </span>
@@ -48,20 +51,22 @@ export default {
     getPendingList () {
       if (this.finished || this.loading) return
       this.loading = true
-      this.$api.getWikiNodeCheckRecordList({
-        filter: {
-          wikiId: this.wikiId
-        },
-        pageNo: this.pageNo,
-        pageSize: this.pageSize
-      }).then((list) => {
-        this.loading = false
-        this.finished = true
-        // list.forEach(item => {
-        //   item.
-        // })
-        this.checkList = list
-      })
+      this.$api
+        .getWikiNodeCheckRecordList({
+          filter: {
+            wikiId: this.wikiId
+          },
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        })
+        .then((list) => {
+          this.loading = false
+          this.finished = true
+          // list.forEach(item => {
+          //   item.
+          // })
+          this.checkList = list
+        })
     },
     handleCheck () {}
   }

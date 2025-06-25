@@ -4,11 +4,21 @@
       <div class="base-info-item base-title">
         <div class="title-box">
           <span class="title">{{ titleMap[type] }}：</span>
-          <input v-model="articleTitle" class="title-content" type="text" :placeholder="`请输入${titleMap[type]}`">
+          <input
+            v-model="articleTitle"
+            class="title-content"
+            type="text"
+            :placeholder="`请输入${titleMap[type]}`"
+          >
         </div>
         <div>
           <a-space>
-            <ASwitch checked-children="markdown" un-checked-children="富文本" :default-checked="isMarkDown" @change="isMarkDown = !isMarkDown" />
+            <ASwitch
+              checked-children="markdown"
+              un-checked-children="富文本"
+              :default-checked="isMarkDown"
+              @change="isMarkDown = !isMarkDown"
+            />
             <a-dropdown v-if="draftList.length && type === 'article'">
               <a-menu slot="overlay" @click="handleMenuClick">
                 <a-menu-item v-for="item in draftList" :key="item.id">
@@ -16,7 +26,10 @@
                     <template slot="title">
                       删除该草稿
                     </template>
-                    <a-icon type="delete" @click.stop.prevent="delDraft(item.id)" />
+                    <a-icon
+                      type="delete"
+                      @click.stop.prevent="delDraft(item.id)"
+                    />
                   </a-tooltip>
                   <span> {{ item.title }}</span>
                 </a-menu-item>
@@ -29,11 +42,11 @@
               发布
             </Button>
             <a-upload
-              v-show="fileList.length === 0 || uploading "
+              v-show="fileList.length === 0 || uploading"
               action="/developers-server/rest/file/file/upload"
               accept=".docx,.doc,.xls,.ppt,.pdf"
               :show-upload-list="false"
-              :headers="{token}"
+              :headers="{ token }"
               :file-list="fileList"
               multiple
               @change="handleUploadChange"
@@ -44,27 +57,50 @@
             </a-upload>
             <a-popover v-if="fileList.length > 0 && !uploading">
               <a-badge :count="fileList.length">
-                <a-icon type="file" style="font-size: 20px; cursor: pointer;" />
+                <a-icon type="file" style="font-size: 20px; cursor: pointer" />
               </a-badge>
               <template #content>
-                <div v-for="(item,index) of fileList" :key="index" style="padding:10px 0px;  display:flex;justify-content: space-between; column-gap: 10px;">
+                <div
+                  v-for="(item, index) of fileList"
+                  :key="index"
+                  style="
+                    padding: 10px 0px;
+                    display: flex;
+                    justify-content: space-between;
+                    column-gap: 10px;
+                  "
+                >
                   <div
-
-                    style="color:rgba(0, 0, 0, 0.85); flex: 1;
-                    width: 250px;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;"
+                    style="
+                      color: rgba(0, 0, 0, 0.85);
+                      flex: 1;
+                      width: 250px;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    "
                     :title="fileList[0].name"
                   >
                     {{ item.name }}
                   </div>
-                  <div style="width: 50px;">
+                  <div style="width: 50px">
                     <a-tooltip title="删除">
-                      <a-icon style="color:red; cursor:pointer;" type="delete" @click="e => handleDeleteFile(item,index)" />
+                      <a-icon
+                        style="color: red; cursor: pointer"
+                        type="delete"
+                        @click="(e) => handleDeleteFile(item, index)"
+                      />
                     </a-tooltip>
                     <a-tooltip title="预览">
-                      <a-icon style="margin-right: 4px; color: #0070ff; cursor:pointer;" type="eye" @click="e => handlePreview(item)" />
+                      <a-icon
+                        style="
+                          margin-right: 4px;
+                          color: #0070ff;
+                          cursor: pointer;
+                        "
+                        type="eye"
+                        @click="(e) => handlePreview(item)"
+                      />
                     </a-tooltip>
                   </div>
                 </div>
@@ -85,8 +121,14 @@
       destroy-on-close
       @ok="onPublish"
     >
-      <div :style="Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })">
-        <span :style="labelStyle"><span style="color: red;">*</span>选择分类：</span>
+      <div
+        :style="
+          Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })
+        "
+      >
+        <span
+          :style="labelStyle"
+        ><span style="color: red">*</span>选择分类：</span>
         <div :style="contentStyle">
           <span
             v-for="(item, index) in tagGroup"
@@ -98,7 +140,7 @@
         </div>
       </div>
       <div :style="categoryItemStyle">
-        <span :style="labelStyle"><span style="color: red;">*</span>标签：</span>
+        <span :style="labelStyle"><span style="color: red">*</span>标签：</span>
         <div :style="contentStyle">
           <Select
             mode="multiple"
@@ -108,34 +150,49 @@
             style="width: 400px"
             @change="handleTagChange"
           >
-            <SelectOption v-for="(item, index) in filteredOptions" :key="index" :value="item.name">
+            <SelectOption
+              v-for="(item, index) in filteredOptions"
+              :key="index"
+              :value="item.name"
+            >
               {{ item.name }}
             </SelectOption>
           </Select>
         </div>
       </div>
-      <template v-if="type ==='article'">
+      <template v-if="type === 'article'">
         <div :style="categoryItemStyle">
           <span :style="labelStyle">原创：</span>
           <div :style="contentStyle">
-            <ASwitch checked-children="是" un-checked-children="否" :default-checked="isOriginal" @change="isOriginal = !isOriginal" />
+            <ASwitch
+              checked-children="是"
+              un-checked-children="否"
+              :default-checked="isOriginal"
+              @change="isOriginal = !isOriginal"
+            />
           </div>
         </div>
         <template v-if="!isOriginal">
           <div :style="categoryItemStyle">
-            <span :style="labelStyle"><span style="color: red;">*</span>原文标题：</span>
+            <span
+              :style="labelStyle"
+            ><span style="color: red">*</span>原文标题：</span>
             <div :style="contentStyle">
               <Input v-model="originalTitle" placeholder="文章为原创则忽略" />
             </div>
           </div>
           <div :style="categoryItemStyle">
-            <span :style="labelStyle"><span style="color: red;">*</span>原文作者：</span>
+            <span
+              :style="labelStyle"
+            ><span style="color: red">*</span>原文作者：</span>
             <div :style="contentStyle">
               <Input v-model="originalAuthor" placeholder="文章为原创则忽略" />
             </div>
           </div>
           <div :style="categoryItemStyle">
-            <span :style="labelStyle"><span style="color: red;">*</span>原文地址：</span>
+            <span
+              :style="labelStyle"
+            ><span style="color: red">*</span>原文地址：</span>
             <div :style="contentStyle">
               <Input v-model="originalUrl" placeholder="文章为原创则忽略" />
             </div>
@@ -154,8 +211,14 @@
       destroy-on-close
       @ok="onPublish"
     >
-      <div :style="Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })">
-        <span :style="labelStyle"><span style="color: red;">*</span>选择公司：</span>
+      <div
+        :style="
+          Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })
+        "
+      >
+        <span
+          :style="labelStyle"
+        ><span style="color: red">*</span>选择公司：</span>
         <div :style="contentStyle">
           <span
             v-for="(item, index) in companyList"
@@ -166,8 +229,14 @@
           >{{ item.name }}</span>
         </div>
       </div>
-      <div :style="Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })">
-        <span :style="labelStyle"><span style="color: red;">*</span>选择分类：</span>
+      <div
+        :style="
+          Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })
+        "
+      >
+        <span
+          :style="labelStyle"
+        ><span style="color: red">*</span>选择分类：</span>
         <div :style="contentStyle">
           <span
             v-for="(item, index) in referralCategoryList"
@@ -179,8 +248,16 @@
         </div>
       </div>
     </Modal>
-    <ByteMarkdownEditor v-show="isMarkDown" :markdown-content="markdownContent" @change="handleMarkdownChange" />
-    <RichEditor v-show="!isMarkDown" :html-content="htmlContent" @change="handleRichTextChange" />
+    <ByteMarkdownEditor
+      v-show="isMarkDown"
+      :markdown-content="markdownContent"
+      @change="handleMarkdownChange"
+    />
+    <RichEditor
+      v-show="!isMarkDown"
+      :html-content="htmlContent"
+      @change="handleRichTextChange"
+    />
   </div>
 </template>
 
@@ -347,7 +424,11 @@ export default {
      * */
     const localTime = _get(this.getDraft(), 'time', 0)
     const updateTime = dayjs(this.content.updateAt).valueOf()
-    if (this.getDraft() && this.type !== 'article' && (!content || (this.getDraft().id === this.id && localTime > updateTime))) {
+    if (
+      this.getDraft() &&
+      this.type !== 'article' &&
+      (!content || (this.getDraft().id === this.id && localTime > updateTime))
+    ) {
       this.markdownContent = this.getDraft().content
       this.articleTitle = this.getDraft().title
     } else {
@@ -362,7 +443,14 @@ export default {
       return base64String
     },
     handlePreview () {
-      window.open('https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' + window.encodeURIComponent(this.base64Encode(this.fileList[0].url || this.fileList[0].response.data)))
+      window.open(
+        'https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' +
+          window.encodeURIComponent(
+            this.base64Encode(
+              this.fileList[0].url || this.fileList[0].response.data
+            )
+          )
+      )
     },
     handleUploadChange (info) {
       console.log(info, 'info')
@@ -411,15 +499,20 @@ export default {
       this.confirmModal = true
     },
     setDraft (ctx = '') {
-      localStorage.setItem(MDDRAFT, JSON.stringify({
-        id: this.id === 'new' ? '' : this.id,
-        time: Date.now(),
-        title: this.articleTitle,
-        content: ctx
-      }))
+      localStorage.setItem(
+        MDDRAFT,
+        JSON.stringify({
+          id: this.id === 'new' ? '' : this.id,
+          time: Date.now(),
+          title: this.articleTitle,
+          content: ctx
+        })
+      )
     },
     getDraft () {
-      return localStorage.getItem(MDDRAFT) ? JSON.parse(localStorage.getItem(MDDRAFT)) : null
+      return localStorage.getItem(MDDRAFT)
+        ? JSON.parse(localStorage.getItem(MDDRAFT))
+        : null
     },
     clearDraft () {
       localStorage.removeItem(MDDRAFT)
@@ -463,13 +556,17 @@ export default {
         const content = this.markdownContent || this.htmlContent
         if (this.type !== 'article') return
         if (!this.articleTitle || !content) return
-        this.$route.query.flag === 'platform' ? this.savePlatform(true) : this.saveArticle(true)
+        this.$route.query.flag === 'platform'
+          ? this.savePlatform(true)
+          : this.saveArticle(true)
       }, 3000)
     },
     handleTagChange (tags) {
       const list = []
       this.tags.forEach((tag) => {
-        if (tags.includes(tag.name)) { list.push(tag.id) }
+        if (tags.includes(tag.name)) {
+          list.push(tag.id)
+        }
       })
       this.selectTags = tags
       this.selectTagIds = list
@@ -479,7 +576,9 @@ export default {
       this.selectTags = []
       this.selectTagIds = []
       if (this.activeCategory > 0) {
-        this.tags = this.allTags.filter(item => item.groupName === this.tagGroup[index])
+        this.tags = this.allTags.filter(
+          item => item.groupName === this.tagGroup[index]
+        )
         return
       }
       this.tags = [...this.allTags]
@@ -517,7 +616,10 @@ export default {
       }
       const saveMap = {
         qa: 'saveFq',
-        article: this.$route.query.flag === 'platform' ? 'savePlatform' : 'saveArticle',
+        article:
+          this.$route.query.flag === 'platform'
+            ? 'savePlatform'
+            : 'saveArticle',
         wiki: 'saveWiki'
       }
       if (this.type) {
@@ -526,7 +628,9 @@ export default {
       this.confirmModal = false
     },
     getArticleImgs () {
-      const id = this.isMarkDown ? 'library-markdown-editor' : 'library-rich-editor'
+      const id = this.isMarkDown
+        ? 'library-markdown-editor'
+        : 'library-rich-editor'
       const headImg = []
       const imgs = document.getElementById(id).getElementsByTagName('img')
       for (let i = 0; i < imgs.length; i++) {
@@ -544,39 +648,43 @@ export default {
       if (this.isMarkDown && el) {
         directory = generateDirectory(el)
       }
-      this.$api.createWikiNode({
-        wikiId: this.wikiId,
-        title: this.articleTitle,
-        directory: JSON.stringify(directory),
-        contentType,
-        htmlContent: this.htmlContent,
-        headImg: this.getArticleImgs(),
-        id: this.content?.id,
-        markdownContent: this.markdownContent,
-        attachmentJson: JSON.stringify(this.fileList.map((item) => {
-          return {
-            name: item.name,
-            url: item.url || item.response.data
+      this.$api
+        .createWikiNode({
+          wikiId: this.wikiId,
+          title: this.articleTitle,
+          directory: JSON.stringify(directory),
+          contentType,
+          htmlContent: this.htmlContent,
+          headImg: this.getArticleImgs(),
+          id: this.content?.id,
+          markdownContent: this.markdownContent,
+          attachmentJson: JSON.stringify(
+            this.fileList.map((item) => {
+              return {
+                name: item.name,
+                url: item.url || item.response.data
+              }
+            })
+          )
+        })
+        .then((res) => {
+          if (res.success) {
+            this.clearDraft()
+            this.$notification.success({
+              duration: 2,
+              message: '发布成功！'
+            })
+            setTimeout(() => {
+              window.history.back()
+            }, 1000)
+            window.location.replace('/')
+          } else {
+            this.$notification.error({
+              duration: 2,
+              message: res.message
+            })
           }
-        }))
-      }).then((res) => {
-        if (res.success) {
-          this.clearDraft()
-          this.$notification.success({
-            duration: 2,
-            message: '发布成功！'
-          })
-          setTimeout(() => {
-            window.history.back()
-          }, 1000)
-          window.location.replace('/')
-        } else {
-          this.$notification.error({
-            duration: 2,
-            message: res.message
-          })
-        }
-      })
+        })
     },
     saveArticle (draft = '') {
       // 防止草稿更新状态
@@ -587,52 +695,56 @@ export default {
       if (this.isMarkDown && el) {
         directory = generateDirectory(el)
       }
-      this.$api.saveNewArticle({
-        title: this.articleTitle,
-        directory: JSON.stringify(directory),
-        contentType,
-        htmlContent: this.htmlContent,
-        headImg: this.getArticleImgs(),
-        id: this.draftId || this.content?.id,
-        draft,
-        markdownContent: this.markdownContent,
-        tagIds: this.selectTagIds,
-        originalTitle: this.originalTitle.trim(),
-        originalUrl: this.originalUrl.trim(),
-        originalAuthor: this.originalAuthor.trim(),
-        attachmentJson: JSON.stringify(this.fileList.map((item) => {
-          return {
-            name: item.name,
-            url: item.url || item.response.data
-          }
-        }))
-      }).then((res) => {
-        if (res.success) {
-          if (draft) {
-            this.draftId = res.data
-            this.$message.success('已存为草稿')
-          } else {
-            this.clearDraft()
-            this.draftId = ''
-            this.$notification.success({
-              duration: 2,
-              message: '发布成功！'
-            })
-            setTimeout(() => {
-              if (this.content?.id) {
-                window.history.back()
-                return
+      this.$api
+        .saveNewArticle({
+          title: this.articleTitle,
+          directory: JSON.stringify(directory),
+          contentType,
+          htmlContent: this.htmlContent,
+          headImg: this.getArticleImgs(),
+          id: this.draftId || this.content?.id,
+          draft,
+          markdownContent: this.markdownContent,
+          tagIds: this.selectTagIds,
+          originalTitle: this.originalTitle.trim(),
+          originalUrl: this.originalUrl.trim(),
+          originalAuthor: this.originalAuthor.trim(),
+          attachmentJson: JSON.stringify(
+            this.fileList.map((item) => {
+              return {
+                name: item.name,
+                url: item.url || item.response.data
               }
-              window.location.replace('/')
-            }, 1000)
+            })
+          )
+        })
+        .then((res) => {
+          if (res.success) {
+            if (draft) {
+              this.draftId = res.data
+              this.$message.success('已存为草稿')
+            } else {
+              this.clearDraft()
+              this.draftId = ''
+              this.$notification.success({
+                duration: 2,
+                message: '发布成功！'
+              })
+              setTimeout(() => {
+                if (this.content?.id) {
+                  window.history.back()
+                  return
+                }
+                window.location.replace('/')
+              }, 1000)
+            }
+          } else {
+            this.$notification.error({
+              duration: 2,
+              message: res.message
+            })
           }
-        } else {
-          this.$notification.error({
-            duration: 2,
-            message: res.message
-          })
-        }
-      })
+        })
     },
     savePlatform (draft = '') {
       // 防止草稿更新状态
@@ -643,98 +755,106 @@ export default {
       if (this.isMarkDown && el) {
         directory = generateDirectory(el)
       }
-      this.$api.saveNewPlatformArticle({
-        title: this.articleTitle,
-        directory: JSON.stringify(directory),
-        contentType,
-        htmlContent: this.htmlContent,
-        headImg: this.getArticleImgs(),
-        id: this.draftId || this.content?.id,
-        draft,
-        markdownContent: this.markdownContent,
-        tagIds: this.selectTagIds,
-        originalTitle: this.originalTitle.trim(),
-        originalUrl: this.originalUrl.trim(),
-        originalAuthor: this.originalAuthor.trim(),
-        attachmentJson: JSON.stringify(this.fileList.map((item) => {
-          return {
-            name: item.name,
-            url: item.url || item.response.data
-          }
-        }))
-      }).then((res) => {
-        if (res.success) {
-          if (draft) {
-            this.draftId = res.data
-            this.$message.success('已存为草稿')
+      this.$api
+        .saveNewPlatformArticle({
+          title: this.articleTitle,
+          directory: JSON.stringify(directory),
+          contentType,
+          htmlContent: this.htmlContent,
+          headImg: this.getArticleImgs(),
+          id: this.draftId || this.content?.id,
+          draft,
+          markdownContent: this.markdownContent,
+          tagIds: this.selectTagIds,
+          originalTitle: this.originalTitle.trim(),
+          originalUrl: this.originalUrl.trim(),
+          originalAuthor: this.originalAuthor.trim(),
+          attachmentJson: JSON.stringify(
+            this.fileList.map((item) => {
+              return {
+                name: item.name,
+                url: item.url || item.response.data
+              }
+            })
+          )
+        })
+        .then((res) => {
+          if (res.success) {
+            if (draft) {
+              this.draftId = res.data
+              this.$message.success('已存为草稿')
+            } else {
+              this.clearDraft()
+              this.draftId = ''
+              this.$notification.success({
+                duration: 2,
+                message: '发布成功！'
+              })
+              setTimeout(() => {
+                if (this.content?.id) {
+                  window.history.back()
+                  return
+                }
+                window.location.replace('/')
+              }, 1000)
+            }
           } else {
+            this.$notification.error({
+              duration: 2,
+              message: res.message
+            })
+          }
+        })
+    },
+    saveFq () {
+      const contentType = this.isMarkDown ? 'MARKDOWN' : 'HTML'
+      this.$api
+        .saveNewQuestion({
+          title: this.articleTitle.trim(),
+          contentType,
+          htmlContent: this.htmlContent,
+          headImg: this.getArticleImgs(),
+          id: this.content?.id,
+          markdownContent: this.markdownContent,
+          tagIds: this.selectTagIds
+        })
+        .then((res) => {
+          if (res.success) {
             this.clearDraft()
-            this.draftId = ''
             this.$notification.success({
               duration: 2,
               message: '发布成功！'
             })
-            setTimeout(() => {
-              if (this.content?.id) {
-                window.history.back()
-                return
-              }
-              window.location.replace('/')
-            }, 1000)
+            if (this.content?.id) {
+              window.history.back()
+              return
+            }
+            window.location.replace('/')
+          } else {
+            this.$notification.error({
+              duration: 2,
+              message: res.message
+            })
           }
-        } else {
-          this.$notification.error({
-            duration: 2,
-            message: res.message
-          })
-        }
-      })
-    },
-    saveFq () {
-      const contentType = this.isMarkDown ? 'MARKDOWN' : 'HTML'
-      this.$api.saveNewQuestion({
-        title: this.articleTitle.trim(),
-        contentType,
-        htmlContent: this.htmlContent,
-        headImg: this.getArticleImgs(),
-        id: this.content?.id,
-        markdownContent: this.markdownContent,
-        tagIds: this.selectTagIds
-      }).then((res) => {
-        if (res.success) {
-          this.clearDraft()
-          this.$notification.success({
-            duration: 2,
-            message: '发布成功！'
-          })
-          if (this.content?.id) {
-            window.history.back()
-            return
-          }
-          window.location.replace('/')
-        } else {
-          this.$notification.error({
-            duration: 2,
-            message: res.message
-          })
-        }
-      })
+        })
     },
     getDraftList () {
       if (this.type !== 'article' || this.id !== 'new') return
-      this.$api.getTopicList({
-        filter: {
-          state: 'DRAFT',
-          userId: _get(this, '$store.state.user.userInfo.id')
-        }
-      }).then((list) => {
-        this.draftList = list
-        if (!list.length) {
-          this.articleTitle = ''
-          this.markdownContent = this.htmlContent = ''
-          this.draftId = ''
-        }
-      })
+      this.$api
+        .getTopicList({
+          filter: {
+            state: 'DRAFT',
+            userId: _get(this, '$store.state.user.userInfo.id')
+          }
+        })
+        .then((list) => {
+          this.draftList = list
+          if (!list.length) {
+            this.articleTitle = ''
+            this.markdownContent = this.htmlContent = ''
+            this.draftId = ''
+          }
+        })
     },
     delDraft (articleId) {
       this.$api.delArticleBy(articleId).then((res) => {
@@ -751,79 +871,80 @@ export default {
 </script>
 
 <style lang="less">
-  .page-library-mavon-add {
-    width: @max-width;
-    margin: 0 auto;
-    min-height: 100%;
-    background-color: #fff;
-    border-radius: @g-radius;
-    padding-top: 5px;
-    .base-title {
-      justify-content: space-between;
+.page-library-mavon-add {
+  width: @max-width;
+  margin: 0 auto;
+  min-height: 100%;
+  background-color: #fff;
+  border-radius: @g-radius;
+  padding-top: 5px;
+  .base-title {
+    justify-content: space-between;
+  }
+  .base-info-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    justify-content: space-between;
+    border-bottom: 1px solid @border-4-color;
+    .draft-sync {
+      color: green;
     }
-    .base-info-item {
+    .ant-switch {
+      color: #fff;
+      background-color: @g-main-color;
+    }
+    .ant-switch-inner {
+      width: 60px;
+    }
+    .ant-select-selection__choice {
+      background-color: #fff;
+      border-radius: 4px;
+      border-color: #e5f0e5;
+      box-sizing: border-box;
+      font-size: @font-third;
+    }
+    .ant-select-selection__placeholder {
+      font-size: 15px;
+    }
+    .ant-select-selection__choice__content {
+      color: @font-color-second;
+      font-size: 12px;
+    }
+    .ant-select-selection {
+      border: 0;
+    }
+    .title-box {
       display: flex;
       align-items: center;
-      padding: 10px 15px;
-      justify-content: space-between;
-      border-bottom: 1px solid @border-4-color;
-      .draft-sync {
-        color: green;
-      }
-      .ant-switch {
-        color: #fff;
-        background-color: @g-main-color;
-      }
-      .ant-switch-inner {
-        width: 60px
-      }
-      .ant-select-selection__choice {
-        background-color: #fff;
-        border-radius: 4px;
-        border-color: #e5f0e5;
-        box-sizing: border-box;
-        font-size: @font-third;
-      }
-      .ant-select-selection__placeholder {
-        font-size: 15px;
-      }
-      .ant-select-selection__choice__content {
-        color: @font-color-second;
-        font-size: 12px;
-      }
-      .ant-select-selection {
-        border: 0;
-      }
-      .title-box {
-        display: flex;
-        align-items: center;
-        margin-right: 15px;
-      }
-      .title {
-        min-width: 60px;
-        font-size: @font-third;
-        font-weight: bold;
-      }
-      .title-content {
-        width: 580px;
-        border: 0;
-        outline: none;
-        font-size: @font-third;
-        color: @font-color-first;
-        font-weight: bold;
-        text-indent: 12px;
-        &::placeholder {
-          color: @font-color-third;
-          font-weight: 400;
-        }
-      }
-      .category-input, .tag-list {
-        font-size: @font-third;
-      }
-      .tag-container {
-        flex: 1;
-        border: 0;
+      margin-right: 15px;
+    }
+    .title {
+      min-width: 60px;
+      font-size: @font-third;
+      font-weight: bold;
+    }
+    .title-content {
+      width: 580px;
+      border: 0;
+      outline: none;
+      font-size: @font-third;
+      color: @font-color-first;
+      font-weight: bold;
+      text-indent: 12px;
+      &::placeholder {
+        color: @font-color-third;
+        font-weight: 400;
       }
     }
+    .category-input,
+    .tag-list {
+      font-size: @font-third;
+    }
+    .tag-container {
+      flex: 1;
+      border: 0;
+    }
   }
+}
 </style>

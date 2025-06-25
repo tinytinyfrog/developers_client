@@ -1,11 +1,24 @@
 <template>
-  <g-card class="half-card" title="月刊" :go-to="e => handleGoto(`/info?type=journal`)">
+  <g-card
+    class="half-card"
+    title="月刊"
+    :go-to="(e) => handleGoto(`/info?type=journal`)"
+  >
     <template>
       <a-spin :spinning="loading">
         <div v-if="journalList.length > 0" class="journal">
           <a-carousel>
-            <div v-for="(item,index) of journalList" :key="index" class="journal-list">
-              <div v-for="(k,i) of item.child" :key="i" class="journal-item" @click="e => handleGoto(`/info/${k.id}?type=journal`)">
+            <div
+              v-for="(item, index) of journalList"
+              :key="index"
+              class="journal-list"
+            >
+              <div
+                v-for="(k, i) of item.child"
+                :key="i"
+                class="journal-item"
+                @click="(e) => handleGoto(`/info/${k.id}?type=journal`)"
+              >
                 <div>
                   <img class="img" :src="k.coverImageUrl">
                 </div>
@@ -96,41 +109,40 @@ export default {
   }
 }
 </script>
-  <style scoped lang="less">
- .journal {
-    padding: 20px;
-    padding-bottom: 32px;
-    .journal-list {
-      display: flex !important;
-      column-gap:14px;
-      .journal-item {
-        width: calc((100% - (14px * 2)) / 3);
-        border-radius: 4px;
-        background: rgb(241, 247, 254);
-        height: 300px;
-        padding: 16px;
-        .img {
-          width: 100%;
-          height: 145px;
-        }
-        .text {
-          margin-top:16px;
-          color: rgb(40, 40, 40);
-          font-size: 14px;
-          font-weight: 400;
-          display: -webkit-box;
-              overflow: hidden; /* 隐藏溢出的内容 */
-              -webkit-line-clamp: 5;
-              -webkit-box-orient: vertical;
-        }
+<style scoped lang="less">
+.journal {
+  padding: 20px;
+  padding-bottom: 32px;
+  .journal-list {
+    display: flex !important;
+    column-gap: 14px;
+    .journal-item {
+      width: calc((100% - (14px * 2)) / 3);
+      border-radius: 4px;
+      background: rgb(241, 247, 254);
+      height: 300px;
+      padding: 16px;
+      .img {
+        width: 100%;
+        height: 145px;
       }
-
+      .text {
+        margin-top: 16px;
+        color: rgb(40, 40, 40);
+        font-size: 14px;
+        font-weight: 400;
+        display: -webkit-box;
+        overflow: hidden; /* 隐藏溢出的内容 */
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+      }
     }
   }
-  .journal-empty {
-       height: 352px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-  </style>
+}
+.journal-empty {
+  height: 352px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

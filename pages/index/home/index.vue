@@ -3,13 +3,15 @@
     <div class="home-container-banner">
       <a-carousel autoplay>
         <img
-          v-for="(item,index) of bannerList"
+          v-for="(item, index) of bannerList"
           :key="index"
           class="home-container-banner-img"
           :src="item.imgUrl"
-          @click="e => {
-            handleOpen(item)
-          }"
+          @click="
+            (e) => {
+              handleOpen(item);
+            }
+          "
         >
       </a-carousel>
     </div>
@@ -76,19 +78,18 @@ export default {
     Statistics
   },
   data () {
-    const bannerList = [{
-      imgUrl: bannerDefaultImg,
-      actionUrl: ''
-    }
+    const bannerList = [
+      {
+        imgUrl: bannerDefaultImg,
+        actionUrl: ''
+      }
     ]
     return {
       defaultImg,
       bannerList
     }
   },
-  watch: {
-
-  },
+  watch: {},
   beforeMount () {
     this.fetchBannerList()
   },
@@ -105,7 +106,11 @@ export default {
       }
     },
     fetchBannerList () {
-      const params = { pageSize: 10, pageNo: 1, filter: { state: null, name: null, type: 'HOME_CAROUSEL' } }
+      const params = {
+        pageSize: 10,
+        pageNo: 1,
+        filter: { state: null, name: null, type: 'HOME_CAROUSEL' }
+      }
       this.$api.getBannerLists(params).then((res) => {
         if (res?.list?.length > 0) {
           this.bannerList = res.list.map((i) => {
@@ -119,125 +124,121 @@ export default {
 </script>
 <style lang="less" scoped>
 .home-container {
-    background: #F6F6F6;
-    min-height:100vh;
-    overflow:auto;
-    &-banner {
-        &-img {
-          width: 100%;
-          height:300px;
-          cursor: pointer;
-        }
+  background: #f6f6f6;
+  min-height: 100vh;
+  overflow: auto;
+  &-banner {
+    &-img {
+      width: 100%;
+      height: 300px;
+      cursor: pointer;
+    }
 
-       ::v-deep .ant-carousel .slick-dots-bottom {
-        bottom: 20px !important
+    ::v-deep .ant-carousel .slick-dots-bottom {
+      bottom: 20px !important;
+    }
+  }
+  .home-content {
+    padding: 20px 96px;
+    .item {
+      margin-bottom: 20px;
+      display: flex;
+      column-gap: 20px;
+      cursor: pointer;
+      .card-header {
+        display: flex;
+        height: 54px;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid rgb(226, 232, 246);
+        .header-left {
+          display: flex;
+          padding: 16px 14px 0px 14px;
+          column-gap: 36px;
+          align-items: flex-start;
+          .tab {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            .tab-item {
+              display: flex;
+              column-gap: 4px;
+              cursor: pointer;
+
+              .img {
+                width: 14px;
+                height: 14px;
+              }
+
+              .text {
+                color: rgb(40, 40, 40);
+                font-family: PingFang SC;
+                font-size: 16px;
+                font-weight: 400;
+              }
+            }
+            .tab-item:hover {
+              .text {
+                color: #0060ff;
+                font-weight: 600;
+              }
+            }
+            .item-active {
+              width: 100%;
+              height: 4px;
+              .block {
+                width: 40%;
+                margin: 0 auto;
+                height: 4px;
+                border-radius: 100px;
+                background: rgb(0, 112, 255);
+              }
+            }
+          }
+          .tab-active {
+            .tab-item {
+              display: flex;
+              column-gap: 4px;
+              cursor: pointer;
+
+              .img {
+                width: 14px;
+                height: 14px;
+              }
+
+              .text {
+                color: #0070ff;
+                font-family: PingFang SC;
+                font-size: 16px;
+                font-weight: 600;
+              }
+            }
+          }
+        }
+        .talent-header {
+          display: flex;
+          column-gap: 8px;
+        }
+        .header-right {
+          padding: 16px 14px 16px 0;
+        }
+        .header-right {
+          .more {
+            color: #0060ff;
+            cursor: pointer;
+          }
+        }
+      }
+      .half-card {
+        width: calc((100% - (20px * 1)) / 2);
+      }
+
+      .full-card {
+        width: 100%;
       }
     }
-    .home-content{
-        padding:20px 96px;
-        .item {
-            margin-bottom:20px;
-            display:flex;
-            column-gap:20px;
-            cursor:pointer;
-            .card-header {
-                display:flex;
-                height:54px;
-                justify-content: space-between;
-                width:100%;
-                border-bottom: 1px solid rgb(226, 232, 246);
-                .header-left {
-                    display:flex;
-                    padding: 16px 14px 0px 14px;
-                    column-gap:36px;
-                    align-items: flex-start;
-                    .tab {
-                        display:flex;
-                        flex-direction: column;
-                        justify-content: space-between;
-                        height: 100%;
-                    .tab-item {
-                        display:flex;
-                        column-gap:4px;
-                        cursor:pointer;
-
-                        .img {
-                            width:14px;
-                            height:14px;
-                        }
-
-                        .text {
-                        color: rgb(40, 40, 40);
-                        font-family: PingFang SC;
-                        font-size: 16px;
-                        font-weight: 400;
-
-                      }
-                    }
-                    .tab-item:hover {
-                        .text {
-                            color :#0060ff;
-                            font-weight:600
-                        }
-                    }
-                    .item-active {
-                        width:100%;
-                        height: 4px;
-                        .block {
-                            width: 40%;
-                            margin: 0 auto;
-                            height: 4px;
-                            border-radius: 100px;
-                            background: rgb(0, 112, 255);
-                        }
-                    }
-                    }
-                    .tab-active {
-                        .tab-item {
-                        display:flex;
-                        column-gap:4px;
-                        cursor:pointer;
-
-                        .img {
-                            width:14px;
-                            height:14px;
-                        }
-
-                        .text {
-                        color: #0070ff;
-                        font-family: PingFang SC;
-                        font-size: 16px;
-                        font-weight: 600;
-
-                        }
-                      }
-                    }
-
-                }
-                .talent-header {
-                  display: flex;
-                  column-gap: 8px;
-                }
-                .header-right {
-                    padding: 16px 14px 16px 0;
-                }
-                .header-right {
-                    .more {
-                        color:#0060ff;
-                        cursor:pointer;
-                    }
-                }
-            }
-            .half-card {
-                width: calc((100% - (20px * 1)) / 2);
-            }
-
-            .full-card {
-            width: 100%
-        }
-
-        }
-    }
+  }
 }
 ::v-deep .ant-carousel .slick-slide {
   height: 300px;
@@ -257,10 +258,10 @@ export default {
 }
 
 ::v-deep .ant-carousel .slick-dots-bottom {
-  bottom: -16px
+  bottom: -16px;
 }
 
-::v-deep .ant-carousel .slick-dots li.slick-active button{
+::v-deep .ant-carousel .slick-dots li.slick-active button {
   border-radius: 100px;
   background: rgb(0, 112, 255);
   height: 6px;
@@ -270,24 +271,24 @@ export default {
   display: block !important;
   background: #fff;
   border: 1px solid rgb(170, 218, 255);
-box-shadow: 0px 4px 24px 0px rgba(0, 159, 255, 0.24);
-background: rgb(255, 255, 255);
+  box-shadow: 0px 4px 24px 0px rgba(0, 159, 255, 0.24);
+  background: rgb(255, 255, 255);
 }
 
 ::v-deep .el-carousel__arrow--left i {
-  color:black !important
+  color: black !important;
 }
 
 ::v-deep .el-carousel__arrow--right {
   display: block !important;
   background: #fff;
   border: 1px solid rgb(170, 218, 255);
-box-shadow: 0px 4px 24px 0px rgba(0, 159, 255, 0.24);
-background: rgb(255, 255, 255);
+  box-shadow: 0px 4px 24px 0px rgba(0, 159, 255, 0.24);
+  background: rgb(255, 255, 255);
 }
 
 ::v-deep .el-carousel__arrow--right i {
-  color:black !important
+  color: black !important;
 }
 
 ::v-deep .el-carousel__indicators--outside {
@@ -307,5 +308,4 @@ background: rgb(255, 255, 255);
 //   .el-carousel__item:nth-child(2n+1) {
 //     background-color: #d3dce6;
 //   }
-
 </style>

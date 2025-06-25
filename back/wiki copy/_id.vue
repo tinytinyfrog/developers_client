@@ -1,6 +1,6 @@
 <template>
   <div class="page-wiki-detail-entry">
-    <div class="wiki-menu-left" :class="{'show-mobile-menu': showMobileMenu}">
+    <div class="wiki-menu-left" :class="{ 'show-mobile-menu': showMobileMenu }">
       <Menu
         :menu-list="wikiMenu"
         :wiki-info="wikiInfo"
@@ -11,7 +11,11 @@
       />
     </div>
     <div class="wiki-container-right">
-      <nuxt-child :wiki-info="wikiInfo" :show-mobile-menu="showMobileMenu" :menu-list="wikiMenu" />
+      <nuxt-child
+        :wiki-info="wikiInfo"
+        :show-mobile-menu="showMobileMenu"
+        :menu-list="wikiMenu"
+      />
     </div>
     <div class="fixed-menu-btn">
       <a-button
@@ -25,112 +29,112 @@
 </template>
 
 <script>
-import EventBus from '@/lib/event-bus'
-import Menu from './_id/components/wiki-menu'
+import EventBus from "@/lib/event-bus";
+import Menu from "./_id/components/wiki-menu";
 
 const getNextSortNode = (nextNode, list, resultList) => {
-  if (!nextNode) return []
-  resultList.push(nextNode)
-  let hasNext = false
+  if (!nextNode) return [];
+  resultList.push(nextNode);
+  let hasNext = false;
   for (let i = 0; i < list.length; i++) {
-    const item = list[i]
+    const item = list[i];
     if (nextNode.nodeId === item.prevBrotherNodeId) {
-      hasNext = true
-      return getNextSortNode(item, list, resultList)
+      hasNext = true;
+      return getNextSortNode(item, list, resultList);
     }
   }
-  if (!hasNext) return resultList
-}
+  if (!hasNext) return resultList;
+};
 
 const menuSort = (list) => {
-  let firstWiki = null
+  let firstWiki = null;
   for (let i = 0; i < list.length; i++) {
     if (!list[i].prevBrotherNodeId) {
-      firstWiki = list[i]
+      firstWiki = list[i];
     }
   }
-  return getNextSortNode(firstWiki, list, [])
-}
+  return getNextSortNode(firstWiki, list, []);
+};
 
 const handlerMenu = (wikiMenu) => {
-  if (!wikiMenu.length) return
+  if (!wikiMenu.length) return;
   // 所有一级目录
-  let list = wikiMenu.filter(item => item.level === 1)
+  let list = wikiMenu.filter((item) => item.level === 1);
   // 二级目录
-  const tempList = wikiMenu.filter(item => item.level === 2)
+  const tempList = wikiMenu.filter((item) => item.level === 2);
   // eslint-disable-next-line no-return-assign
-  list.forEach(item => item.children = [])
-  list = menuSort(list)
-  const tempListLen = tempList.length
+  list.forEach((item) => (item.children = []));
+  list = menuSort(list);
+  const tempListLen = tempList.length;
   for (let i = 0; i < list.length; i++) {
-    const oneLevel = list[i]
-    let childrenList = []
+    const oneLevel = list[i];
+    let childrenList = [];
     for (let k = 0; k < tempListLen; k++) {
-      const children = tempList[k]
+      const children = tempList[k];
       if (children.parentNodeId === oneLevel.nodeId) {
-        childrenList.push(children)
+        childrenList.push(children);
       }
     }
     if (childrenList.length) {
-      childrenList = menuSort(childrenList)
-      list[i].children = [...childrenList]
-      childrenList = []
+      childrenList = menuSort(childrenList);
+      list[i].children = [...childrenList];
+      childrenList = [];
     }
   }
-  return list
-}
+  return list;
+};
 export default {
-  name: 'WikiDetailEntry',
+  name: "WikiDetailEntry",
   components: {
-    Menu
+    Menu,
   },
-  async asyncData ({ route, $api, store }) {
-    const { id } = route.params
-    const wikiInfo = await $api.getWikiNodeListInfoById(id)
-    const wikiMenu = handlerMenu(wikiInfo.nodeList)
-    let canEdit = ['ADMIN', 'OWNER'].includes(wikiInfo.role)
-    const { isMobile } = store.state.globalData
+  async asyncData({ route, $api, store }) {
+    const { id } = route.params;
+    const wikiInfo = await $api.getWikiNodeListInfoById(id);
+    const wikiMenu = handlerMenu(wikiInfo.nodeList);
+    let canEdit = ["ADMIN", "OWNER"].includes(wikiInfo.role);
+    const { isMobile } = store.state.globalData;
     if (isMobile) {
-      canEdit = false
+      canEdit = false;
     }
     // 协作者
-    const isCollaborator = wikiInfo.role === 'COLLABORATOR'
+    const isCollaborator = wikiInfo.role === "COLLABORATOR";
     return {
       wikiId: id,
       wikiInfo,
       wikiMenu,
       canEdit,
-      isCollaborator
-    }
+      isCollaborator,
+    };
   },
-  data () {
+  data() {
     return {
       showMobileMenu: false,
-      showPagination: false
-    }
+      showPagination: false,
+    };
   },
   watch: {
-    $route (to) {
+    $route(to) {
       if (to.path === `/wiki/${this.wikiId}`) {
-        this.updateMenu()
+        this.updateMenu();
       }
-    }
+    },
   },
-  mounted () {
-    EventBus.$on('G_UPDATE_MENU', (show) => {
-      this.showMobileMenu = show
-    })
+  mounted() {
+    EventBus.$on("G_UPDATE_MENU", (show) => {
+      this.showMobileMenu = show;
+    });
   },
-  beforeDestroy () {
-    EventBus.$off('G_UPDATE_MENU')
+  beforeDestroy() {
+    EventBus.$off("G_UPDATE_MENU");
   },
   methods: {
-    async updateMenu () {
-      this.wikiInfo = await this.$api.getWikiNodeListInfoById(this.wikiId)
-      this.wikiMenu = handlerMenu(this.wikiInfo.nodeList)
-    }
-  }
-}
+    async updateMenu() {
+      this.wikiInfo = await this.$api.getWikiNodeListInfoById(this.wikiId);
+      this.wikiMenu = handlerMenu(this.wikiInfo.nodeList);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -146,8 +150,8 @@ export default {
     border-left: 1px dashed @border-1-color;
   }
   .wiki-menu-left {
-      transition: all 0.3s;
-    }
+    transition: all 0.3s;
+  }
   .fixed-menu-btn {
     display: none;
   }

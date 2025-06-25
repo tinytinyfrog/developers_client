@@ -107,6 +107,6 @@ export default {
   .bytemd-status {
     display: none;
   }
-  @import './theme.less';
+  @import "./theme.less";
 }
 </style>

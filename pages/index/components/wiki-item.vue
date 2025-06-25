@@ -11,11 +11,16 @@
               @click="$utils.openUserCenter(article.authorId)"
             />
           </GUserPopover> -->
-          <span class="user-name g-hover" @click.stop.prevent="$utils.openUserCenter(article.authorId)">
+          <span
+            class="user-name g-hover"
+            @click.stop.prevent="$utils.openUserCenter(article.authorId)"
+          >
             {{ article.authorNickname }}
           </span>
           <GSpace />
-          <span class="question-time">{{ article.createAtString | dateCountDown }}</span>
+          <span class="question-time">{{
+            article.createAtString | dateCountDown
+          }}</span>
           <!-- <span class="tag-container">
             <g-space />
             <span
@@ -47,12 +52,27 @@
           <p
             v-if="article.markdownContent"
             class="article-simple-content g-hidden-line2"
-            v-text="article.markdownContent.replace(/\!\[\w*\]\(https:\/\/static.developers.pub\/[\w]*\)/gi, '')"
+            v-text="
+              article.markdownContent.replace(
+                /\!\[\w*\]\(https:\/\/static.developers.pub\/[\w]*\)/gi,
+                ''
+              )
+            "
           />
-          <img v-if="headImg" class="article-picture" :src="`${headImg}?imageView2/1/w/120/h/80`" alt="">
+          <img
+            v-if="headImg"
+            class="article-picture"
+            :src="`${headImg}?imageView2/1/w/120/h/80`"
+            alt=""
+          >
         </div>
       </div>
-      <img v-if="headImg" class="article-big-picture" :src="`${headImg}?imageView2/1/w/160/h/110`" alt="">
+      <img
+        v-if="headImg"
+        class="article-big-picture"
+        :src="`${headImg}?imageView2/1/w/160/h/110`"
+        alt=""
+      >
     </div>
     <!-- <div class="article-operation">
       <span class="article-operation-actions">
@@ -96,7 +116,7 @@ export default {
   },
   data () {
     return {
-      textReg: /[#|-|>|[x\]]/ig
+      textReg: /[#|-|>|[x\]]/gi
     }
   },
   computed: {

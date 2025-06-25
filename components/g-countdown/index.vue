@@ -1,7 +1,5 @@
 <template>
-  <canvas id="g-countdown">
-    您的浏览器不自持canvas
-  </canvas>
+  <canvas id="g-countdown"> 您的浏览器不自持canvas </canvas>
 </template>
 
 <script>
@@ -14,141 +12,140 @@ export default {
   },
   methods: {
     initTemplate () {
-      digit =
+      digit = [
         [
-          [
-            [0, 0, 1, 1, 1, 0, 0],
-            [0, 1, 1, 0, 1, 1, 0],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 1, 1, 0, 1, 1, 0],
-            [0, 0, 1, 1, 1, 0, 0]
-          ], // 0
-          [
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 1, 1, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [1, 1, 1, 1, 1, 1, 1]
-          ], // 1
-          [
-            [0, 1, 1, 1, 1, 1, 0],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 1, 1, 0, 0, 0],
-            [0, 1, 1, 0, 0, 0, 0],
-            [1, 1, 0, 0, 0, 0, 0],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1]
-          ], // 2
-          [
-            [1, 1, 1, 1, 1, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 1, 1, 1, 0, 0],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 1, 1, 1, 1, 1, 0]
-          ], // 3
-          [
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 1, 1, 1, 0],
-            [0, 0, 1, 1, 1, 1, 0],
-            [0, 1, 1, 0, 1, 1, 0],
-            [1, 1, 0, 0, 1, 1, 0],
-            [1, 1, 1, 1, 1, 1, 1],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 1, 1, 1, 1]
-          ], // 4
-          [
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 0, 0, 0, 0, 0],
-            [1, 1, 0, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1, 1, 0],
-            [0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 1, 1, 1, 1, 1, 0]
-          ], // 5
-          [
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 1, 1, 0, 0, 0],
-            [0, 1, 1, 0, 0, 0, 0],
-            [1, 1, 0, 0, 0, 0, 0],
-            [1, 1, 0, 1, 1, 1, 0],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 1, 1, 1, 1, 1, 0]
-          ], // 6
-          [
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 1, 1, 0, 0, 0],
-            [0, 0, 1, 1, 0, 0, 0],
-            [0, 0, 1, 1, 0, 0, 0],
-            [0, 0, 1, 1, 0, 0, 0]
-          ], // 7
-          [
-            [0, 1, 1, 1, 1, 1, 0],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 1, 1, 1, 1, 1, 0],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 1, 1, 1, 1, 1, 0]
-          ], // 8
-          [
-            [0, 1, 1, 1, 1, 1, 0],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1],
-            [0, 1, 1, 1, 0, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 0, 0, 1, 1, 0, 0],
-            [0, 1, 1, 0, 0, 0, 0]
-          ], // 9
-          [
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 1, 1, 0],
-            [0, 1, 1, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 1, 1, 0],
-            [0, 1, 1, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0]
-          ]// :
-        ]
+          [0, 0, 1, 1, 1, 0, 0],
+          [0, 1, 1, 0, 1, 1, 0],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 1, 1, 0, 1, 1, 0],
+          [0, 0, 1, 1, 1, 0, 0]
+        ], // 0
+        [
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 1, 1, 1, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [1, 1, 1, 1, 1, 1, 1]
+        ], // 1
+        [
+          [0, 1, 1, 1, 1, 1, 0],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 1, 1, 0, 0, 0],
+          [0, 1, 1, 0, 0, 0, 0],
+          [1, 1, 0, 0, 0, 0, 0],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1]
+        ], // 2
+        [
+          [1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 1, 1, 1, 0, 0],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 1, 1, 1, 1, 1, 0]
+        ], // 3
+        [
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 1, 1, 1, 0],
+          [0, 0, 1, 1, 1, 1, 0],
+          [0, 1, 1, 0, 1, 1, 0],
+          [1, 1, 0, 0, 1, 1, 0],
+          [1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 1, 1, 1, 1]
+        ], // 4
+        [
+          [1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 0, 0, 0, 0, 0],
+          [1, 1, 0, 0, 0, 0, 0],
+          [1, 1, 1, 1, 1, 1, 0],
+          [0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 1, 1, 1, 1, 1, 0]
+        ], // 5
+        [
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 1, 1, 0, 0, 0],
+          [0, 1, 1, 0, 0, 0, 0],
+          [1, 1, 0, 0, 0, 0, 0],
+          [1, 1, 0, 1, 1, 1, 0],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 1, 1, 1, 1, 1, 0]
+        ], // 6
+        [
+          [1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 0, 1, 1, 0, 0, 0],
+          [0, 0, 1, 1, 0, 0, 0],
+          [0, 0, 1, 1, 0, 0, 0],
+          [0, 0, 1, 1, 0, 0, 0]
+        ], // 7
+        [
+          [0, 1, 1, 1, 1, 1, 0],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 1, 1, 1, 1, 1, 0],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 1, 1, 1, 1, 1, 0]
+        ], // 8
+        [
+          [0, 1, 1, 1, 1, 1, 0],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [1, 1, 0, 0, 0, 1, 1],
+          [0, 1, 1, 1, 0, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 0, 0, 1, 1, 0],
+          [0, 0, 0, 1, 1, 0, 0],
+          [0, 1, 1, 0, 0, 0, 0]
+        ], // 9
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [0, 1, 1, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [0, 1, 1, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ] // :
+      ]
     },
     countdown () {
       const WINDOW_WIDTH = 286
@@ -161,7 +158,7 @@ export default {
       endTime.setTime(endTime.getTime() + 2700 * 1000) // 倒计时截止时间是当前时间之后的一个小时。
       let curShowTimeSeconds = 0 // 用于显示当前距离截止时间的毫秒数。
 
-      let balls = []// 用于存放小球，将新增加的小球添加进去。
+      let balls = [] // 用于存放小球，将新增加的小球添加进去。
       // 预设小球的颜色值，生成的小球来随机取其中的某一个值。
       // const colors = ['#33B545', '#009CC', '#AA66CC', '#9933CC', '#99CC00', '#669900', '#FFBB33', '#FF8800', '#FF4444', '#CC0000']
       const colors = ['#2d6d2d', '#c0d6c0', '#dedede']
@@ -193,20 +190,24 @@ export default {
       function getCurrentShowTimeSeconds () {
         const curTime = new Date()
         let ret = endTime.getTime() - curTime.getTime() // 截止时间减去当前时间得到的毫秒数。
-        ret = Math.round(ret / 1000)// 将毫秒数转换为秒数。
+        ret = Math.round(ret / 1000) // 将毫秒数转换为秒数。
         return ret >= 0 ? ret : 0
       }
 
       // 更新函数：1.更新时间；2.更新动画，3.生成小球
       function update () {
         // 得到下一次距离截止时间的秒数。
-        const nextShowTimeSeconds = getCurrentShowTimeSeconds()// 注意getCurrentShowTimeSeconds这里掉了括号“（）”也就是说没有执行函数。
+        const nextShowTimeSeconds = getCurrentShowTimeSeconds() // 注意getCurrentShowTimeSeconds这里掉了括号“（）”也就是说没有执行函数。
         const nextHours = parseInt(nextShowTimeSeconds / 3600)
-        const nextMinutes = parseInt((nextShowTimeSeconds - nextHours * 3600) / 60)
+        const nextMinutes = parseInt(
+          (nextShowTimeSeconds - nextHours * 3600) / 60
+        )
         const nextSeconds = parseInt(nextShowTimeSeconds % 60)
 
         const curHours = parseInt(curShowTimeSeconds / 3600)
-        const curMinutes = parseInt((curShowTimeSeconds - curHours * 3600) / 60)
+        const curMinutes = parseInt(
+          (curShowTimeSeconds - curHours * 3600) / 60
+        )
         const curSeconds = parseInt(curShowTimeSeconds % 60)
         // 如果时间发生改变，将改变后的时间赋予给当前时间；根据改变的是哪个数字，来给该数字添加小球。
         if (nextSeconds !== curSeconds) {
@@ -216,24 +217,44 @@ export default {
             addBalls(MARGIN_LEFT, MARGIN_TOP, parseInt(curHours / 10))
           }
           if (parseInt(curHours % 10) !== parseInt(nextHours % 10)) {
-            addBalls(MARGIN_LEFT + 15 * (RADIUS + 1), MARGIN_TOP, parseInt(curHours % 10))
+            addBalls(
+              MARGIN_LEFT + 15 * (RADIUS + 1),
+              MARGIN_TOP,
+              parseInt(curHours % 10)
+            )
           }
 
           if (parseInt(curMinutes / 10) !== parseInt(nextMinutes / 10)) {
-            addBalls(MARGIN_LEFT + 39 * (RADIUS + 1), MARGIN_TOP, parseInt(curMinutes / 10))
+            addBalls(
+              MARGIN_LEFT + 39 * (RADIUS + 1),
+              MARGIN_TOP,
+              parseInt(curMinutes / 10)
+            )
           }
           if (parseInt(curMinutes % 10) !== parseInt(nextMinutes % 10)) {
-            addBalls(MARGIN_LEFT + 54 * (RADIUS + 1), MARGIN_TOP, parseInt(curMinutes % 10))
+            addBalls(
+              MARGIN_LEFT + 54 * (RADIUS + 1),
+              MARGIN_TOP,
+              parseInt(curMinutes % 10)
+            )
           }
 
           if (parseInt(curSeconds / 10) !== parseInt(nextSeconds / 10)) {
-            addBalls(MARGIN_LEFT + 78 * (RADIUS + 1), MARGIN_TOP, parseInt(curSeconds / 10))
+            addBalls(
+              MARGIN_LEFT + 78 * (RADIUS + 1),
+              MARGIN_TOP,
+              parseInt(curSeconds / 10)
+            )
           }
           if (parseInt(curSeconds % 10) !== parseInt(nextSeconds % 10)) {
-            addBalls(MARGIN_LEFT + 93 * (RADIUS + 1), MARGIN_TOP, parseInt(curSeconds % 10))
+            addBalls(
+              MARGIN_LEFT + 93 * (RADIUS + 1),
+              MARGIN_TOP,
+              parseInt(curSeconds % 10)
+            )
           }
         }
-        updateBalls()// 更新每个小球的运动状态。
+        updateBalls() // 更新每个小球的运动状态。
       }
 
       // 小球运动状态的更新设置。
@@ -245,7 +266,7 @@ export default {
 
           // 碰撞检测
           if (balls[i].y >= WINDOW_HEIGHT - RADIUS) {
-            balls[i].y = WINDOW_HEIGHT - RADIUS// 小球落到底部的位置
+            balls[i].y = WINDOW_HEIGHT - RADIUS // 小球落到底部的位置
             balls[i].vy = -balls[i].vy * 0.75 // 速度反向，进行反弹,0.5表示摩擦系数，每次反弹速度都减半。
           }
         }
@@ -280,7 +301,7 @@ export default {
                 g: 1.5 + Math.random(),
                 color: colors[Math.floor(Math.random() * colors.length)]
               }
-              balls.push(aball)// 每产生一个小球就放到全局容器balls中。
+              balls.push(aball) // 每产生一个小球就放到全局容器balls中。
             }
           }
         }
@@ -295,13 +316,38 @@ export default {
         const seconds = parseInt(curShowTimeSeconds % 60) // 所有的秒数对分钟求余得到秒数
 
         renderdigit(MARGIN_LEFT, MARGIN_TOP, parseInt(hours / 10), cxt) // 时钟的十位数
-        renderdigit(MARGIN_LEFT + 15 * (RADIUS + 1), MARGIN_TOP, parseInt(hours % 10), cxt) // 时钟的个位数
+        renderdigit(
+          MARGIN_LEFT + 15 * (RADIUS + 1),
+          MARGIN_TOP,
+          parseInt(hours % 10),
+          cxt
+        ) // 时钟的个位数
         renderdigit(MARGIN_LEFT + 30 * (RADIUS + 1), MARGIN_TOP, 10, cxt) // 冒号":"的粒子化
-        renderdigit(MARGIN_LEFT + 39 * (RADIUS + 1), MARGIN_TOP, parseInt(minutes / 10), cxt) // 分钟十位数粒子化
-        renderdigit(MARGIN_LEFT + 54 * (RADIUS + 1), MARGIN_TOP, parseInt(minutes % 10), cxt) // 分钟个位数粒子化
+        renderdigit(
+          MARGIN_LEFT + 39 * (RADIUS + 1),
+          MARGIN_TOP,
+          parseInt(minutes / 10),
+          cxt
+        ) // 分钟十位数粒子化
+        renderdigit(
+          MARGIN_LEFT + 54 * (RADIUS + 1),
+          MARGIN_TOP,
+          parseInt(minutes % 10),
+          cxt
+        ) // 分钟个位数粒子化
         renderdigit(MARGIN_LEFT + 69 * (RADIUS + 1), MARGIN_TOP, 10, cxt) // 冒号粒子化
-        renderdigit(MARGIN_LEFT + 78 * (RADIUS + 1), MARGIN_TOP, parseInt(seconds / 10), cxt) // 秒针十位数粒子化
-        renderdigit(MARGIN_LEFT + 93 * (RADIUS + 1), MARGIN_TOP, parseInt(seconds % 10), cxt) // 秒针个位数粒子化
+        renderdigit(
+          MARGIN_LEFT + 78 * (RADIUS + 1),
+          MARGIN_TOP,
+          parseInt(seconds / 10),
+          cxt
+        ) // 秒针十位数粒子化
+        renderdigit(
+          MARGIN_LEFT + 93 * (RADIUS + 1),
+          MARGIN_TOP,
+          parseInt(seconds % 10),
+          cxt
+        ) // 秒针个位数粒子化
 
         // 绘制balls容器中的每一个小球。
         for (let i = 0; i < balls.length; i++) {
@@ -321,7 +367,13 @@ export default {
           for (let j = 0; j < digit[num][i].length; j++) {
             if (digit[num][i][j] === 1) {
               cxt.beginPath()
-              cxt.arc(x + (RADIUS + 1) + j * 2 * (RADIUS + 1), y + (RADIUS + 1) + i * 2 * (RADIUS + 1), RADIUS, 0, 2 * Math.PI)
+              cxt.arc(
+                x + (RADIUS + 1) + j * 2 * (RADIUS + 1),
+                y + (RADIUS + 1) + i * 2 * (RADIUS + 1),
+                RADIUS,
+                0,
+                2 * Math.PI
+              )
               cxt.closePath()
               cxt.fill()
             }

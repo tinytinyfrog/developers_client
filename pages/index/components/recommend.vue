@@ -1,7 +1,11 @@
 <template>
   <g-sidebar :title="recommend.title" background-color="#fff">
     {{ recommend.title }}
-    <div v-for="(item, index) in recommend.list" :key="index" class="recommend-ctx-container">
+    <div
+      v-for="(item, index) in recommend.list"
+      :key="index"
+      class="recommend-ctx-container"
+    >
       <h3 class="recommend-title g-hidden-line1">
         {{ item.title }}
       </h3>
@@ -26,20 +30,20 @@
 </template>
 
 <script>
-import { Avatar, Icon } from 'ant-design-vue'
+import { Avatar, Icon } from "ant-design-vue";
 export default {
-  name: 'SliderRecommend',
+  name: "SliderRecommend",
   components: {
     Icon,
-    Avatar
+    Avatar,
   },
   props: {
     recommend: {
       type: Object,
-      default: null
-    }
-  }
-}
+      default: null,
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -9,27 +9,51 @@
       <span>
         <a-space :size="4">
           <template>
-            <a-icon v-if="wiki.children.length" class="parent-icon" :type="open ? 'caret-down' : 'caret-right'" @click.stop.prevent="open = !open" />
-            <span v-else style="display: inline-block; width: 16px;" />
+            <a-icon
+              v-if="wiki.children.length"
+              class="parent-icon"
+              :type="open ? 'caret-down' : 'caret-right'"
+              @click.stop.prevent="open = !open"
+            />
+            <span v-else style="display: inline-block; width: 16px" />
           </template>
-          <span class="wiki-menu-title g-hidden-line1">{{ wiki.postsTitle }}</span>
+          <span class="wiki-menu-title g-hidden-line1">{{
+            wiki.postsTitle
+          }}</span>
         </a-space>
       </span>
-      <a-popover v-if="canEdit || isCollaborator" v-model="wiki.visible" placement="rightTop" :get-popup-container="() => $refs.wikiParent">
+      <a-popover
+        v-if="canEdit || isCollaborator"
+        v-model="wiki.visible"
+        placement="rightTop"
+        :get-popup-container="() => $refs.wikiParent"
+      >
         <template slot="content">
-          <p v-if="canEdit" class="wiki-popover-item g-bg-hover" @click="editWikiMenu(wiki)">
+          <p
+            v-if="canEdit"
+            class="wiki-popover-item g-bg-hover"
+            @click="editWikiMenu(wiki)"
+          >
             <a-space>
               <a-icon type="edit" />
               <span>修改</span>
             </a-space>
           </p>
-          <p v-if="canEdit" class="wiki-popover-item g-bg-hover" @click="delNodeById(wiki)">
+          <p
+            v-if="canEdit"
+            class="wiki-popover-item g-bg-hover"
+            @click="delNodeById(wiki)"
+          >
             <a-space>
               <a-icon type="delete" />
               <span>删除</span>
             </a-space>
           </p>
-          <p v-if="canEdit || isCollaborator" class="wiki-popover-item g-bg-hover" @click="addNode(wiki)">
+          <p
+            v-if="canEdit || isCollaborator"
+            class="wiki-popover-item g-bg-hover"
+            @click="addNode(wiki)"
+          >
             <a-space>
               <b><a-icon type="plus" /></b>
               <span>添加子文章</span>
@@ -42,105 +66,125 @@
     <div v-show="open" class="menu-children-list">
       <slot :open="open" />
     </div>
-    <a-modal v-model="showAddNodeModal" title="输入文章 id 添加子节点" ok-text="确认" cancel-text="取消" @ok="addArticleToNode">
-      <a-input v-model="articleId" placeholder="请输入文章id" style="margin-bottom: 20px;" />
-      <a-input v-model="nodeTitle" placeholder="请输入节点标题，不设置则取文章标题" />
+    <a-modal
+      v-model="showAddNodeModal"
+      title="输入文章 id 添加子节点"
+      ok-text="确认"
+      cancel-text="取消"
+      @ok="addArticleToNode"
+    >
+      <a-input
+        v-model="articleId"
+        placeholder="请输入文章id"
+        style="margin-bottom: 20px"
+      />
+      <a-input
+        v-model="nodeTitle"
+        placeholder="请输入节点标题，不设置则取文章标题"
+      />
     </a-modal>
   </div>
 </template>
 
 <script>
-import EventBus from '@/lib/event-bus'
+import EventBus from "@/lib/event-bus";
 export default {
-  name: 'WikiMenuParent',
+  name: "WikiMenuParent",
   props: {
     wiki: {
       type: Object,
-      default: () => null
+      default: () => null,
     },
     canEdit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isCollaborator: {
       type: Boolean,
-      default: false
+      default: false,
     },
     nodeId: {
       type: String,
-      default: ''
+      default: "",
     },
     defaultOpen: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
-    const { id } = this.$route.params
+  data() {
+    const { id } = this.$route.params;
     return {
       showAddNodeModal: false,
       open: this.defaultOpen,
       wikiId: id,
-      articleId: '',
-      nodeTitle: ''
-    }
+      articleId: "",
+      nodeTitle: "",
+    };
   },
   methods: {
-    goWiki (url) {
-      EventBus.$emit('G_UPDATE_MENU', false)
-      this.$router.push(url)
+    goWiki(url) {
+      EventBus.$emit("G_UPDATE_MENU", false);
+      this.$router.push(url);
     },
-    addNode (wiki) {
-      wiki.visible = false
+    addNode(wiki) {
+      wiki.visible = false;
       this.$nextTick(() => {
-        this.showAddNodeModal = true
-      })
+        this.showAddNodeModal = true;
+      });
     },
-    editWikiMenu (wiki) {
-      wiki.visible = false
-      this.$router.push(`/draft/editor/${wiki.postsId}?t=wiki`)
+    editWikiMenu(wiki) {
+      wiki.visible = false;
+      this.$router.push(`/draft/editor/${wiki.postsId}?t=wiki`);
     },
-    delNodeById (wiki) {
-      wiki.visible = false
+    delNodeById(wiki) {
+      wiki.visible = false;
       this.$confirm({
-        title: '确认要删除当前节点吗',
-        content: h => <div style="color: #606a78;">节点：{wiki.postsTitle}</div>,
-        okText: '确认',
-        cancelText: '取消',
+        title: "确认要删除当前节点吗",
+        content: (h) => (
+          <div style="color: #606a78;">节点：{wiki.postsTitle}</div>
+        ),
+        okText: "确认",
+        cancelText: "取消",
         onOk: () => {
           this.$api.delWikiNodeById(wiki.nodeId).then((res) => {
             if (res.success) {
-              this.$message.success('删除成功')
-              this.$emit('on-update-menu')
+              this.$message.success("删除成功");
+              this.$emit("on-update-menu");
             } else {
-              this.$message.error(res.message)
+              this.$message.error(res.message);
             }
-          })
-        }
-      })
+          });
+        },
+      });
     },
-    addArticleToNode () {
-      const lastChildren = this.wiki.children.slice(-1)
-      this.$api.addWikiNode({
-        postsId: this.articleId,
-        parentNodeId: this.wiki.nodeId,
-        nodeTitle: this.nodeTitle,
-        prevBrotherNodeId: lastChildren.length ? lastChildren[0].nodeId : null
-      }).then((res) => {
-        this.showAddNodeModal = false
-        if (res.success) {
-          this.articleId = this.nodeTitle = ''
-          this.$message.success('添加成功')
-          this.$emit('on-update-menu')
-        } else {
-          this.$message.error(res.message)
-        }
-      }).catch(() => {
-        this.showAddNodeModal = false
-      })
-    }
-  }
-}
+    addArticleToNode() {
+      const lastChildren = this.wiki.children.slice(-1);
+      this.$api
+        .addWikiNode({
+          postsId: this.articleId,
+          parentNodeId: this.wiki.nodeId,
+          nodeTitle: this.nodeTitle,
+          prevBrotherNodeId: lastChildren.length
+            ? lastChildren[0].nodeId
+            : null,
+        })
+        .then((res) => {
+          this.showAddNodeModal = false;
+          if (res.success) {
+            this.articleId = this.nodeTitle = "";
+            this.$message.success("添加成功");
+            this.$emit("on-update-menu");
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.showAddNodeModal = false;
+        });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

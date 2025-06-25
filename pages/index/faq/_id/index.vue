@@ -1,7 +1,10 @@
 <template>
   <div class="page-question-detail g-margin-top">
     <div class="page-question-info">
-      <ContentDetail :question="question" :directory-list.sync="directoryList" />
+      <ContentDetail
+        :question="question"
+        :directory-list.sync="directoryList"
+      />
       <CommentList :article="question" />
     </div>
     <CommonSlider>
@@ -44,7 +47,9 @@ export default {
       question = res
       question.category = 'FAQ'
     })
-    if (question) { question.follow = 0 }
+    if (question) {
+      question.follow = 0
+    }
     await $api.checkFollowUserById(question?.authorId).then((res) => {
       question.follow = !!res?.data
     })
@@ -103,7 +108,8 @@ export default {
       }
     },
     scrollFun () {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+      const scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop
       setViewHistoryTop({ [this.id]: scrollTop })
     },
     listenScroll () {
@@ -114,7 +120,7 @@ export default {
     const { title, tags, markdownContent, htmlContent } = this.question
     const keywords = `,${information.keywords}`
     let description = markdownContent || htmlContent
-    description = description.replace(/[#|\n|-|>|[x\]]/ig, '').slice(0, 300)
+    description = description.replace(/[#|\n|-|>|[x\]]/gi, '').slice(0, 300)
     let directory = ''
     this.directoryList.forEach((item) => {
       directory += `${item.content},`
@@ -147,38 +153,38 @@ export default {
 </script>
 
 <style lang="less">
-@import '~/pages/components/byte-markdown-editor/theme.less';
-  .page-question-detail {
-    display: flex;
-    width: 100vw;
-    justify-content: center;
-    border-radius: @g-radius;
+@import "~/pages/components/byte-markdown-editor/theme.less";
+.page-question-detail {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  border-radius: @g-radius;
+  box-sizing: border-box;
+  min-height: 100vh;
+  .page-question-info {
+    flex: 1;
+    margin-right: @g-margin * 2;
+    max-width: @content-max-width;
     box-sizing: border-box;
-    min-height: 100vh;
-    .page-question-info {
-      flex: 1;
-      margin-right: @g-margin * 2;
-      max-width: @content-max-width;
-      box-sizing: border-box;
-    }
-    .slider-item {
-      margin-bottom: @g-margin;
-      border-radius: @g-radius;
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-    .directory-list {
-      position: sticky;
-      left: 0;
-      top: 0;
-      padding: 12px 12px 12px 5px;
-      font-weight: bold;
-    }
-    .ant-anchor-ink::before {
-      background-color: #fff;
+  }
+  .slider-item {
+    margin-bottom: @g-margin;
+    border-radius: @g-radius;
+    &:last-child {
+      margin-bottom: 0;
     }
   }
+  .directory-list {
+    position: sticky;
+    left: 0;
+    top: 0;
+    padding: 12px 12px 12px 5px;
+    font-weight: bold;
+  }
+  .ant-anchor-ink::before {
+    background-color: #fff;
+  }
+}
 @media screen and (max-width: 1000px) {
   .page-question-detail {
     .page-question-info {

@@ -2,7 +2,13 @@
   <div class="info-container">
     <template v-if="activeIndex >= 0">
       <div class="info-menu">
-        <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="activeIndex === index ? 'active-menu':''" @click="e => handleClick(item,index)">
+        <div
+          v-for="(item, index) of menuList"
+          :key="index"
+          class="menu-item"
+          :class="activeIndex === index ? 'active-menu' : ''"
+          @click="(e) => handleClick(item, index)"
+        >
           <img :src="item.icon">
           <div>
             {{ item.menuName }}
@@ -149,48 +155,47 @@ export default {
 }
 </script>
 <style scoped lang="less">
- .info-container {
+.info-container {
+  width: 100%;
+  height: calc(100vh - 140px);
+  display: flex;
+  background: #fff;
+  display: flex;
+  background: #f7f8fa;
+  .info-menu {
+    width: 265px;
+    height: calc(100vh - 140px);
+    background: rgb(246, 246, 246);
+    color: rgb(40, 40, 40);
+    font-family: PingFang SC;
+    font-size: 16px;
+    font-weight: 400;
+    border-right: 1px solid rgb(226, 232, 246);
+    .menu-item {
+      padding: 16px 24px;
+      display: flex;
+      column-gap: 10px;
+      cursor: pointer;
+      align-items: center;
+      img {
+        width: 18px;
+        height: 18px;
+      }
+    }
+    .active-menu {
+      background: #ffff;
+      border-left: 6px solid rgb(0, 112, 255);
+    }
+  }
+  .info-content {
     width: 100%;
-    height: calc( 100vh - 140px);
-    display: flex;
-    background: #fff;
-    display: flex;
-    background:#f7f8fa;
-    .info-menu {
-        width:265px;
-        height: calc( 100vh - 140px);
-        background: rgb(246, 246, 246);
-        color: rgb(40, 40, 40);
-        font-family: PingFang SC;
-        font-size: 16px;
-        font-weight: 400;
-        border-right: 1px solid rgb(226, 232, 246);;
-        .menu-item {
-            padding: 16px 24px;
-            display: flex;
-            column-gap: 10px;
-            cursor: pointer;
-            align-items: center;
-            img {
-                width: 18px;
-                height: 18px;
-            }
-        }
-        .active-menu {
-            background: #ffff;
-            border-left:  6px solid  rgb(0, 112, 255);
-        }
-
-    }
-    .info-content {
-        width: 100%;
-     height: calc(100vh - 140px);
-     padding: 20px 28px;
-     overflow: auto;
-    }
-    .info-empty-container{
-      widows: 100%;
-      margin: 0 auto;
-    }
- }
+    height: calc(100vh - 140px);
+    padding: 20px 28px;
+    overflow: auto;
+  }
+  .info-empty-container {
+    widows: 100%;
+    margin: 0 auto;
+  }
+}
 </style>

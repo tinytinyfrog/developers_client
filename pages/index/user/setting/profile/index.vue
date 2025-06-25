@@ -3,11 +3,7 @@
     <div class="content">
       <Tabs tab-position="left">
         <TabPane key="1" tab="基础信息" class="tabs-content" force-render>
-          <FormModel
-            ref="ruleForm"
-            :model="form"
-            :rules="rules"
-          >
+          <FormModel ref="ruleForm" :model="form" :rules="rules">
             <FormModeItem label="头像">
               <Upload
                 :action="`${this.$global.developerServer}/developers-server/rest/file/image/upload`"
@@ -18,13 +14,22 @@
                 :before-upload="beforeUpload"
                 @change="handleChange"
               >
-                <img :style="previewStyle" class="preview-img" :src="imageUrl" alt="avatar">
+                <img
+                  :style="previewStyle"
+                  class="preview-img"
+                  :src="imageUrl"
+                  alt="avatar"
+                >
               </Upload>
             </FormModeItem>
             <FormModeItem ref="nickname" label="昵称" required prop="nickname">
               <Input
                 v-model="form.nickname"
-                @blur="() => { $refs.nickname.onFieldBlur()}"
+                @blur="
+                  () => {
+                    $refs.nickname.onFieldBlur();
+                  }
+                "
               />
             </FormModeItem>
             <FormModeItem label="职业" prop="job">
@@ -37,17 +42,18 @@
               <Button @click="handleBack">
                 返回
               </Button>
-              <Button style="margin-left: 10px;" type="primary" @click="onSubmit">
+              <Button
+                style="margin-left: 10px"
+                type="primary"
+                @click="onSubmit"
+              >
                 保存
               </Button>
             </div>
           </FormModel>
         </TabPane>
         <TabPane key="2" tab="其它信息" class="tabs-content" force-render>
-          <FormModel
-            ref="ruleFormOther"
-            :model="formOther"
-          >
+          <FormModel ref="ruleFormOther" :model="formOther">
             <FormModeItem label="github" prop="github">
               <Input v-model="formOther.github" />
             </FormModeItem>
@@ -61,7 +67,11 @@
               <Button @click="handleBack">
                 返回
               </Button>
-              <Button style="margin-left: 10px;" type="primary" @click="onSubmitOther">
+              <Button
+                style="margin-left: 10px"
+                type="primary"
+                @click="onSubmitOther"
+              >
                 保存
               </Button>
             </div>
@@ -139,14 +149,17 @@ export default {
       }
     },
     updateUserAvatar (avatarUrl) {
-      this.$api.updateUserAvatar({
-        avatarUrl
-      }).then((res) => {
-        this.imageUrl = avatarUrl
-      })
+      this.$api
+        .updateUserAvatar({
+          avatarUrl
+        })
+        .then((res) => {
+          this.imageUrl = avatarUrl
+        })
     },
     beforeUpload (file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+      const isJpgOrPng =
+        file.type === 'image/jpeg' || file.type === 'image/png'
       if (!isJpgOrPng) {
         this.$message.error('You can only upload JPG file!')
       }
@@ -165,25 +178,29 @@ export default {
     onSubmit () {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.$api.updateUserInfo({
-            ...this.form
-          }).then((res) => {
-            if (res.success) {
-              this.$notification.success({
-                duration: 2,
-                message: '更新成功！'
-              })
-              this.$store.dispatch('user/getUserInfo', {
-                $api: this.$api,
-                clear: true
-              }).then((res) => {
-                this.userInfo = this.$store.state.user.userInfo
-              })
-              this.showEdit = false
-            } else {
-              this.$message.error(res.message)
-            }
-          })
+          this.$api
+            .updateUserInfo({
+              ...this.form
+            })
+            .then((res) => {
+              if (res.success) {
+                this.$notification.success({
+                  duration: 2,
+                  message: '更新成功！'
+                })
+                this.$store
+                  .dispatch('user/getUserInfo', {
+                    $api: this.$api,
+                    clear: true
+                  })
+                  .then((res) => {
+                    this.userInfo = this.$store.state.user.userInfo
+                  })
+                this.showEdit = false
+              } else {
+                this.$message.error(res.message)
+              }
+            })
         } else {
           return false
         }
@@ -192,25 +209,29 @@ export default {
     onSubmitOther () {
       this.$refs.ruleFormOther.validate((valid) => {
         if (valid) {
-          this.$api.updateUserOtherInfo({
-            ...this.formOther
-          }).then((res) => {
-            if (res.success) {
-              this.$notification.success({
-                duration: 2,
-                message: '更新成功！'
-              })
-              this.$store.dispatch('user/getUserInfo', {
-                $api: this.$api,
-                clear: true
-              }).then((res) => {
-                this.userInfo = this.$store.state.user.userInfo
-              })
-              this.showEdit = false
-            } else {
-              this.$message.error(res.message)
-            }
-          })
+          this.$api
+            .updateUserOtherInfo({
+              ...this.formOther
+            })
+            .then((res) => {
+              if (res.success) {
+                this.$notification.success({
+                  duration: 2,
+                  message: '更新成功！'
+                })
+                this.$store
+                  .dispatch('user/getUserInfo', {
+                    $api: this.$api,
+                    clear: true
+                  })
+                  .then((res) => {
+                    this.userInfo = this.$store.state.user.userInfo
+                  })
+                this.showEdit = false
+              } else {
+                this.$message.error(res.message)
+              }
+            })
         } else {
           return false
         }

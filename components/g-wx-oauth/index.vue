@@ -12,14 +12,23 @@
       @cancel.stop.prevent="clearTimer()"
     >
       <div class="qrcode-box">
-        <img v-if="loginQrCode" class="wx-login-qrcode" :src="loginQrCode" alt="">
+        <img
+          v-if="loginQrCode"
+          class="wx-login-qrcode"
+          :src="loginQrCode"
+          alt=""
+        >
         <Spin v-else />
         <span v-if="tips" class="mask">
           <span class="time-out" @click="refreshCode">{{ tips }}</span>
         </span>
       </div>
       <p class="email-login-btn">
-        <span v-if="showEimail" class="g-hover" @click="onEmailLogin">邮箱登录</span>
+        <span
+          v-if="showEimail"
+          class="g-hover"
+          @click="onEmailLogin"
+        >邮箱登录</span>
       </p>
     </Modal>
   </div>
@@ -59,8 +68,12 @@ export default {
     tips () {
       let tips = ''
       switch (this.qrcodeStatus) {
-        case 1: tips = '扫码成功 请确认登录'; break
-        case 3: tips = '二维码已过期 点击刷新'; break
+        case 1:
+          tips = '扫码成功 请确认登录'
+          break
+        case 3:
+          tips = '二维码已过期 点击刷新'
+          break
       }
       return tips
     }
@@ -156,65 +169,67 @@ export default {
       location.reload()
     },
     handleOk () {
-      this.$api.login({
-        email: this.email,
-        password: this.password
-      }).then((data) => {
-        if (data.data) {
-          this.loginSuccess(data.data)
-        } else {
-          cookieUtils.clearToken()
-          this.errorMessage = data.message
-        }
-      })
+      this.$api
+        .login({
+          email: this.email,
+          password: this.password
+        })
+        .then((data) => {
+          if (data.data) {
+            this.loginSuccess(data.data)
+          } else {
+            cookieUtils.clearToken()
+            this.errorMessage = data.message
+          }
+        })
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .g-login-model {
-    background-color: #fff;
-    .qrcode-box {
-      position: relative;
+.g-login-model {
+  background-color: #fff;
+  .qrcode-box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    .wx-login-qrcode {
+      width: 100%;
+      height: 100%;
+    }
+    .mask {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 250px;
-      height: 250px;
-      margin: 0 auto;
-      .wx-login-qrcode {
-        width: 100%;
-        height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      color: #fff;
+      font-size: 14px;
+      border-radius: @g-radius * 2;
+      background-color: rgba(0, 0, 0, 0.6);
+      .time-out {
+        cursor: pointer;
       }
-      .mask {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        color: #fff;
-        font-size: 14px;
-        border-radius: @g-radius * 2;
-        background-color: rgba(0, 0, 0, 0.6);
-        .time-out {
-          cursor: pointer;
-        }
-      }
-    }
-    .email-login-btn {
-      text-align: right;
-      margin-top: 10px;
-      padding: 0 40px;
-      color: @font-color-third;
-    }
-   /deep/.ant-modal-body {
-     text-align: center;
-     padding-top: 40px;
-     padding-bottom: 40px;
     }
   }
+  .email-login-btn {
+    text-align: right;
+    margin-top: 10px;
+    padding: 0 40px;
+    color: @font-color-third;
+  }
+  /deep/.ant-modal-body {
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
 </style>

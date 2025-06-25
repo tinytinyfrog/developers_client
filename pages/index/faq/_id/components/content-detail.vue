@@ -1,25 +1,35 @@
 <template>
-  <section v-if="question" ref="question" class="question-detail-content-detail">
+  <section
+    v-if="question"
+    ref="question"
+    class="question-detail-content-detail"
+  >
     <div class="question-main-content">
       <h1 class="question-title">
         {{ question.title }}
       </h1>
       <div class="author-info">
-        <Avatar class="question-user-header g-avatar-border" :src="question.authorAvatar" alt="Han Solo" />
+        <Avatar
+          class="question-user-header g-avatar-border"
+          :src="question.authorAvatar"
+          alt="Han Solo"
+        />
         <span class="nick-name g-hover">{{ question.authorNickname }}</span>
         <g-space />
         <span><Icon type="eye" /> {{ question.views }}</span>
         <g-space />
-        <span><Icon type="dashboard" /> {{ question.createAt | dateCountDown }}</span>
+        <span><Icon type="dashboard" />
+          {{ question.createAt | dateCountDown }}</span>
         <template v-if="canEdit">
           <g-space />
-          <router-link class="g-main-color" :to="{path: `/draft/editor/${question.id}?t=qa`}">
+          <router-link
+            class="g-main-color"
+            :to="{ path: `/draft/editor/${question.id}?t=qa` }"
+          >
             编辑
           </router-link>
           <g-space />
-          <span class="g-main-color g-hover" @click="onDelFaq">
-            删除
-          </span>
+          <span class="g-main-color g-hover" @click="onDelFaq"> 删除 </span>
         </template>
       </div>
       <byte-viewer
@@ -30,7 +40,12 @@
         <div class="wiki-line" />
         <h3>关联知识库</h3>
         <div class="wiki-item-container">
-          <div v-for="wiki in question.belongWikis" :key="wiki.wikiId" class="wiki-item g-hover" @click="$router.push(`/wiki/${wiki.wikiId}/${question.id}`)">
+          <div
+            v-for="wiki in question.belongWikis"
+            :key="wiki.wikiId"
+            class="wiki-item g-hover"
+            @click="$router.push(`/wiki/${wiki.wikiId}/${question.id}`)"
+          >
             <img class="wiki-headimg" :src="wiki.wikiHeadImg" alt="">
             <span>{{ wiki.wikiName }}</span>
           </div>
@@ -51,20 +66,33 @@
       <div v-if="showCurPage" class="cut-page-container">
         <span>
           <a-button v-if="prePage" type="link" @click="onNewArticle(prePage)">
-            <a-icon type="left" /><span class="cur-title g-hidden-line1">{{ prePage.postsTitle }}</span>
+            <a-icon type="left" /><span class="cur-title g-hidden-line1">{{
+              prePage.postsTitle
+            }}</span>
           </a-button>
         </span>
         <span>
           <a-button v-if="nextPage" type="link" @click="onNewArticle(nextPage)">
-            <span class="cur-title g-hidden-line1">{{ nextPage.postsTitle }}</span><a-icon type="right" />
+            <span class="cur-title g-hidden-line1">{{
+              nextPage.postsTitle
+            }}</span><a-icon type="right" />
           </a-button>
         </span>
       </div>
       <div class="action-container">
-        <Button v-auth="{handler: onApproval}" type="primary" icon="star" :ghost="hasLike">
-          {{ hasLike ? '已关注' : '关注问题' }}
+        <Button
+          v-auth="{ handler: onApproval }"
+          type="primary"
+          icon="star"
+          :ghost="hasLike"
+        >
+          {{ hasLike ? "已关注" : "关注问题" }}
         </Button>
-        <Button v-auth="{handler: () => showDrawer = true}" type="primary" icon="edit">
+        <Button
+          v-auth="{ handler: () => (showDrawer = true) }"
+          type="primary"
+          icon="edit"
+        >
           写回答
         </Button>
       </div>
@@ -72,7 +100,7 @@
     <Drawer
       height="60%"
       :get-container="() => this.$refs.question"
-      :drawer-style="{backgroundColor: '#f7f8fa'}"
+      :drawer-style="{ backgroundColor: '#f7f8fa' }"
       :header-style="{ padding: 0 }"
       :body-style="{ paddingTop: 0, height: 'calc(100% - 70px)' }"
       :visible="showDrawer"
@@ -80,7 +108,14 @@
       @close="showDrawer = false"
     >
       <div style="max-width: 1100px; margin: 0 auto; height: 100%">
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+          "
+        >
           <h3>{{ question.title }}</h3>
           <ASwitch
             checked-children="markdown"
@@ -89,9 +124,17 @@
             @change="isMarkDown = !isMarkDown"
           />
         </div>
-        <RichEditor v-show="!isMarkDown" :html-content="htmlContent" @change="handleRichTextChange" />
-        <ByteMarkdownEditor v-show="isMarkDown" :markdown-content="markdownContent" @change="handleMarkdownChange" />
-        <div style="text-align: right;">
+        <RichEditor
+          v-show="!isMarkDown"
+          :html-content="htmlContent"
+          @change="handleRichTextChange"
+        />
+        <ByteMarkdownEditor
+          v-show="isMarkDown"
+          :markdown-content="markdownContent"
+          @change="handleMarkdownChange"
+        />
+        <div style="text-align: right">
           <Button type="primary" :loading="cmLoading" @click="handleSubmit">
             提交回答
           </Button>
@@ -168,7 +211,10 @@ export default {
   computed: {
     canEdit () {
       if (this.userInfo) {
-        if (['ADMIN', 'SUPER_ADMIN'].includes(this.userInfo.role) || this.userInfo.id === this.question.authorId) {
+        if (
+          ['ADMIN', 'SUPER_ADMIN'].includes(this.userInfo.role) ||
+          this.userInfo.id === this.question.authorId
+        ) {
           return !this.isMobile
         }
       }
@@ -181,7 +227,9 @@ export default {
       return this.currentIndex > 0 ? this.menus[this.currentIndex - 1] : null
     },
     nextPage () {
-      return this.currentIndex < this.menus.length - 1 ? this.menus[this.currentIndex + 1] : null
+      return this.currentIndex < this.menus.length - 1
+        ? this.menus[this.currentIndex + 1]
+        : null
     }
   },
   mounted () {
@@ -205,7 +253,9 @@ export default {
     },
     checkAdoptHeight () {
       if (this.question.solution && this.question.solution.userId) {
-        const adoptHeight = document.getElementById('best-answer-viewer-container').offsetHeight
+        const adoptHeight = document.getElementById(
+          'best-answer-viewer-container'
+        ).offsetHeight
         this.showAdopt = adoptHeight > 500
       }
     },
@@ -216,37 +266,42 @@ export default {
       this.markdownContent = val
     },
     handleSubmit () {
-      const commentValue = this.isMarkDown ? this.markdownContent : this.htmlContent
+      const commentValue = this.isMarkDown
+        ? this.markdownContent
+        : this.htmlContent
       if (!commentValue) {
         this.errorMsg = '评论内容不能为空哦~'
         return
       }
       this.errorMsg = ''
       this.cmLoading = true
-      this.$api.createCommentByArticle({
-        postsId: this.question.id,
-        content: commentValue,
-        replyId: ''
-      }).then((res) => {
-        if (res.success) {
-          this.$notification.success({
+      this.$api
+        .createCommentByArticle({
+          postsId: this.question.id,
+          content: commentValue,
+          replyId: ''
+        })
+        .then((res) => {
+          if (res.success) {
+            this.$notification.success({
+              duration: 2,
+              message: '提交成功'
+            })
+            this.showDrawer = false
+            this.markdownContent = this.htmlContent = ''
+            this.cmLoading = false
+            EventBus.$emit('G_COMMENT_QUESTION')
+            return
+          }
+          this.$notification.error({
             duration: 2,
-            message: '提交成功'
+            message: '提交失败：' + res.message
           })
-          this.showDrawer = false
+        })
+        .catch(() => {
           this.markdownContent = this.htmlContent = ''
           this.cmLoading = false
-          EventBus.$emit('G_COMMENT_QUESTION')
-          return
-        }
-        this.$notification.error({
-          duration: 2,
-          message: '提交失败：' + res.message
         })
-      }).catch(() => {
-        this.markdownContent = this.htmlContent = ''
-        this.cmLoading = false
-      })
     },
     onDelFaq () {
       const _this = this
@@ -304,7 +359,7 @@ export default {
       })
     },
     handleDirectory (obj, directoryList) {
-      const reg = /\./ig
+      const reg = /\./gi
       const pointObjLen = obj.id.match(reg).length
       directoryList.forEach((item) => {
         const pointItem = item.id.match(reg)
@@ -326,18 +381,24 @@ export default {
       if (this.apLoading || this.apFinished) {
         return
       }
-      this.$api.getApprovalListByArticle({
-        filter: this.question.id,
-        pageNo: this.apPageNo
-      }).then((res) => {
-        this.apLoading = false
-        this.approvalTotal = res.total
-        this.approvalList = this.apPageNo === 1 ? res.list : [...this.approvalList, ...res.list]
-        this.apFinished = res.total === this.approvalList.length
-        this.apPageNo++
-      }).catch(() => {
-        this.apLoading = false
-      })
+      this.$api
+        .getApprovalListByArticle({
+          filter: this.question.id,
+          pageNo: this.apPageNo
+        })
+        .then((res) => {
+          this.apLoading = false
+          this.approvalTotal = res.total
+          this.approvalList =
+            this.apPageNo === 1
+              ? res.list
+              : [...this.approvalList, ...res.list]
+          this.apFinished = res.total === this.approvalList.length
+          this.apPageNo++
+        })
+        .catch(() => {
+          this.apLoading = false
+        })
     }
   }
 }
@@ -346,7 +407,7 @@ export default {
 .question-detail-content-detail {
   /deep/.byte-markdown-editor-container {
     height: 100%;
-    &>div {
+    & > div {
       height: calc(100% - 15px);
       .bytemd {
         border: 0;
@@ -361,7 +422,7 @@ export default {
       height: 100%;
       .w-e-text-container {
         height: calc(100% - 50px) !important;
-        min-height: calc(100% - 50px) !important;;
+        min-height: calc(100% - 50px) !important;
       }
     }
   }

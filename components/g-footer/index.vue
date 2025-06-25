@@ -11,16 +11,16 @@ export default {
 </script>
 
 <style lang="less">
-  @fill-height: 60px;
-  .g-footer-container {
-    height: 84px;
-    width: 100%;
-    color: rgb(40, 40, 40);
-    font-size: 14px;
-    font-weight: 400;
-    border-radius: @g-radius;
-    background-color: #fff;
-    text-align: center;
-    line-height: 84px;
-  }
+@fill-height: 60px;
+.g-footer-container {
+  height: 84px;
+  width: 100%;
+  color: rgb(40, 40, 40);
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: @g-radius;
+  background-color: #fff;
+  text-align: center;
+  line-height: 84px;
+}
 </style>

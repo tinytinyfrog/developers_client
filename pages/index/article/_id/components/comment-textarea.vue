@@ -9,8 +9,13 @@
         </FormItem>
         <FormItem>
           <Alert v-if="errorMsg" :message="errorMsg" banner />
-          <div style="text-align: right;">
-            <Button v-auth="{ handler: handleSubmit }" html-type="submit" :loading="loading" type="primary">
+          <div style="text-align: right">
+            <Button
+              v-auth="{ handler: handleSubmit }"
+              html-type="submit"
+              :loading="loading"
+              type="primary"
+            >
               提交评论
             </Button>
           </div>
@@ -68,42 +73,47 @@ export default {
       }
       this.errorMsg = ''
       this.loading = true
-      this.$api.createCommentByArticle({
-        postsId: this.article.id,
-        content: this.commentValue,
-        replyId: ''
-      }).then((res) => {
-        this.loading = false
-        if (res.message === 'success') {
-          this.commentValue = ''
-          this.$message.success({
-            duration: 2,
-            content: '评论成功~'
-          })
-          if (typeof this.reloadCommentList === 'function') { this.reloadCommentList() }
-          return
-        }
-        this.$message.error({
-          duration: 2,
-          content: res.message
+      this.$api
+        .createCommentByArticle({
+          postsId: this.article.id,
+          content: this.commentValue,
+          replyId: ''
         })
-      }).catch(() => {
-        this.commentValue = ''
-        this.loading = false
-      })
+        .then((res) => {
+          this.loading = false
+          if (res.message === 'success') {
+            this.commentValue = ''
+            this.$message.success({
+              duration: 2,
+              content: '评论成功~'
+            })
+            if (typeof this.reloadCommentList === 'function') {
+              this.reloadCommentList()
+            }
+            return
+          }
+          this.$message.error({
+            duration: 2,
+            content: res.message
+          })
+        })
+        .catch(() => {
+          this.commentValue = ''
+          this.loading = false
+        })
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .library-comment-textarea {
-    padding: 0 @g-padding * 2;
-    /deep/.ant-comment-inner {
-      padding-bottom: 0;
-    }
+.library-comment-textarea {
+  padding: 0 @g-padding * 2;
+  /deep/.ant-comment-inner {
+    padding-bottom: 0;
   }
- /deep/.ant-comment-avatar {
-   margin: 0;
- }
+}
+/deep/.ant-comment-avatar {
+  margin: 0;
+}
 </style>

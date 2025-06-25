@@ -1,9 +1,13 @@
 <template>
   <div class="collect-mark-container">
-    <Popover v-model="visible" trigger="click" :get-popup-container="getPopContainer">
+    <Popover
+      v-model="visible"
+      trigger="click"
+      :get-popup-container="getPopContainer"
+    >
       <template slot="content">
         <div class="collect-content">
-          <h3 style="padding-bottom: 10px; margin: 0;" class="g-bm-border">
+          <h3 style="padding-bottom: 10px; margin: 0" class="g-bm-border">
             添加到收藏集
           </h3>
           <div class="collect-items" :style="collectItemsBox">
@@ -16,19 +20,31 @@
                 @click="addArticleByCollect(item.collectId)"
               >
                 <span>{{ item.name }}</span>
-                <span :style="collectCountStyle">&nbsp;·&nbsp;{{ item.refCount }}篇</span>
+                <span
+                  :style="collectCountStyle"
+                >&nbsp;·&nbsp;{{ item.refCount }}篇</span>
               </p>
             </template>
             <Empty v-else description="请先添加收藏集" />
           </div>
           <div class="add-new-collection-box" :style="newCollectionStyle">
             <div v-show="showCollect" class="g-flex-between" style="flex: 1">
-              <input ref="newC" v-model="collectName" type="text" placeholder="请输入收藏夹名" style="border: 0;width: 140px; outline: none;">
+              <input
+                ref="newC"
+                v-model="collectName"
+                type="text"
+                placeholder="请输入收藏夹名"
+                style="border: 0; width: 140px; outline: none"
+              >
               <Button type="primary" @click="addCollectFolder">
                 添加
               </Button>
             </div>
-            <span v-if="!showCollect" :style="collectBtnStyle" @click="handleCollect">新建收藏夹</span>
+            <span
+              v-if="!showCollect"
+              :style="collectBtnStyle"
+              @click="handleCollect"
+            >新建收藏夹</span>
           </div>
         </div>
       </template>

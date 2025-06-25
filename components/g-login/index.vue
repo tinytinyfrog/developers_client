@@ -9,7 +9,13 @@
       :closable="false"
     >
       <div class="login-item">
-        <Input ref="userNameInput" v-model="email" size="large" placeholder="请输入昵称/邮箱" autocomplete="off">
+        <Input
+          ref="userNameInput"
+          v-model="email"
+          size="large"
+          placeholder="请输入昵称/邮箱"
+          autocomplete="off"
+        >
           <Icon slot="prefix" type="mail" />
         </Input>
       </div>
@@ -25,7 +31,13 @@
           <Icon slot="prefix" type="lock" />
         </InputPassword>
       </div>
-      <Alert v-if="errorMessage" class="error-message" type="error" :message="errorMessage" banner />
+      <Alert
+        v-if="errorMessage"
+        class="error-message"
+        type="error"
+        :message="errorMessage"
+        banner
+      />
       <div class="login-action">
         <span class="action g-hover" @click="onQrcodeLogin">微信扫码登录</span>
       </div>
@@ -46,7 +58,12 @@ import cookieUtils from '@/lib/cookie-utils'
 const InputPassword = Input.Password
 export default {
   components: {
-    Modal, Button, Alert, InputPassword, Icon, Input
+    Modal,
+    Button,
+    Alert,
+    InputPassword,
+    Icon,
+    Input
   },
   props: {
     show: {
@@ -93,55 +110,58 @@ export default {
       return document.getElementById('g-login-model')
     },
     handleOk () {
-      this.$api.login({
-        email: this.email,
-        password: this.password
-      }).then((data) => {
-        if (data.data) {
-          cookieUtils.setToken(data.data)
-          this.$emit('update:show', false)
-          this.errorMessage = ''
-          this.$store.dispatch('user/getUserInfo', this)
-          this.$notification.success({
-            duration: 2,
-            message: '登录成功！',
-            description: '恭喜你可以为所欲为了~'
-          })
-          location.reload()
-        } else {
-          cookieUtils.clearToken()
-          this.errorMessage = data.message
-        }
-      })
+      this.$api
+        .login({
+          email: this.email,
+          password: this.password
+        })
+        .then((data) => {
+          if (data.data) {
+            cookieUtils.setToken(data.data)
+            this.$emit('update:show', false)
+            this.errorMessage = ''
+            this.$store.dispatch('user/getUserInfo', this)
+            this.$notification.success({
+              duration: 2,
+              message: '登录成功！',
+              description: '恭喜你可以为所欲为了~'
+            })
+            location.reload()
+          } else {
+            cookieUtils.clearToken()
+            this.errorMessage = data.message
+          }
+        })
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .g-login-model {
-    background-color: #fff;
-    .login-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      width: 100%;
-      text-align: left;
-      .auth-code {
-        width: 230px;
-      }
-    }
-    .error-message {
-      margin-bottom: 20px;
-    }
-    .login-action {
-      text-align: right;
-      .action {
-        cursor: pointer;
-      }
-    }
-   /deep/.ant-modal-footer, /deep/.ant-modal-header  {
-      border-color: #f2f2f2 !important;
+.g-login-model {
+  background-color: #fff;
+  .login-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+    .auth-code {
+      width: 230px;
     }
   }
+  .error-message {
+    margin-bottom: 20px;
+  }
+  .login-action {
+    text-align: right;
+    .action {
+      cursor: pointer;
+    }
+  }
+  /deep/.ant-modal-footer,
+  /deep/.ant-modal-header {
+    border-color: #f2f2f2 !important;
+  }
+}
 </style>

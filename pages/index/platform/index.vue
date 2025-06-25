@@ -1,8 +1,14 @@
 <template>
-  <div class="page-article-container ">
+  <div class="page-article-container">
     <template v-if="menuIndex >= 0">
       <div class="info-menu">
-        <div v-for="(item,index) of menuList" :key="index" class="menu-item" :class="menuIndex === index ? 'active-menu':''" @click="e => handleGoto(item)">
+        <div
+          v-for="(item, index) of menuList"
+          :key="index"
+          class="menu-item"
+          :class="menuIndex === index ? 'active-menu' : ''"
+          @click="(e) => handleGoto(item)"
+        >
           <div>
             {{ item.menuName }}
           </div>
@@ -15,17 +21,24 @@
     </div> -->
       <div class="article-content">
         <div class="article-header">
-          <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
+          <HomeTitle
+            :title-tags="titleTags"
+            :current-tag-index.sync="currentTagIndex"
+          />
           <a-button v-if="userInfo" type="primary" @click="handleWrite">
             写文章
           </a-button>
         </div>
         <div v-infinite-scroll="loadData" class="home-list-box">
-          <PlatformItem v-for="(item, index) in articleList" :key="index" :article="item" />
+          <PlatformItem
+            v-for="(item, index) in articleList"
+            :key="index"
+            :article="item"
+          />
         </div>
         <g-empty :list="articleList" :finished="finished" :loading="loading" />
       </div>
-    <!-- <CommonSlider>
+      <!-- <CommonSlider>
       <slider-sign-in />
       <SliderBanner />
       <slider-my-achievement :my-achievement="myAchievement" />
@@ -113,22 +126,28 @@ export default {
       menuList
     }
     await Promise.all([
-      $api.getTopicList({
-        filter: data.filter,
-        pageNo: data.pageNo,
-        pageSize: data.pageSize
-      }).then((list) => {
-        if (list) {
-          data.articleList = list
-          data.pageNo++
-          data.finished = list.length < data.pageSize
-        }
-      }).catch((e) => {
-        console.log(e)
-      }),
-      $api.getUserActionRecord().then((res) => {
-        data.myAchievement = res.data
-      }).catch(console.log),
+      $api
+        .getTopicList({
+          filter: data.filter,
+          pageNo: data.pageNo,
+          pageSize: data.pageSize
+        })
+        .then((list) => {
+          if (list) {
+            data.articleList = list
+            data.pageNo++
+            data.finished = list.length < data.pageSize
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        }),
+      $api
+        .getUserActionRecord()
+        .then((res) => {
+          data.myAchievement = res.data
+        })
+        .catch(console.log),
       $api.getRandomArticle().then((list) => {
         data.randomArticle.list = list
       }),
@@ -173,7 +192,9 @@ export default {
   },
   watch: {
     currentTagIndex (nVal, oVal) {
-      if (nVal === oVal) { return }
+      if (nVal === oVal) {
+        return
+      }
       const filter = this.titleTags[nVal]
       this.filter.sortByViews = null
       this.filter.official = null
@@ -184,7 +205,7 @@ export default {
       this.clearStatus()
       this.loadData()
     },
-    '$route' (to) {
+    $route (to) {
       const { platformId } = to.query
       this.filter.tagIds = [platformId]
       this.filter.sortByViews = null
@@ -194,7 +215,9 @@ export default {
       this.clearStatus()
       this.loadData()
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(item => item.path === to.fullPath)
+        this.menuIndex = this.menuList.findIndex(
+          item => item.path === to.fullPath
+        )
       } else {
         this.menuIndex = -1
       }
@@ -208,7 +231,9 @@ export default {
       }
       this.menuList = menuList
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+        this.menuIndex = this.menuList.findIndex(
+          item => item.path === this.$route.fullPath
+        )
       } else {
         this.menuIndex = -1
       }
@@ -223,12 +248,21 @@ export default {
       this.clearStatus()
       this.loadData()
     })
-    const res = this.$store.state.menu.menuList.filter(i => i.path === '/platform')
+    const res = this.$store.state.menu.menuList.filter(
+      i => i.path === '/platform'
+    )
     if (res?.length > 0 && res[0].children) {
       this.menuList = res[0].children
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
-        console.log('menuIndex', this.menuList, this.$route.tagId, this.menuIndex)
+        this.menuIndex = this.menuList.findIndex(
+          item => item.path === this.$route.fullPath
+        )
+        console.log(
+          'menuIndex',
+          this.menuList,
+          this.$route.tagId,
+          this.menuIndex
+        )
       }
     } else {
       this.menuIndex = -1
@@ -252,21 +286,27 @@ export default {
       this.loading = false
     },
     loadData () {
-      if (this.loading || this.finished) { return }
+      if (this.loading || this.finished) {
+        return
+      }
       this.loading = true
-      this.$api.getTopicList({
-        filter: this.filter,
-        pageNo: this.pageNo,
-        pageSize: this.pageSize
-      }).then((list) => {
-        if (list) {
-          this.articleList = this.pageNo === 1 ? list : [...this.articleList, ...list]
-          this.pageNo++
-          this.finished = list.length < this.pageSize
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+      this.$api
+        .getTopicList({
+          filter: this.filter,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        })
+        .then((list) => {
+          if (list) {
+            this.articleList =
+              this.pageNo === 1 ? list : [...this.articleList, ...list]
+            this.pageNo++
+            this.finished = list.length < this.pageSize
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }
@@ -281,30 +321,29 @@ export default {
   // justify-content: center;
   min-height: 100vh;
   .info-menu {
-        width:265px;
-        min-height: calc( 100vh - 140px);
-        background: rgb(246, 246, 246);
-        color: rgb(40, 40, 40);
-        font-family: PingFang SC;
-        font-size: 16px;
-        font-weight: 400;
-        border-right: 1px solid rgb(226, 232, 246);;
-        .menu-item {
-            padding: 16px 24px;
-            display: flex;
-            column-gap: 10px;
-            cursor: pointer;
-            img {
-                width: 18px;
-                height: 18px;
-            }
-        }
-        .active-menu {
-            background: #ffff;
-            border-left:  6px solid  rgb(0, 112, 255);
-        }
-
+    width: 265px;
+    min-height: calc(100vh - 140px);
+    background: rgb(246, 246, 246);
+    color: rgb(40, 40, 40);
+    font-family: PingFang SC;
+    font-size: 16px;
+    font-weight: 400;
+    border-right: 1px solid rgb(226, 232, 246);
+    .menu-item {
+      padding: 16px 24px;
+      display: flex;
+      column-gap: 10px;
+      cursor: pointer;
+      img {
+        width: 18px;
+        height: 18px;
+      }
     }
+    .active-menu {
+      background: #ffff;
+      border-left: 6px solid rgb(0, 112, 255);
+    }
+  }
   // .tag-list {
   //   background: #fff;
   //   border-radius: 8px;
@@ -330,14 +369,14 @@ export default {
   // }
   .article-content {
     // width: @content-max-width;
-    width:0;
-    flex:1;
+    width: 0;
+    flex: 1;
     height: 100%;
     background-color: #fff;
     border-radius: @g-radius;
     padding-bottom: 20px;
     .article-header {
-      display:flex;
+      display: flex;
       justify-content: space-between;
       align-items: center;
       padding-right: 8px;
@@ -404,7 +443,7 @@ export default {
       }
     }
   }
-  .page-article-empty-container{
+  .page-article-empty-container {
     widows: 100%;
     margin: 0 auto;
   }
@@ -413,7 +452,7 @@ export default {
   .page-article-container {
     .article-content {
       padding-bottom: 0;
-      margin-right:0;
+      margin-right: 0;
     }
   }
 }

@@ -10,29 +10,44 @@
         :alt="article.authorNickname"
         @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)"
       />
-      <span class="nick-name g-hover" @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)">{{ article.authorNickname }}</span><g-space />
-      <span><Icon type="eye" /> {{ article.views }}</span><g-space />
-      <span><Icon type="dashboard" /> {{ article.createAt | formatDate('YYYY-MM-DD') }}</span>
+      <span
+        class="nick-name g-hover"
+        @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)"
+      >{{ article.authorNickname }}</span><g-space /> <span><Icon type="eye" /> {{ article.views }}</span><g-space />
+      <span><Icon type="dashboard" />
+        {{ article.createAt | formatDate("YYYY-MM-DD") }}</span>
       <template v-if="canEdit && !isMobile">
         <g-space />
-        <router-link class="g-main-color" :to="{path: `/draft/editor/${article.id}?t=${isWiki ? 'wiki' :'article'}`}">
+        <router-link
+          class="g-main-color"
+          :to="{
+            path: `/draft/editor/${article.id}?t=${
+              isWiki ? 'wiki' : 'article'
+            }`,
+          }"
+        >
           编辑
         </router-link>
         <g-space />
-        <span class="g-main-color g-hover" @click="onDelArticle">
-          删除
-        </span>
+        <span class="g-main-color g-hover" @click="onDelArticle"> 删除 </span>
       </template>
     </div>
-    <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
+    <byte-viewer
+      id="byte-article-viewer-container"
+      :markdown-content="articleCtx"
+    />
     <div v-if="article.attachmentJson" class="attach-info">
       <div>附件:</div>
-      <div v-for="(item,index) of JSON.parse(article.attachmentJson)" :key="index" class="attach-item">
-        <div class="attach-name" @click="e => handleDownload(item)">
+      <div
+        v-for="(item, index) of JSON.parse(article.attachmentJson)"
+        :key="index"
+        class="attach-item"
+      >
+        <div class="attach-name" @click="(e) => handleDownload(item)">
           {{ item.name }}
         </div>
         <a-tooltip title="预览">
-          <div class="attach-preview" @click="e => handlePreview(item)">
+          <div class="attach-preview" @click="(e) => handlePreview(item)">
             <a-icon type="eye" />
           </div>
         </a-tooltip>
@@ -41,7 +56,9 @@
     <div v-if="showCurPage" class="cut-page-container">
       <span>
         <a-button v-if="prePage" type="link" @click="onNewArticle(prePage)">
-          <a-icon type="left" /><span class="cur-title g-hidden-line1">{{ prePage.postsTitle }}</span>
+          <a-icon type="left" /><span class="cur-title g-hidden-line1">{{
+            prePage.postsTitle
+          }}</span>
         </a-button>
       </span>
       <span>
@@ -54,7 +71,12 @@
       <div class="wiki-line" />
       <h3>关联知识库</h3>
       <div class="wiki-item-container">
-        <div v-for="wiki in article.belongWikis" :key="wiki.wikiId" class="wiki-item g-hover" @click="$router.push(`/wiki/${wiki.wikiId}/${article.id}`)">
+        <div
+          v-for="wiki in article.belongWikis"
+          :key="wiki.wikiId"
+          class="wiki-item g-hover"
+          @click="$router.push(`/wiki/${wiki.wikiId}/${article.id}`)"
+        >
           <img class="wiki-headimg" :src="wiki.wikiHeadImg" alt="">
           <span>{{ wiki.wikiName }}</span>
         </div>
@@ -81,18 +103,34 @@
       <p v-if="article.originalAuthor">
         原作者： <b>{{ article.originalAuthor }}</b>
       </p>
-      <p>转载自: <a :href="article.originalUrl" target="_blank">《{{ article.originalTitle }}》</a>，如有侵权，请联系本站删除。 </p>
+      <p>
+        转载自:
+        <a
+          :href="article.originalUrl"
+          target="_blank"
+        >《{{ article.originalTitle }}》</a>，如有侵权，请联系本站删除。
+      </p>
     </div>
-    <div v-if="!(isWiki && article.solution)" class="article-heart" :class="{'has-like': hasLike}">
-      <div v-auth="{handler: onApproval}" class="praise-box">
+    <div
+      v-if="!(isWiki && article.solution)"
+      class="article-heart"
+      :class="{ 'has-like': hasLike }"
+    >
+      <div v-auth="{ handler: onApproval }" class="praise-box">
         <Icon type="like" :theme="hasLike ? 'filled' : 'outlined'" />
       </div>
       <p class="approval-tips-line">
-        {{ approvalTotal > 0 ? `${approvalTotal}人已点赞` : '真诚点赞 诚不我欺' }}
+        {{
+          approvalTotal > 0 ? `${approvalTotal}人已点赞` : "真诚点赞 诚不我欺"
+        }}
       </p>
       <div class="approval-box">
         <template v-for="(user, index) in approvalList.slice(0, 6)">
-          <GUserPopover :key="index" class="approval-img" :user-id="user.userId">
+          <GUserPopover
+            :key="index"
+            class="approval-img"
+            :user-id="user.userId"
+          >
             <img
               :src="user.userAvatar"
               alt=""
@@ -102,19 +140,47 @@
         </template>
         <Popover placement="leftBottom">
           <template slot="content">
-            <div ref="approvalBox" style="height: 250px; width: 240px; overflow: auto; scrollbar-width: none; cursor: pointer;" @scroll="onScrollApproval">
-              <p v-for="(user, index) in approvalList" :key="index" class="approval-user-item" style="display: flex; align-items: center; height: 30px; justify-content: space-between; margin-bottom: 15px;">
+            <div
+              ref="approvalBox"
+              style="
+                height: 250px;
+                width: 240px;
+                overflow: auto;
+                scrollbar-width: none;
+                cursor: pointer;
+              "
+              @scroll="onScrollApproval"
+            >
+              <p
+                v-for="(user, index) in approvalList"
+                :key="index"
+                class="approval-user-item"
+                style="
+                  display: flex;
+                  align-items: center;
+                  height: 30px;
+                  justify-content: space-between;
+                  margin-bottom: 15px;
+                "
+              >
                 <span>
                   <GUserPopover :key="index" :user-id="user.userId">
                     <img
-                      style="width: 30px; height: 30px; border-radius: 50%; margin-right: 15px;"
+                      style="
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        margin-right: 15px;
+                      "
                       :src="user.userAvatar"
                       alt=""
                     >
                   </GUserPopover>
                   <span class="g-hover">{{ user.userName }}</span>
                 </span>
-                <span style="color: #999">{{ user.createAt | formatDate('YYYY-MM-DD') }}</span>
+                <span style="color: #999">{{
+                  user.createAt | formatDate("YYYY-MM-DD")
+                }}</span>
               </p>
             </div>
           </template>
@@ -127,24 +193,60 @@
         <h3 v-if="!isMobile" class="min-title g-hidden-line1">
           {{ article.title }}
         </h3>
-        <span v-auth="{handler: onApproval}" :class="{ 'g-main-color': hasLike }" class="action-box g-hover">
-          <Icon class="action-btn" :theme="hasLike ? 'filled' : 'outlined'" type="like" two-tone-color="#004fc4" />
-          <span>{{ hasLike ? '已' : '' }}点赞</span>
+        <span
+          v-auth="{ handler: onApproval }"
+          :class="{ 'g-main-color': hasLike }"
+          class="action-box g-hover"
+        >
+          <Icon
+            class="action-btn"
+            :theme="hasLike ? 'filled' : 'outlined'"
+            type="like"
+            two-tone-color="#004fc4"
+          />
+          <span>{{ hasLike ? "已" : "" }}点赞</span>
         </span>
         <template>
-          <span v-if="hasCollect || !userInfo" v-auth="{ handler: delArticleForCollect }" :class="{ 'g-main-color': hasCollect }" class="action-box g-hover">
-            <Icon class="action-btn" :theme="!userInfo ? 'outlined' : 'filled'" type="star" />
-            <span>{{ hasCollect ? '已' : '' }}收藏</span>
+          <span
+            v-if="hasCollect || !userInfo"
+            v-auth="{ handler: delArticleForCollect }"
+            :class="{ 'g-main-color': hasCollect }"
+            class="action-box g-hover"
+          >
+            <Icon
+              class="action-btn"
+              :theme="!userInfo ? 'outlined' : 'filled'"
+              type="star"
+            />
+            <span>{{ hasCollect ? "已" : "" }}收藏</span>
           </span>
-          <CollectMark v-else :id="article.id" container="collect-mark-box" @on-success="hasCollect = true">
-            <span class="action-box g-hover" :class="{ 'g-main-color': hasCollect }">
-              <Icon class="action-btn" theme="outlined" type="star" two-tone-color="#004fc4" />
-              <span>{{ hasCollect ? '已' : '' }}收藏</span>
+          <CollectMark
+            v-else
+            :id="article.id"
+            container="collect-mark-box"
+            @on-success="hasCollect = true"
+          >
+            <span
+              class="action-box g-hover"
+              :class="{ 'g-main-color': hasCollect }"
+            >
+              <Icon
+                class="action-btn"
+                theme="outlined"
+                type="star"
+                two-tone-color="#004fc4"
+              />
+              <span>{{ hasCollect ? "已" : "" }}收藏</span>
             </span>
           </CollectMark>
         </template>
-        <span v-auth="{handler: onComment}" class="action-box g-hover">
-          <Icon class="action-btn" theme="outlined" type="message" two-tone-color="#004fc4" />
+        <span v-auth="{ handler: onComment }" class="action-box g-hover">
+          <Icon
+            class="action-btn"
+            theme="outlined"
+            type="message"
+            two-tone-color="#004fc4"
+          />
           <span>评论</span>
         </span>
       </div>
@@ -216,7 +318,10 @@ export default {
   computed: {
     canEdit () {
       if (this.userInfo) {
-        if (['ADMIN', 'SUPER_ADMIN'].includes(this.userInfo.role) || this.userInfo.id === this.article.authorId) {
+        if (
+          ['ADMIN', 'SUPER_ADMIN'].includes(this.userInfo.role) ||
+          this.userInfo.id === this.article.authorId
+        ) {
           return true
         }
       }
@@ -232,7 +337,9 @@ export default {
       return this.currentIndex > 0 ? this.menus[this.currentIndex - 1] : null
     },
     nextPage () {
-      return this.currentIndex < this.menus.length - 1 ? this.menus[this.currentIndex + 1] : null
+      return this.currentIndex < this.menus.length - 1
+        ? this.menus[this.currentIndex + 1]
+        : null
     }
   },
   mounted () {
@@ -262,7 +369,10 @@ export default {
     },
     handlePreview (item) {
       console.log(item, 'dsfds')
-      window.open('https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' + window.encodeURIComponent(this.base64Encode(item.url)))
+      window.open(
+        'https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' +
+          window.encodeURIComponent(this.base64Encode(item.url))
+      )
     },
     computePage () {
       let list = []
@@ -299,16 +409,18 @@ export default {
       })
     },
     updateScore (score) {
-      this.$api.setArticleScore({
-        postsId: this.article.id,
-        difficultyScore: score * 100
-      }).then((res) => {
-        if (res.success) {
-          this.$message.success('评级成功')
-          return
-        }
-        this.$message.error(res.message)
-      })
+      this.$api
+        .setArticleScore({
+          postsId: this.article.id,
+          difficultyScore: score * 100
+        })
+        .then((res) => {
+          if (res.success) {
+            this.$message.success('评级成功')
+            return
+          }
+          this.$message.error(res.message)
+        })
     },
     onScrollApproval () {
       const a = this.$refs.approvalBox.scrollHeight
@@ -337,7 +449,9 @@ export default {
               duration: 2,
               message: msg
             })
-            if (res.code === 0) { location.href = '/' }
+            if (res.code === 0) {
+              location.href = '/'
+            }
           })
         }
       })
@@ -395,20 +509,28 @@ export default {
         this.apLoading = this.apFinished = false
         this.apPageNo = 1
       }
-      if (this.apLoading || this.apFinished) { return }
+      if (this.apLoading || this.apFinished) {
+        return
+      }
       this.apLoading = true
-      this.$api.getApprovalListByArticle({
-        filter: this.article.id,
-        pageNo: this.apPageNo
-      }).then((res) => {
-        this.apLoading = false
-        this.approvalTotal = res.total
-        this.approvalList = this.apPageNo === 1 ? [...res.list] : [...res.list, ...this.approvalList]
-        this.apFinished = res.total === this.approvalList.length
-        this.apPageNo++
-      }).catch(() => {
-        this.apLoading = false
-      })
+      this.$api
+        .getApprovalListByArticle({
+          filter: this.article.id,
+          pageNo: this.apPageNo
+        })
+        .then((res) => {
+          this.apLoading = false
+          this.approvalTotal = res.total
+          this.approvalList =
+            this.apPageNo === 1
+              ? [...res.list]
+              : [...res.list, ...this.approvalList]
+          this.apFinished = res.total === this.approvalList.length
+          this.apPageNo++
+        })
+        .catch(() => {
+          this.apLoading = false
+        })
     }
   }
 }
@@ -482,9 +604,11 @@ export default {
       }
     }
   }
-  .tags-line, .article-difficulty {
+  .tags-line,
+  .article-difficulty {
     margin-top: @g-margin * 2;
-    .tag-title, .difficulty-title{
+    .tag-title,
+    .difficulty-title {
       font-weight: bold;
       margin-right: @g-margin;
       font-size: 16px;
@@ -634,9 +758,12 @@ export default {
     .article-heart {
       display: none;
     }
-    .tags-line, .article-difficulty, .reprint-statement {
+    .tags-line,
+    .article-difficulty,
+    .reprint-statement {
       margin-top: 15px;
-      .tag-title, .difficulty-title{
+      .tag-title,
+      .difficulty-title {
         font-size: 16px;
       }
     }

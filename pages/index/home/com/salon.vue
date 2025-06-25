@@ -1,11 +1,24 @@
 <template>
-  <g-card class="half-card" title="沙龙" :go-to="e => handleGoto(`/info?type=salon`)">
+  <g-card
+    class="half-card"
+    title="沙龙"
+    :go-to="(e) => handleGoto(`/info?type=salon`)"
+  >
     <template>
       <a-spin :spinning="loading">
         <div v-if="salonList.length > 0" class="salon">
           <a-carousel>
-            <div v-for="(item,index) of salonList" :key="index" class="salon-list">
-              <div v-for="(k,i) of item.child" :key="i" class="salon-item" @click="e => handleGoto(`/info/${k.id}?type=salon`)">
+            <div
+              v-for="(item, index) of salonList"
+              :key="index"
+              class="salon-list"
+            >
+              <div
+                v-for="(k, i) of item.child"
+                :key="i"
+                class="salon-item"
+                @click="(e) => handleGoto(`/info/${k.id}?type=salon`)"
+              >
                 <div>
                   <img class="img" :src="k.coverImageUrl">
                 </div>
@@ -14,7 +27,7 @@
                 </div>
               </div>
             </div>
-          <!-- <div class="salon-list">
+            <!-- <div class="salon-list">
             <div v-for="(item,index) of salonList" :key="index" class="salon-item">
               <div>
                 <img class="img" :src="item.icon">
@@ -95,41 +108,40 @@ export default {
   }
 }
 </script>
-    <style scoped lang="less">
-   .salon {
-      padding: 20px;
-      padding-bottom: 32px;
-      .salon-list {
-        display: flex !important;
-        column-gap:14px;
-        .salon-item {
-          width: calc((100% - (14px * 2)) / 3);
-          border-radius: 4px;
-          background: rgb(241, 247, 254);
-          height: 300px;
-          padding: 16px;
-          .img {
-            width: 100%;
-            height: 145px;
-          }
-          .text {
-            margin-top:16px;
-            color: rgb(40, 40, 40);
-            font-size: 14px;
-            font-weight: 400;
-            display: -webkit-box;
-                overflow: hidden; /* 隐藏溢出的内容 */
-                -webkit-line-clamp: 5;
-                -webkit-box-orient: vertical;
-          }
-        }
-
+<style scoped lang="less">
+.salon {
+  padding: 20px;
+  padding-bottom: 32px;
+  .salon-list {
+    display: flex !important;
+    column-gap: 14px;
+    .salon-item {
+      width: calc((100% - (14px * 2)) / 3);
+      border-radius: 4px;
+      background: rgb(241, 247, 254);
+      height: 300px;
+      padding: 16px;
+      .img {
+        width: 100%;
+        height: 145px;
+      }
+      .text {
+        margin-top: 16px;
+        color: rgb(40, 40, 40);
+        font-size: 14px;
+        font-weight: 400;
+        display: -webkit-box;
+        overflow: hidden; /* 隐藏溢出的内容 */
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
       }
     }
-    .salon-empty {
-       height: 352px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    </style>
+  }
+}
+.salon-empty {
+  height: 352px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

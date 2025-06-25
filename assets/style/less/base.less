@@ -1,4 +1,9 @@
-p, h1, h2, h3, h4, h5 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5 {
   margin: 0;
 }
 // 最大宽度
@@ -17,7 +22,7 @@ p, h1, h2, h3, h4, h5 {
 // 统一字体选中色1-1
 @g-main-color: #004fc4;
 .g-main-color {
-  color: @g-main-color
+  color: @g-main-color;
 }
 //@g-active-color: #09A67A;
 @g-active-color: @g-main-color;
@@ -48,15 +53,17 @@ p, h1, h2, h3, h4, h5 {
 @font-first: 20px;
 
 // 四级边框 深 -> 浅
-@border-1-color: #DCDFE6;
-@border-2-color: #E4E7ED;
-@border-3-color: #EBEEF5;
-@border-4-color: #F2F6FC;
+@border-1-color: #dcdfe6;
+@border-2-color: #e4e7ed;
+@border-3-color: #ebeef5;
+@border-4-color: #f2f6fc;
 @border-5-color: #f2f2f2;
 
 @test-border: #ad1b0f;
 
-.g-disabled, .g-sub-title, .g-sub-color {
+.g-disabled,
+.g-sub-title,
+.g-sub-color {
   color: #b4b7bb;
 }
 
@@ -79,11 +86,9 @@ p, h1, h2, h3, h4, h5 {
   margin-top: @g-margin * 2;
 }
 
-
 .g-avatar-border {
   border: 1px solid @border-5-color;
 }
-
 
 .g-content-container {
   width: @content-max-width;
@@ -141,14 +146,14 @@ p, h1, h2, h3, h4, h5 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
+};
 
 .g-hidden-line2 {
-  overflow:hidden;
-  text-overflow:ellipsis;
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .g-tag {

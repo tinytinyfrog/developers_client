@@ -10,9 +10,13 @@
         :alt="article.authorNickname"
         @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)"
       />
-      <span class="nick-name g-hover" @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)">{{ article.authorNickname }}</span><g-space />
+      <span
+        class="nick-name g-hover"
+        @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)"
+      >{{ article.authorNickname }}</span><g-space />
       <span v-if="article.topic"><Icon type="bulb" /> {{ article.topic }}</span><g-space />
-      <span><Icon type="dashboard" /> {{ article.createAt | formatDate('YYYY-MM-DD') }}</span>
+      <span><Icon type="dashboard" />
+        {{ article.createAt | formatDate("YYYY-MM-DD") }}</span>
       <!-- <template v-if="canEdit && !isWiki && !isMobile">
         <g-space />
         <router-link class="g-main-color" :to="{path: `/draft/editor/${article.id}?t=article`}">
@@ -24,18 +28,31 @@
         </span>
       </template> -->
     </div>
-    <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
-    <div v-if="article.coverImageUrl || article.imageUrl" style="margin-bottom: 20px;">
-      <img :src="article.coverImageUrl || article.imageUrl" style="width: 100%;">
+    <byte-viewer
+      id="byte-article-viewer-container"
+      :markdown-content="articleCtx"
+    />
+    <div
+      v-if="article.coverImageUrl || article.imageUrl"
+      style="margin-bottom: 20px"
+    >
+      <img
+        :src="article.coverImageUrl || article.imageUrl"
+        style="width: 100%"
+      >
     </div>
     <div v-if="article.attachmentJson" class="attach-info">
       <div>附件:</div>
-      <div v-for="(item,index) of JSON.parse(article.attachmentJson)" :key="index" class="attach-item">
-        <div class="attach-name" @click="e => handleDownload(item)">
+      <div
+        v-for="(item, index) of JSON.parse(article.attachmentJson)"
+        :key="index"
+        class="attach-item"
+      >
+        <div class="attach-name" @click="(e) => handleDownload(item)">
           {{ item.name }}
         </div>
         <a-tooltip title="预览">
-          <div class="attach-preview" @click="e => handlePreview(item)">
+          <div class="attach-preview" @click="(e) => handlePreview(item)">
             <a-icon type="eye" />
           </div>
         </a-tooltip>
@@ -220,14 +237,19 @@ export default {
   computed: {
     canEdit () {
       if (this.userInfo) {
-        if (['ADMIN', 'SUPER_ADMIN'].includes(this.userInfo.role) || this.userInfo.id === this.article.authorId) {
+        if (
+          ['ADMIN', 'SUPER_ADMIN'].includes(this.userInfo.role) ||
+          this.userInfo.id === this.article.authorId
+        ) {
           return true
         }
       }
       return false
     },
     articleCtx () {
-      return this.$route.query.type === 'team' ? this.article.summary : this.article.markdownContent || this.article.htmlContent
+      return this.$route.query.type === 'team'
+        ? this.article.summary
+        : this.article.markdownContent || this.article.htmlContent
     },
     showCurPage () {
       return this.menus.some(item => item.postsId === this.article.id)
@@ -236,7 +258,9 @@ export default {
       return this.currentIndex > 0 ? this.menus[this.currentIndex - 1] : null
     },
     nextPage () {
-      return this.currentIndex < this.menus.length - 1 ? this.menus[this.currentIndex + 1] : null
+      return this.currentIndex < this.menus.length - 1
+        ? this.menus[this.currentIndex + 1]
+        : null
     }
   },
   mounted () {
@@ -265,7 +289,10 @@ export default {
       window.open(item.url)
     },
     handlePreview (item) {
-      window.open('https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' + window.encodeURIComponent(this.base64Encode(item.url)))
+      window.open(
+        'https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' +
+          window.encodeURIComponent(this.base64Encode(item.url))
+      )
     },
     computePage () {
       let list = []
@@ -302,16 +329,18 @@ export default {
       })
     },
     updateScore (score) {
-      this.$api.setArticleScore({
-        postsId: this.article.id,
-        difficultyScore: score * 100
-      }).then((res) => {
-        if (res.success) {
-          this.$message.success('评级成功')
-          return
-        }
-        this.$message.error(res.message)
-      })
+      this.$api
+        .setArticleScore({
+          postsId: this.article.id,
+          difficultyScore: score * 100
+        })
+        .then((res) => {
+          if (res.success) {
+            this.$message.success('评级成功')
+            return
+          }
+          this.$message.error(res.message)
+        })
     },
     onScrollApproval () {
       const a = this.$refs.approvalBox.scrollHeight
@@ -340,7 +369,9 @@ export default {
               duration: 2,
               message: msg
             })
-            if (res.code === 0) { location.href = '/' }
+            if (res.code === 0) {
+              location.href = '/'
+            }
           })
         }
       })
@@ -398,20 +429,28 @@ export default {
         this.apLoading = this.apFinished = false
         this.apPageNo = 1
       }
-      if (this.apLoading || this.apFinished) { return }
+      if (this.apLoading || this.apFinished) {
+        return
+      }
       this.apLoading = true
-      this.$api.getApprovalListByArticle({
-        filter: this.article.id,
-        pageNo: this.apPageNo
-      }).then((res) => {
-        this.apLoading = false
-        this.approvalTotal = res.total
-        this.approvalList = this.apPageNo === 1 ? [...res.list] : [...res.list, ...this.approvalList]
-        this.apFinished = res.total === this.approvalList.length
-        this.apPageNo++
-      }).catch(() => {
-        this.apLoading = false
-      })
+      this.$api
+        .getApprovalListByArticle({
+          filter: this.article.id,
+          pageNo: this.apPageNo
+        })
+        .then((res) => {
+          this.apLoading = false
+          this.approvalTotal = res.total
+          this.approvalList =
+            this.apPageNo === 1
+              ? [...res.list]
+              : [...res.list, ...this.approvalList]
+          this.apFinished = res.total === this.approvalList.length
+          this.apPageNo++
+        })
+        .catch(() => {
+          this.apLoading = false
+        })
     }
   }
 }
@@ -485,9 +524,11 @@ export default {
       }
     }
   }
-  .tags-line, .article-difficulty {
+  .tags-line,
+  .article-difficulty {
     margin-top: @g-margin * 2;
-    .tag-title, .difficulty-title{
+    .tag-title,
+    .difficulty-title {
       font-weight: bold;
       margin-right: @g-margin;
       font-size: 16px;
@@ -637,9 +678,12 @@ export default {
     .article-heart {
       display: none;
     }
-    .tags-line, .article-difficulty, .reprint-statement {
+    .tags-line,
+    .article-difficulty,
+    .reprint-statement {
       margin-top: 15px;
-      .tag-title, .difficulty-title{
+      .tag-title,
+      .difficulty-title {
         font-size: 16px;
       }
     }

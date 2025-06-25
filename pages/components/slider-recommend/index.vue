@@ -1,9 +1,15 @@
 <template>
-  <g-sidebar v-if="recommend.list.length" :title="recommend.title" background-color="#fff">
+  <g-sidebar
+    v-if="recommend.list.length"
+    :title="recommend.title"
+    background-color="#fff"
+  >
     <router-link
       v-for="(item, index) in recommend.list"
       :key="index"
-      :to="{path: `/${item.category === 'ARTICLE' ? 'article' : 'faq'}/${item.id}`}"
+      :to="{
+        path: `/${item.category === 'ARTICLE' ? 'article' : 'faq'}/${item.id}`,
+      }"
       class="recommend-ctx-container"
       target="_blank"
     >
@@ -22,8 +28,7 @@
         <span>
           <span>
             <Icon class="operation-icon g-hover" type="eye" />
-            &nbsp;{{ item.views }}
-          </span>&nbsp;
+          &nbsp;{{ item.views }} </span>&nbsp;
           <span>
             <Icon class="operation-icon g-hover" type="like" />
             &nbsp;{{ item.approvals }}
@@ -58,10 +63,10 @@ export default {
   padding: 12px @g-padding * 2;
   width: 100%;
   .recommend-title {
-      font-size: @font-third;
-      cursor: pointer;
-      margin-bottom: @g-margin * 2;
-    }
+    font-size: @font-third;
+    cursor: pointer;
+    margin-bottom: @g-margin * 2;
+  }
   .recommend-infos {
     display: flex;
     align-items: center;

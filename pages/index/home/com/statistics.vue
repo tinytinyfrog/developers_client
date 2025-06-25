@@ -3,9 +3,13 @@
     <template>
       <a-spin :spinning="loading">
         <div class="statistics">
-          <div v-for="(item,index) of statisticList" :key="index">
+          <div v-for="(item, index) of statisticList" :key="index">
             <div class="statistics-item">
-              <div v-for="(k,v) of item.child" :key="v" class="statistics-card">
+              <div
+                v-for="(k, v) of item.child"
+                :key="v"
+                class="statistics-card"
+              >
                 <div class="statistics-card-left">
                   <div class="img-inner-wrap">
                     <img :src="k.icon">
@@ -118,66 +122,63 @@ export default {
 }
 </script>
 <style scoped lang="less">
-     .statistics {
-    margin: 30px 24px;
-    padding: 16px 32px;
-    margin-bottom:30px;
-    height: 324px;
-    background-image: url('~/assets/images/home/statistics-bg.png');
-    .statistics-item {
+.statistics {
+  margin: 30px 24px;
+  padding: 16px 32px;
+  margin-bottom: 30px;
+  height: 324px;
+  background-image: url("~/assets/images/home/statistics-bg.png");
+  .statistics-item {
+    display: flex;
+    column-gap: 10px;
+    height: 60px;
+    .statistics-card {
       display: flex;
-      column-gap: 10px;
-      height: 60px;
-      .statistics-card {
-        display: flex;
-        width: calc((100% - (10px * 2)) / 3);
-        column-gap: 18px;
-        .statistics-card-left {
-            height: 60px;
-            width:60px;
-            border-radius: 4px;
-            background: rgb(213, 237, 254);
-            padding: 14px;
-           .img-inner-wrap {
-            border-radius: 4px;
-            width: 32px;
-            height: 32px;
-            background: rgb(0, 112, 255);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            .img {
-              width: 16px;
-              height: 12px;
-            }
-           }
-
-        }
-        .statistics-card-right {
-            .statistics-card-title {
-              color: rgb(40, 40, 40);
-              font-family: PingFang SC;
-              font-size: 14px;
-              font-weight: 400;
-            }
-            .statistics-card-count {
-              color: rgb(40, 40, 40);
-              font-family: PingFang SC;
-              font-size: 28px;
-              font-weight: 400;
-            }
-
-        }
-        .statistics-card-left {
-
+      width: calc((100% - (10px * 2)) / 3);
+      column-gap: 18px;
+      .statistics-card-left {
+        height: 60px;
+        width: 60px;
+        border-radius: 4px;
+        background: rgb(213, 237, 254);
+        padding: 14px;
+        .img-inner-wrap {
+          border-radius: 4px;
+          width: 32px;
+          height: 32px;
+          background: rgb(0, 112, 255);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .img {
+            width: 16px;
+            height: 12px;
+          }
         }
       }
-    }
-    .statistics-item-bg {
-      height: 28px;
-      width: 100%;
-      margin-bottom: 14px;
-      background-image: url('~/assets/images/home/statistics-item-bg.png');
+      .statistics-card-right {
+        .statistics-card-title {
+          color: rgb(40, 40, 40);
+          font-family: PingFang SC;
+          font-size: 14px;
+          font-weight: 400;
+        }
+        .statistics-card-count {
+          color: rgb(40, 40, 40);
+          font-family: PingFang SC;
+          font-size: 28px;
+          font-weight: 400;
+        }
+      }
+      .statistics-card-left {
+      }
     }
   }
-  </style>
+  .statistics-item-bg {
+    height: 28px;
+    width: 100%;
+    margin-bottom: 14px;
+    background-image: url("~/assets/images/home/statistics-item-bg.png");
+  }
+}
+</style>

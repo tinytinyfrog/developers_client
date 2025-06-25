@@ -1,6 +1,10 @@
 <template>
   <div class="page-layout-container">
-    <div v-if="showHeadByRouter" class="common-header-box" :class="{'transition-head': hideHead}">
+    <div
+      v-if="showHeadByRouter"
+      class="common-header-box"
+      :class="{ 'transition-head': hideHead }"
+    >
       <GHeader />
       <GMenu />
     </div>
@@ -54,41 +58,40 @@ export default {
     // Button
   },
   async asyncData (ctx) {
-    const {
-      store,
-      $api,
-      route
-    } = ctx
-    const {
-      _tk,
-      _isMp
-    } = route.query
+    const { store, $api, route } = ctx
+    const { _tk, _isMp } = route.query
     let scene = ''
     let miniUrl = ''
-    const {
-      isMobile,
-      isMiniProgram,
-      isWeChat
-    } = store.state.globalData
+    const { isMobile, isMiniProgram, isWeChat } = store.state.globalData
     if (_tk) {
       // 外部 cookie 暂时有效 10 d
-      ctx.$cookies.set(cookieUtils.TOKENKEY, _tk, { maxAge: 60 * 60 * 24 * 10 })
+      ctx.$cookies.set(cookieUtils.TOKENKEY, _tk, {
+        maxAge: 60 * 60 * 24 * 10
+      })
       console.log('微信小程序打开页面:', _tk)
       await store.dispatch('user/getUserInfo', {
         $api,
         ctx
       })
-    } else if (_isMp) { // 小程序且无 cookie
+    } else if (_isMp) {
+      // 小程序且无 cookie
       const res = await $api.getWxLogoQrcode()
       scene = res.scene
     }
     if (isMobile && !isMiniProgram) {
       // 手机端重定向 打开微信小程序
-      const res = await $api.getSchemeUrl({
-        path: route.path === '/article' ? '/pages/index/index' : '/pages/new-web-view/index',
-        query: `?scene=${scene}&url=${globalConfig.developerServer}${encodeURIComponent(route.path)}`,
-        env_version: 'release'
-      }).catch(console.log)
+      const res = await $api
+        .getSchemeUrl({
+          path:
+            route.path === '/article'
+              ? '/pages/index/index'
+              : '/pages/new-web-view/index',
+          query: `?scene=${scene}&url=${
+            globalConfig.developerServer
+          }${encodeURIComponent(route.path)}`,
+          env_version: 'release'
+        })
+        .catch(console.log)
       if (res.success) {
         miniUrl = res.data
       }
@@ -123,7 +126,9 @@ export default {
   watch: {
     $route: {
       handler (newRoute) {
-        this.showHeadByRouter = hideHeadReg.some(reg => !reg.test(newRoute.path))
+        this.showHeadByRouter = hideHeadReg.some(
+          reg => !reg.test(newRoute.path)
+        )
         this.showTag = tagsWhite.includes(newRoute.path)
         if (location.href !== '/article') {
           this.miniPath = `pages/new-web-view/index.html?scene=${this.scene}&url=${location.href}`
@@ -171,7 +176,15 @@ export default {
           timestamp,
           nonceStr,
           signature,
-          jsApiList: ['updateTimelineShareData', 'updateAppMessageShareData', 'onMenuShareAppMessage', 'onMenuShareTimeline', 'showShareMenu', 'onShareAppMessage', 'onShareTimeline'],
+          jsApiList: [
+            'updateTimelineShareData',
+            'updateAppMessageShareData',
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline',
+            'showShareMenu',
+            'onShareAppMessage',
+            'onShareTimeline'
+          ],
           openTagList: ['wx-open-launch-weapp']
         })
         window.wx.ready(() => {
@@ -190,7 +203,8 @@ export default {
     randomString (len) {
       // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
       const chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-      const tempLen = chars.length; let tempStr = ''
+      const tempLen = chars.length
+      let tempStr = ''
       for (let i = 0; i < len; ++i) {
         tempStr += chars.charAt(Math.floor(Math.random() * tempLen))
       }
@@ -203,7 +217,10 @@ export default {
       if (flag) {
         return
       }
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      const scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop
       EventBus.$emit('G_SCROLLTOP', scrollTop)
       if (scrollTop > this.scrollTop) {
         // 下滑

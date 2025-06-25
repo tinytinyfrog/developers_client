@@ -32,10 +32,10 @@ export default {
       // console.log(this.$route.params.provider);
       const param = {
         code: this.$route.query.code
-
       }
       this.loading = true
-      this.$api.oauth2LoginCallback(param)
+      this.$api
+        .oauth2LoginCallback(param)
         .then((res) => {
           let userInfo
           if (res.data) {
@@ -57,10 +57,12 @@ export default {
             this.$message.success('登录成功')
             setTimeout(() => {}, 3000)
           }
-        }).catch((e) => {
+        })
+        .catch((e) => {
           this.$message.error(e)
           this.$router.push('/login')
-        }).finally(() => {
+        })
+        .finally(() => {
           this.loading = false
         })
     }
@@ -68,8 +70,8 @@ export default {
 }
 </script>
 <style scope lang="less">
-  .auth-container {
-    width: 100%;
-    height: 100vh;
-  }
+.auth-container {
+  width: 100%;
+  height: 100vh;
+}
 </style>

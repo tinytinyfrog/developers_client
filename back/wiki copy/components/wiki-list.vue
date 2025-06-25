@@ -6,9 +6,10 @@
           v-for="(item, index) in selfCategoryList"
           :key="index"
           class="tag-category"
-          :class="{'active-category': activeCategoryIndex === index}"
+          :class="{ 'active-category': activeCategoryIndex === index }"
           @click="getWikiListByCategory(index)"
-        >{{ item.name }}</span>
+          >{{ item.name }}</span
+        >
       </div>
     </div>
     <div class="wiki-list">
@@ -24,35 +25,33 @@
           class="wiki-head-cover"
           alt="example"
           :src="wiki.headImg + '?imageView2/1/w/208/h/260'"
-        >
+        />
         <a-card-meta :title="wiki.name" />
         <a-icon class="book-icon" type="book" />
         <a-icon v-if="!wiki.show" class="book-hide" type="eye-invisible" />
       </a-card>
       <p class="loading-box">
-        <span v-if="loading">
-          <a-icon type="loading" /> 加载中...
-        </span>
+        <span v-if="loading"> <a-icon type="loading" /> 加载中... </span>
       </p>
     </div>
   </div>
 </template>
 
 <script>
-import EventBus from '@/lib/event-bus'
+import EventBus from "@/lib/event-bus";
 export default {
-  name: 'WikiList',
+  name: "WikiList",
   props: {
     wikiType: {
       type: String,
-      default: 'show'
+      default: "show",
     },
     categoryList: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
-  data () {
+  data() {
     return {
       pageNo: 1,
       pageSize: 100,
@@ -62,59 +61,62 @@ export default {
       wikiList: [],
       selfCategoryList: [
         {
-          id: '',
-          name: '全部'
-        }
-      ]
-    }
+          id: "",
+          name: "全部",
+        },
+      ],
+    };
   },
   watch: {
-    categoryList (list) {
+    categoryList(list) {
       this.selfCategoryList = [
         {
-          id: '',
-          name: '全部'
-        }
-      ].concat(list.filter(item => item.refCount > 0))
-    }
+          id: "",
+          name: "全部",
+        },
+      ].concat(list.filter((item) => item.refCount > 0));
+    },
   },
-  mounted () {
-    this.getWikiList()
-    EventBus.$on('on-update-wiki', () => {
-      this.finished = false
-      this.getWikiList()
-    })
+  mounted() {
+    this.getWikiList();
+    EventBus.$on("on-update-wiki", () => {
+      this.finished = false;
+      this.getWikiList();
+    });
   },
-  beforeDestroy () {
-    EventBus.$off('on-update-wiki')
+  beforeDestroy() {
+    EventBus.$off("on-update-wiki");
   },
   methods: {
-    getWikiListByCategory (index) {
-      this.activeCategoryIndex = index
-      this.finished = false
-      this.getWikiList()
+    getWikiListByCategory(index) {
+      this.activeCategoryIndex = index;
+      this.finished = false;
+      this.getWikiList();
     },
-    getWikiList () {
-      if (this.finished || this.loading) return
-      this.loading = true
-      const { pageNo, pageSize, selfCategoryList, activeCategoryIndex } = this
-      const method = this.wikiType === 'all' ? 'getWikiList' : 'getMySelfWikiList'
+    getWikiList() {
+      if (this.finished || this.loading) return;
+      this.loading = true;
+      const { pageNo, pageSize, selfCategoryList, activeCategoryIndex } = this;
+      const method =
+        this.wikiType === "all" ? "getWikiList" : "getMySelfWikiList";
       this.$api[method]({
         pageNo,
         pageSize,
         filter: {
-          categoryId: selfCategoryList[activeCategoryIndex].id
-        }
-      }).then((list) => {
-        this.loading = false
-        this.wikiList = pageNo === 1 ? list : [...this.wikiList, ...list]
-        this.finished = list.length < pageSize
-      }).catch(() => {
-        this.loading = false
+          categoryId: selfCategoryList[activeCategoryIndex].id,
+        },
       })
-    }
-  }
-}
+        .then((list) => {
+          this.loading = false;
+          this.wikiList = pageNo === 1 ? list : [...this.wikiList, ...list];
+          this.finished = list.length < pageSize;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -142,7 +144,7 @@ export default {
           margin-left: 0;
         }
         &:last-child {
-          border-bottom-width: 0
+          border-bottom-width: 0;
         }
         &:hover {
           color: @g-active-color;

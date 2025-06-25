@@ -1,7 +1,9 @@
 <template>
   <div class="page-about-detail">
     <div>
-      <ByteViewer :markdown-content="article.markdownContent || article.htmlContent" />
+      <ByteViewer
+        :markdown-content="article.markdownContent || article.htmlContent"
+      />
     </div>
   </div>
 </template>
@@ -31,12 +33,12 @@ export default {
 </script>
 
 <style lang="less">
-  @import '~/pages/components/byte-markdown-editor/theme.less';
-  .page-about-detail {
-    border-radius: @g-radius;
-    align-self: center;
-    padding: 20px 20px 80px;
-    background-color: #fff;
-    margin-bottom: 20px;
-  }
+@import "~/pages/components/byte-markdown-editor/theme.less";
+.page-about-detail {
+  border-radius: @g-radius;
+  align-self: center;
+  padding: 20px 20px 80px;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
 </style>

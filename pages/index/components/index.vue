@@ -10,13 +10,13 @@
 
 <script>
 export default {
-  name: 'PageHome',
-  data () {
+  name: "PageHome",
+  data() {
     return {
-      title: 'home'
-    }
-  }
-}
+      title: "home",
+    };
+  },
+};
 </script>
 
 <style lang="less">
@@ -30,16 +30,8 @@ export default {
 }
 
 .title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;

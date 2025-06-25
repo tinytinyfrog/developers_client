@@ -2,7 +2,7 @@
   <span class="g-user-popover" @mouseover="onMouseover">
     <Popover v-model="showUserInfo" placement="topLeft">
       <template slot="content">
-        <div v-if="userInfo && !loading" style="width: 280px;">
+        <div v-if="userInfo && !loading" style="width: 280px">
           <div class="base-info" :style="baseInfoStyle">
             <Avatar
               shape="square"
@@ -10,27 +10,45 @@
               :size="87"
               @click="$utils.openUserCenter(userId)"
             />
-            <div style="flex: 1; margin-left: 12px;">
-              <p style="display: flex; align-items: center;justify-content: space-between; height: 36px; padding-right: 6px;">
-                <span class="g-hover" style="font-weight: bold; " @click="$utils.openUserCenter(userId)">{{ userInfo.nickname }}</span>
+            <div style="flex: 1; margin-left: 12px">
+              <p
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  height: 36px;
+                  padding-right: 6px;
+                "
+              >
+                <span
+                  class="g-hover"
+                  style="font-weight: bold"
+                  @click="$utils.openUserCenter(userId)"
+                >{{ userInfo.nickname }}</span>
                 <Button
                   v-if="userInfo.hasOwnProperty('follow')"
-                  v-auth="{handler: onFocus}"
+                  v-auth="{ handler: onFocus }"
                   type="primary"
                   size="small"
                   :ghost="userInfo.follow"
                   :loading="fLoading"
-                >{{ userInfo.follow ? '已关注' : '关注' }}</Button>
+                >{{ userInfo.follow ? "已关注" : "关注" }}</Button>
               </p>
               <p>
-                <span :style="signatureStyle">{{ userInfo.job || '搬砖工~' }}</span>
+                <span :style="signatureStyle">{{
+                  userInfo.job || "搬砖工~"
+                }}</span>
               </p>
-              <p class="honour-icon" style="font-size: 16px; margin-top: 5px;">
+              <p class="honour-icon" style="font-size: 16px; margin-top: 5px">
                 <Tooltip v-if="userInfo.github" placement="top">
                   <template slot="title">
                     {{ userInfo.github }}
                   </template>
-                  <Icon type="github" class="g-hover" @click="$utils.openNewWindow(userInfo.github)" />
+                  <Icon
+                    type="github"
+                    class="g-hover"
+                    @click="$utils.openNewWindow(userInfo.github)"
+                  />
                 </Tooltip>
                 <Icon v-else type="github" class="g-disabled" />
                 <g-space :size="0" />
@@ -38,7 +56,11 @@
                   <template slot="title">
                     {{ userInfo.website }}
                   </template>
-                  <Icon type="link" class="g-hover" @click="$utils.openNewWindow(userInfo.website)" />
+                  <Icon
+                    type="link"
+                    class="g-hover"
+                    @click="$utils.openNewWindow(userInfo.website)"
+                  />
                 </Tooltip>
                 <Icon v-else type="link" class="g-disabled" />
                 <g-space :size="0" />
@@ -52,22 +74,35 @@
               </p>
             </div>
           </div>
-          <p v-if="userInfo.signature" class="g-hidden-line2" :style="signatureStyle">{{ userInfo.signature }}</p>
-          <div class="other-honr" style="margin-top: 15px; display: flex; justify-content: space-between;">
+          <p
+            v-if="userInfo.signature"
+            class="g-hidden-line2"
+            :style="signatureStyle"
+          >
+            {{ userInfo.signature }}
+          </p>
+          <div
+            class="other-honr"
+            style="
+              margin-top: 15px;
+              display: flex;
+              justify-content: space-between;
+            "
+          >
             <span :style="infoItemStyle">
-              <span style="font-weight: bold;">{{ userInfo.fasNumb }}</span>
+              <span style="font-weight: bold">{{ userInfo.fasNumb }}</span>
               <span :style="fontSize">关注Ta</span>
             </span>
             <span :style="infoItemStyle">
-              <span style="font-weight: bold;">{{ userInfo.articleNumb }}</span>
+              <span style="font-weight: bold">{{ userInfo.articleNumb }}</span>
               <span :style="fontSize">文章</span>
             </span>
             <span :style="infoItemStyle">
-              <span style="font-weight: bold;">{{ userInfo.experience }}</span>
+              <span style="font-weight: bold">{{ userInfo.experience }}</span>
               <span :style="fontSize">经验值</span>
             </span>
             <span :style="infoItemStyle">
-              <span style="font-weight: bold;">{{ userInfo.approvalNumb }}</span>
+              <span style="font-weight: bold">{{ userInfo.approvalNumb }}</span>
               <span :style="fontSize">获赞</span>
             </span>
           </div>
@@ -166,7 +201,9 @@ export default {
       }
     },
     onMouseover () {
-      if (this.showUserInfo || this.loading) { return }
+      if (this.showUserInfo || this.loading) {
+        return
+      }
       this.getUserInfo()
     },
     async getUserInfo () {

@@ -1,189 +1,93 @@
 <template>
-  <div class="menu-container">
-    <template v-for="(item,index) of userMenu">
-      <a-dropdown v-if="Array.isArray(item.children) && item.children.length > 0" :key="index">
-        <div class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index,item,true)}">
-          <img :src="item.icon" class="img">  {{ item.menuName }}
+  <nav class="menu-container">
+    <template v-for="(item, index) of userMenu">
+      <a-dropdown
+        v-if="hasChildren(item)"
+        :key="index"
+        :trigger="['hover']"
+        placement="bottomLeft"
+      >
+        <div
+          class="menu-item"
+          :class="{ active: activeIndex === index }"
+          @click="handleClick(index, item, true)"
+        >
+          <img v-if="item.icon" :src="item.icon" class="menu-icon" alt="">
+          <span class="menu-text">{{ item.menuName }}</span>
+          <a-icon type="down" class="dropdown-icon" />
         </div>
-        <a-menu slot="overlay" :selected-keys="[current]" @click="hanleMenuClick">
-          <a-menu-item v-for="(k) of item.children" :key="k.path">
-            <a @click="() => {handleGoTo(index,item,k)}">{{ k.menuName }}</a>
+        <a-menu
+          slot="overlay"
+          class="dropdown-menu"
+          :selected-keys="[current]"
+          @click="handleMenuClick"
+        >
+          <a-menu-item
+            v-for="child of item.children"
+            :key="child.path"
+            class="dropdown-item"
+          >
+            <a @click="() => handleGoTo(index, item, child)">
+              {{ child.menuName }}
+            </a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-      <div v-else :key="index" class="menu-item" :class="[activeIndex === index ? 'active':'']" @click="e => {handleClick(index,item)}">
-        <img :src="item.icon" class="img">  {{ item.menuName }}
+
+      <div
+        v-else
+        :key="index"
+        class="menu-item"
+        :class="{ active: activeIndex === index }"
+        @click="handleClick(index, item)"
+      >
+        <img v-if="item.icon" :src="item.icon" class="menu-icon" alt="">
+        <span class="menu-text">{{ item.menuName }}</span>
       </div>
     </template>
-  </div>
+  </nav>
 </template>
 
 <script>
 import EventBus from '@/lib/event-bus'
 import cookieUtils from '@/lib/cookie-utils'
+
 export default {
   name: 'GMenu',
-  components: {
-
-  },
   data () {
-    const navBars = [
-      {
-        name: '开发者·客栈',
-        path: '/article'
-      },
-      {
-        name: 'QA',
-        path: '/faq'
-      },
-      {
-        name: 'Wiki',
-        path: '/wiki'
-      }
-    ]
-    const activeIndex = -1
-    const current = ''
-    // for (let i = 0; i < navBars.length; i++) {
-    //   if (this.$route.path.includes(navBars[i].path)) {
-    //     activeIndex = i
-    //   }
-    // }
-    const userInfo = this.$store.state.user.userInfo
-    const { q = '' } = this.$route.query
     return {
-      searchVal: q,
-      activeIndex,
-      navBars,
-      userInfo,
-      msgCount: 0,
-      showInfoItem: false,
-      cmStyle: { paddingLeft: 0, paddingRight: 0 },
-      popoverItemStyle: {
-        width: '140px',
-        cursor: 'pointer',
-        padding: '8px 0',
-        fontSize: '15px',
-        marginBottom: 0
-      },
-      current,
+      searchVal: this.$route.query.q || '',
+      activeIndex: -1,
+      userInfo: this.$store.state.user.userInfo,
+      current: '',
       userMenu: []
-      // userMenu: [
-      //   {
-      //     label: '首页',
-      //     child: [],
-      //     path: '/home',
-      //     icon: require('@/assets/images/menu/home.png')
-      //   },
-      //   {
-      //     label: '知识库',
-      //     path: '/wiki',
-      //     icon: require('@/assets/images/menu/wiki.png')
-      //   },
-      //   {
-      //     label: '互动论坛',
-      //     path: '/article',
-      //     child: [],
-      //     icon: require('@/assets/images/menu/forum.png')
-      //   },
-      //   {
-      //     label: '开发平台&通用框架',
-      //     path: '/platform',
-      //     child: [],
-      //     icon: require('@/assets/images/menu/platform.png')
-      //   },
-      //   {
-      //     label: '资讯广场',
-      //     path: '/info',
-      //     child: [{
-      //       label: '活动新闻',
-      //       path: '/info?type=news'
-      //     },
-      //     {
-      //       label: '专家墙',
-      //       path: '/info?type=expert'
-      //     },
-      //     {
-      //       label: '荣誉墙',
-      //       path: '/info?type=honor'
-      //     },
-      //     {
-      //       label: '优秀团队',
-      //       path: '/info?type=team'
-      //     },
-      //     {
-      //       label: '贡献达人',
-      //       path: '/info?type=talent'
-      //     },
-      //     {
-      //       label: '沙龙',
-      //       path: '/info?type=salon'
-      //     },
-      //     {
-      //       label: '月刊',
-      //       path: '/info?type=journal'
-      //     }],
-      //     icon: require('@/assets/images/menu/info.png')
-      //   }
-      // ]
+    }
+  },
+
+  computed: {
+    // 计算当前路由相关的 current 值
+    computedCurrent () {
+      const { path, query } = this.$route
+      const routeCurrentMap = {
+        '/wiki': `${path}?wikiId=${query.wikiId || ''}`,
+        '/article': `${path}?tagId=${query.tagId || ''}`,
+        '/info': `${path}?type=${query.type || ''}`,
+        '/platform': `${path}?platformId=${query.platformId || ''}`
+      }
+      return routeCurrentMap[path] || ''
     }
   },
   watch: {
-    // 路由状态变更
     '$store.state.user.userInfo' (userInfo, old) {
       this.userInfo = userInfo
-      if (userInfo && (userInfo.roleId) !== old.roleId) {
+      if (userInfo && userInfo.roleId !== old?.roleId) {
         this.fetchMenuList()
       }
     },
-    '$route' (to) {
-      console.log('coimings')
-      let hasNav = false
-      let navIndex = 0
-      // this.navBars.forEach((item, index) => {
-      //   if (to.path === item.path) {
-      //     hasNav = true
-      //     navIndex = index
-      //   }
-      // })
-      if (to.path === '/wiki') {
-        this.current = to.path + '?wikiId=' + to.query.wikiId
-      }
-      if (to.path === '/article') {
-        this.current = to.path + '?tagId=' + to.query.tagId
-      }
-      if (to.path === '/info') {
-        console.log(to, 'to')
-        this.current = to.path + '?type=' + to.query.type
-      }
-      if (to.path === '/platform') {
-        console.log(to, 'to')
-        this.current = to.path + '?platformId=' + to.query.platformId
-      }
-      for (let i = 0; i < this.userMenu.length; i++) {
-        if (this.userMenu[i]?.path && this.userMenu[i].path === to.path) {
-          hasNav = true
-          navIndex = i
-        } else if (this.userMenu[i]?.children && this.userMenu[i].children.length > 0) {
-          const paths = this.userMenu[i].children.map(i => i.path)
-          if (this.userMenu[i].path === '/wiki' && (/\/wiki\/.*\/?$/).test(to.path)) {
-            hasNav = true
-            navIndex = i
-          } else if (this.userMenu[i].path === '/article' && (/\/article\/.*\/?$/).test(to.path)) {
-            hasNav = true
-            navIndex = i
-          } else if (this.userMenu[i].path === '/info' && (/\/info\/.*\/?$/).test(to.path)) {
-            hasNav = true
-            navIndex = i
-          } else if (this.userMenu[i].path === '/platform' && (/\/platform\/.*\/?$/).test(to.path)) {
-            hasNav = true
-            navIndex = i
-          } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
-            hasNav = true
-            navIndex = i
-          }
-        }
-      }
-      this.activeIndex = hasNav ? navIndex : -1
+
+    $route (to) {
+      this.updateCurrentPath(to)
+      this.updateActiveIndex(to)
     }
   },
   beforeMount () {
@@ -202,155 +106,385 @@ export default {
       this.current = this.$route.path + '?type=' + this.$route.query.type
     }
     if (this.$route.path === '/platform') {
-      this.current = this.$route.path + '?platformId=' + this.$route.query.platformId
+      this.current =
+        this.$route.path + '?platformId=' + this.$route.query.platformId
     }
   },
   beforeDestroy () {
     EventBus.$off('G_UPDATE_MSG_COUNT', this.getMessageCount)
   },
   methods: {
+    // 检查菜单项是否有子菜单
+    hasChildren (item) {
+      return Array.isArray(item.children) && item.children.length > 0
+    },
+
+    // 更新当前路径
+    updateCurrentPath (to) {
+      const { path, query } = to
+      const pathHandlers = {
+        '/wiki': () => `${path}?wikiId=${query.wikiId || ''}`,
+        '/article': () => `${path}?tagId=${query.tagId || ''}`,
+        '/info': () => `${path}?type=${query.type || ''}`,
+        '/platform': () => `${path}?platformId=${query.platformId || ''}`
+      }
+
+      if (pathHandlers[path]) {
+        this.current = pathHandlers[path]()
+      }
+    },
+
+    // 更新活跃索引
+    updateActiveIndex (to) {
+      let hasNav = false
+      let navIndex = 0
+
+      for (let i = 0; i < this.userMenu.length; i++) {
+        const menuItem = this.userMenu[i]
+
+        if (this.isDirectMatch(menuItem, to.path)) {
+          hasNav = true
+          navIndex = i
+          break
+        }
+
+        if (this.isPatternMatch(menuItem, to.path)) {
+          hasNav = true
+          navIndex = i
+          break
+        }
+
+        if (this.isChildMatch(menuItem, to.path)) {
+          hasNav = true
+          navIndex = i
+          break
+        }
+      }
+
+      this.activeIndex = hasNav ? navIndex : -1
+    },
+
+    // 直接路径匹配
+    isDirectMatch (menuItem, currentPath) {
+      return menuItem.path && menuItem.path === currentPath
+    },
+
+    // 模式匹配（如 /wiki/xxx）
+    isPatternMatch (menuItem, currentPath) {
+      const patterns = {
+        '/wiki': /\/wiki\/.*\/?$/,
+        '/article': /\/article\/.*\/?$/,
+        '/info': /\/info\/.*\/?$/,
+        '/platform': /\/platform\/.*\/?$/
+      }
+
+      return menuItem.path && patterns[menuItem.path]?.test(currentPath)
+    },
+
+    // 子菜单路径匹配
+    isChildMatch (menuItem, currentPath) {
+      if (!this.hasChildren(menuItem)) return false
+
+      const childPaths = menuItem.children.map(child => child.path)
+      return childPaths.includes(currentPath)
+    },
+
     handleClick (index, item, hasChild) {
       this.activeIndex = index
+
       if (index !== 1) {
         this.current = ''
       }
-      if (item.path && hasChild) {
+
+      if (item.path && hasChild && this.hasChildren(item)) {
         this.$router.push(item.children[0].path)
         return
       }
-      if (item.path) this.$router.push(item.path)
+
+      if (item.path) {
+        this.$router.push(item.path)
+      }
     },
+
     handleGoTo (index, item, menu) {
       this.activeIndex = index
-      this.$router.push(`${menu.path}`)
+      this.$router.push(menu.path)
     },
-    hanleMenuClick (e) {
+
+    handleMenuClick (e) {
       this.current = e.key
     },
-    fetchMenuList () {
-      this.$api.getRoleMenuList({ roleId: cookieUtils.getToken() ? this.$store.state.user.userInfo ? this.$store.state.user.userInfo.roleId : '-1' : '-1' }).then((res) => {
-        this.userMenu = res.map((item) => {
-          item.children = item.children.filter(i => i.isSelect === 1)
-          return item
-        }).filter(k => k.isSelect === 1)
-        this.$store.commit('menu/insertMenuInfo', {
-          list: this.userMenu
-        })
-        if (this.userMenu.length > 0) {
-          for (let i = 0; i < this.userMenu.length; i++) {
-            if (this.userMenu[i]?.path && this.userMenu[i].path === this.$route.path) {
-              this.activeIndex = i
-            } else if (this.userMenu[i]?.children && this.userMenu[i].children.length > 0) {
-              const paths = this.userMenu[i].children.map(i => i.path)
-              if (this.userMenu[i].path === '/wiki' && (/\/wiki\/.*\/?$/).test(this.$route.path)) {
-                this.activeIndex = i
-                this.current = this.$route.path
-              } else if (this.userMenu[i].path === '/article' && (/\/article\/.*\/?$/).test(this.$route.path)) {
-                this.activeIndex = i
-                this.current = this.$route.path
-              } else if (this.userMenu[i].path === '/info' && (/\/info\/.*\/?$/).test(this.$route.path)) {
-                this.activeIndex = i
-                this.current = this.$route.path
-              } else if (this.userMenu[i].path === '/platform' && (/\/platform\/.*\/?$/).test(this.$route.path)) {
-                this.activeIndex = i
-                this.current = this.$route.path
-              } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
-                this.activeIndex = i
-              }
-            }
-          }
-        }
+
+    // 获取消息数量（如果需要）
+    getMessageCount () {
+      // 如果有消息相关功能，可以在这里实现
+      console.log('Getting message count...')
+    },
+    /**
+     * 获取用户菜单列表
+     * @returns {Promise}
+     */
+    async fetchMenuList () {
+      try {
+        const roleId = this.getCurrentRoleId()
+        const menuData = await this.$api.getRoleMenuList({ roleId })
+
+        // 处理菜单数据
+        this.userMenu = this.processMenuData(menuData)
+
+        // 更新 Vuex store
+        this.updateMenuStore()
+
+        // 设置当前活跃菜单
+        this.setActiveMenuOnInit()
+      } catch (error) {
+        console.error('获取菜单列表失败:', error)
+        this.userMenu = []
+        // 可以添加错误提示
+        // this.$message.error('获取菜单失败，请刷新页面重试')
+      }
+    },
+
+    /**
+     * 获取当前用户角色ID
+     * @returns {string} 角色ID或'-1'
+     */
+    getCurrentRoleId () {
+      const hasToken = cookieUtils.getToken()
+      const userInfo = this.$store.state.user.userInfo
+
+      if (!hasToken || !userInfo) {
+        return '-1'
+      }
+
+      return userInfo.roleId || '-1'
+    },
+
+    /**
+     * 处理菜单数据，过滤选中的菜单项
+     * @param {Array} menuData 原始菜单数据
+     * @returns {Array} 处理后的菜单数据
+     */
+    processMenuData (menuData) {
+      if (!Array.isArray(menuData)) {
+        return []
+      }
+
+      return menuData
+        .map(item => ({
+          ...item,
+          children: this.filterSelectedChildren(item.children)
+        }))
+        .filter(item => item.isSelect === 1)
+    },
+
+    /**
+     * 过滤选中的子菜单
+     * @param {Array} children 子菜单数组
+     * @returns {Array} 过滤后的子菜单
+     */
+    filterSelectedChildren (children) {
+      if (!Array.isArray(children)) {
+        return []
+      }
+
+      return children.filter(child => child.isSelect === 1)
+    },
+
+    /**
+     * 更新菜单信息到 Vuex store
+     */
+    updateMenuStore () {
+      this.$store.commit('menu/insertMenuInfo', {
+        list: this.userMenu
       })
+    },
+
+    /**
+     * 初始化时设置活跃菜单
+     */
+    setActiveMenuOnInit () {
+      if (this.userMenu.length === 0) {
+        this.activeIndex = -1
+        return
+      }
+
+      const currentPath = this.$route.path
+
+      for (let i = 0; i < this.userMenu.length; i++) {
+        const menuItem = this.userMenu[i]
+
+        // 直接路径匹配
+        if (this.isDirectMatch(menuItem, currentPath)) {
+          this.activeIndex = i
+          return
+        }
+
+        // 模式匹配（如 /wiki/xxx）
+        if (this.isPatternMatch(menuItem, currentPath)) {
+          this.activeIndex = i
+          this.current = currentPath
+          return
+        }
+
+        // 子菜单匹配
+        if (this.isChildMatch(menuItem, currentPath)) {
+          this.activeIndex = i
+          return
+        }
+      }
+
+      // 如果没有匹配到任何菜单，重置为-1
+      this.activeIndex = -1
     }
-    // fetchWikiList () {
-    //   this.$api.getWikiList({
-    //     pageNo: 1,
-    //     pageSize: 100,
-    //     filter: { categoryId: '' }
-    //   }).then((res) => {
-    //     if (res?.length > 0)
-    //       this.userMenu[1].children = res.map((i) => {
-    //         return {
-    //           label: i.name,
-    //           path: this.userMenu[1].path + '?wikiId=' + i.id
-    //         }
-    //       })
-    //     this.current = this.userMenu[1].children[0].path
-    //     if (this.userMenu.length > 0) {
-    //       for (let i = 0; i < this.userMenu.length; i++) {
-    //         if (this.userMenu[i]?.path && this.userMenu[i].path === this.$route.path) {
-    //           this.activeIndex = i
-    //         } else if (this.userMenu[i]?.children && this.userMenu[i].children.length > 0) {
-    //           const paths = this.userMenu[i].children.map(i => i.path)
-    //           if (this.userMenu[i].path === '/wiki' && (/\/wiki\/.*\/?$/).test(this.$route.path)) {
-    //             this.activeIndex = i
-    //           } else if (this.userMenu[i].path === '/article' && (/\/article\/.*\/?$/).test(this.$route.path)) {
-    //             this.activeIndex = i
-    //             this.current = this.$route.path
-    //           } else if (this.userMenu[i].path === '/info' && (/\/info\/.*\/?$/).test(this.$route.path)) {
-    //             this.activeIndex = i
-    //             this.current = this.$route.path
-    //           } else if (this.userMenu[i].path === '/platform' && (/\/platform\/.*\/?$/).test(this.$route.path)) {
-    //             this.activeIndex = i
-    //             this.current = this.$route.path
-    //           } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
-    //             this.activeIndex = i
-    //           }
-    //         }
-    //       }
-    //     }
-    //   })
-    // },
-    // fetchTagList () {
-    //   this.$api.getTagsByRef().then((res) => {
-    //     if (res?.length > 0)
-    //       this.userMenu[2].children = res.map((i) => {
-    //         return {
-    //           label: i.name,
-    //           path: `${this.userMenu[2].path}?tagId=${i.id}`
-    //         }
-    //       })
-    //   })
-    // },
-    // fetchPlatformTagList () {
-    //   this.$api.getPlatformTag({ category: 'PLATFORM' }).then((res) => {
-    //     if (res?.length > 0) {
-    //       this.userMenu[3].children = res.map((i) => {
-    //         return {
-    //           label: i.name,
-    //           path: `${this.userMenu[3].path}?platformId=${i.id}`
-    //         }
-    //       })
-    //     }
-    //   })
-    // }
   }
 }
 </script>
 
-  <style lang="less" scoped>
-  .menu-container {
-    width:100%;
-    height:60px;
-    background: rgb(37, 56, 81);
-    padding: 0 96px;
-    display:flex;
-    .menu-item {
-      padding: 22px 20px;
-      color:white;
-      cursor: pointer;
-      display:flex;
-      align-items:center;
-      column-gap: 6px;
-      .img {
-        width:14px;
-        height: 14px;
+<style lang="less" scoped>
+.menu-container {
+  width: 100%;
+  height: 60px;
+  background: rgb(37, 56, 81);
+  padding: 0 96px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
+  @media (max-width: 1200px) {
+    padding: 0 48px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 24px;
+    height: 56px;
+  }
+
+  .menu-item {
+    position: relative;
+    padding: 18px 20px;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+    border-radius: 0;
+    transition: all 0.3s ease;
+    user-select: none;
+
+    @media (max-width: 768px) {
+      padding: 14px 16px;
+      gap: 6px;
+    }
+
+    &:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .menu-icon {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      flex-shrink: 0;
+
+      @media (max-width: 768px) {
+        width: 14px;
+        height: 14px;
       }
     }
-    .active {
+
+    .menu-text {
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+      }
+    }
+
+    .dropdown-icon {
+      font-size: 12px;
+      margin-left: 4px;
+      transition: transform 0.2s ease;
+
+      @media (max-width: 768px) {
+        font-size: 10px;
+      }
+    }
+
+    &.active {
+      color: #ffffff;
       background: rgb(21, 36, 56);
-      border-bottom: 4px solid rgb(0, 112, 255);
+      // border-bottom: 2px solid rgb(0, 112, 255);
+      .dropdown-icon {
+        transform: rotate(180deg);
+      }
     }
   }
-  </style>
+}
+
+// 下拉菜单样式优化
+::v-deep .ant-dropdown {
+  .dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: none;
+    overflow: hidden;
+
+    .dropdown-item {
+      margin: 0;
+
+      a {
+        display: block;
+        padding: 12px 20px;
+        color: #333;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 14px;
+
+        &:hover {
+          background: #f5f5f5;
+          color: rgb(0, 112, 255);
+        }
+      }
+
+      &.ant-menu-item-selected {
+        background: rgba(0, 112, 255, 0.1);
+
+        a {
+          color: rgb(0, 112, 255);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// 添加一个平滑的加载动画
+.menu-item {
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background: rgb(0, 112, 255);
+    transition: width 0.3s ease;
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
+
+  &.active::before {
+    width: 100%;
+    height: 4px;
+  }
+}
+</style>

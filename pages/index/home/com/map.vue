@@ -4,14 +4,16 @@
       <template>
         <div v-if="mapList.length > 0" class="map">
           <a-carousel>
-            <div v-for="(item,index) of mapList" :key="index" class="map-list">
+            <div v-for="(item, index) of mapList" :key="index" class="map-list">
               <div
-                v-for="(k,i) of item.child"
+                v-for="(k, i) of item.child"
                 :key="i"
                 class="map-item"
-                @click="e => {
-                  handleGoto(`/wiki?wikiId=${k.id}`)
-                }"
+                @click="
+                  (e) => {
+                    handleGoto(`/wiki?wikiId=${k.id}`);
+                  }
+                "
               >
                 <img class="img" :src="k.headImg">
                 <div class="map-title">
@@ -69,44 +71,43 @@ export default {
 }
 </script>
 <style scoped lang="less">
-  .map{
-      padding: 36px 0px;
-    .map-list{
-      display: flex !important;
-      column-gap: 30px;
-      justify-content: center;
-      .map-item {
-        max-width: 250px;
-        border-radius: 4px;
-        box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.12);
-        padding: 14px;
-        .img {
-          width: 218px;
-          height: 140px;
-        }
-        .map-title {
-          margin: 26px 0px 6px 0px;
-          width: 100%;
-          color: rgb(40, 40, 40);
+.map {
+  padding: 36px 0px;
+  .map-list {
+    display: flex !important;
+    column-gap: 30px;
+    justify-content: center;
+    .map-item {
+      max-width: 250px;
+      border-radius: 4px;
+      box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.12);
+      padding: 14px;
+      .img {
+        width: 218px;
+        height: 140px;
+      }
+      .map-title {
+        margin: 26px 0px 6px 0px;
+        width: 100%;
+        color: rgb(40, 40, 40);
 
-      font-size: 16px;
-      font-weight: 400;
-          display: flex;
-          justify-content: center;
-        }
+        font-size: 16px;
+        font-weight: 400;
+        display: flex;
+        justify-content: center;
       }
     }
-    ::v-deep .ant-carousel .slick-slide {
+  }
+  ::v-deep .ant-carousel .slick-slide {
     height: 260px !important;
     // line-height: 160px;
     // background: #364d79 !important;
     overflow: hidden;
+  }
 }
-
-  }
-  .map-empty {
-    display:flex;
-    justify-content: center;
-    align-items:center;
-  }
+.map-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
