@@ -1,7 +1,8 @@
 import information from './seo-info'
 import globalConfig from './global'
+import CompressionPlugin from 'compression-webpack-plugin'
 
-const isProd = process.env.NODE_ENV == 'production'
+const isProd = process.env.NODE_ENV === 'production'
 
 console.log('NODE_ENV: ', process.env.NODE_ENV)
 
@@ -118,29 +119,41 @@ export default {
     transpile: ['ant-design-vue','autofit.js'],
     // analyze: true,
     optimization: {
-      splitChunks: {
-        chunks: 'all',
-        minSize: 50000,
-        maxSize: 200000,
-        minChunks: 2,
-        automaticNameDelimiter: '.',
-        maxAsyncRequests: 10,
-        cacheGroups: {
-          wangeditor: {
-            test: /node_modules[\\/]wangeditor/,
-            chunks: 'all',
-            priority: 20,
-            name: true
-          },
-          antdesignvue: {
-            test: /node_modules[\\/]ant-design-vue/,
-            chunks: 'all',
-            priority: 20,
-            name: true
+        splitChunks: {
+          chunks: 'all',
+          minSize: 50000,
+          maxSize: 200000,
+          minChunks: 2,
+          automaticNameDelimiter: '.',
+          maxAsyncRequests: 10,
+          cacheGroups: {
+            wangeditor: {
+              test: /node_modules[\\/]wangeditor/,
+              chunks: 'all',
+              priority: 20,
+              name: true
+            },
+            antdesignvue: {
+              test: /node_modules[\\/]ant-design-vue/,
+              chunks: 'all',
+              priority: 20,
+              name: true
+            }
           }
         }
+      },
+      plugins: [
+        new CompressionPlugin({
+          test: /\.(js|css|html|svg)$/,
+          threshold: 8192,
+          minRatio: 0.8
+        })
+      ],
+      babel: {
+        plugins: [
+          ['import', { libraryName: 'ant-design-vue', style: true }]
+        ]
       }
-    }
   },
 
   eslint: {
@@ -172,6 +185,6 @@ export default {
   },
   server: {
     host: '0.0.0.0', // 关键修改！允许外部访问
-    port: 4000
+    port: 3000
   }
 }
