@@ -12,23 +12,14 @@
       @cancel.stop.prevent="clearTimer()"
     >
       <div class="qrcode-box">
-        <img
-          v-if="loginQrCode"
-          class="wx-login-qrcode"
-          :src="loginQrCode"
-          alt=""
-        >
+        <img v-if="loginQrCode" class="wx-login-qrcode" :src="loginQrCode" alt="">
         <Spin v-else />
         <span v-if="tips" class="mask">
           <span class="time-out" @click="refreshCode">{{ tips }}</span>
         </span>
       </div>
       <p class="email-login-btn">
-        <span
-          v-if="showEimail"
-          class="g-hover"
-          @click="onEmailLogin"
-        >邮箱登录</span>
+        <span v-if="showEimail" class="g-hover" @click="onEmailLogin">邮箱登录</span>
       </p>
     </Modal>
   </div>

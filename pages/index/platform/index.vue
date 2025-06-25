@@ -21,20 +21,13 @@
     </div> -->
       <div class="article-content">
         <div class="article-header">
-          <HomeTitle
-            :title-tags="titleTags"
-            :current-tag-index.sync="currentTagIndex"
-          />
+          <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
           <a-button v-if="userInfo" type="primary" @click="handleWrite">
             写文章
           </a-button>
         </div>
         <div v-infinite-scroll="loadData" class="home-list-box">
-          <PlatformItem
-            v-for="(item, index) in articleList"
-            :key="index"
-            :article="item"
-          />
+          <PlatformItem v-for="(item, index) in articleList" :key="index" :article="item" />
         </div>
         <g-empty :list="articleList" :finished="finished" :loading="loading" />
       </div>
@@ -215,9 +208,7 @@ export default {
       this.clearStatus()
       this.loadData()
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(
-          item => item.path === to.fullPath
-        )
+        this.menuIndex = this.menuList.findIndex(item => item.path === to.fullPath)
       } else {
         this.menuIndex = -1
       }
@@ -231,9 +222,7 @@ export default {
       }
       this.menuList = menuList
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(
-          item => item.path === this.$route.fullPath
-        )
+        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
       } else {
         this.menuIndex = -1
       }
@@ -248,21 +237,12 @@ export default {
       this.clearStatus()
       this.loadData()
     })
-    const res = this.$store.state.menu.menuList.filter(
-      i => i.path === '/platform'
-    )
+    const res = this.$store.state.menu.menuList.filter(i => i.path === '/platform')
     if (res?.length > 0 && res[0].children) {
       this.menuList = res[0].children
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(
-          item => item.path === this.$route.fullPath
-        )
-        console.log(
-          'menuIndex',
-          this.menuList,
-          this.$route.tagId,
-          this.menuIndex
-        )
+        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+        console.log('menuIndex', this.menuList, this.$route.tagId, this.menuIndex)
       }
     } else {
       this.menuIndex = -1
@@ -298,8 +278,7 @@ export default {
         })
         .then((list) => {
           if (list) {
-            this.articleList =
-              this.pageNo === 1 ? list : [...this.articleList, ...list]
+            this.articleList = this.pageNo === 1 ? list : [...this.articleList, ...list]
             this.pageNo++
             this.finished = list.length < this.pageSize
           }
@@ -409,8 +388,8 @@ export default {
       left: 0;
       right: 0;
       bottom: 0;
-      content: "";
-      background-image: url("https://cdn.jsdelivr.net/gh/umlink/umlink-figure-bed_1@master/images/1633585808102WechatIMG14.jpeg");
+      content: '';
+      background-image: url('https://cdn.jsdelivr.net/gh/umlink/umlink-figure-bed_1@master/images/1633585808102WechatIMG14.jpeg');
       background-repeat: no-repeat;
       background-size: cover;
       opacity: 0.3;

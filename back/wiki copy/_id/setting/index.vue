@@ -12,11 +12,7 @@
           <div class="input-form">
             <div class="input-item">
               <span class="label">知识库名称：</span>
-              <a-input
-                v-model="wiki.name"
-                placeholder="请输入知识库名称"
-                :disabled="disabled"
-              />
+              <a-input v-model="wiki.name" placeholder="请输入知识库名称" :disabled="disabled" />
             </div>
             <div class="input-item">
               <span class="label">知识库名称：</span>
@@ -64,13 +60,8 @@
             </div>
           </div>
         </div>
-        <h4 class="desc-title">
-          其它信息<span class="g-sub-title">（更新日志等）</span>
-        </h4>
-        <ByteMarkdownEditor
-          :markdown-content="markdownContent"
-          @change="handleMarkdownChange"
-        />
+        <h4 class="desc-title">其它信息<span class="g-sub-title">（更新日志等）</span></h4>
+        <ByteMarkdownEditor :markdown-content="markdownContent" @change="handleMarkdownChange" />
       </a-tab-pane>
       <a-tab-pane key="2" tab="协作者" force-render>
         <UserList :wiki-id="wikiId" />
@@ -83,12 +74,12 @@
 </template>
 
 <script>
-import Cropper from "@/pages/components/cropper";
-import UserList from "./components/user-list";
-import PendingArticleList from "./components/pending-article-list";
-import ByteMarkdownEditor from "~/pages/components/byte-markdown-editor/index.vue";
+import Cropper from '@/pages/components/cropper'
+import UserList from './components/user-list'
+import PendingArticleList from './components/pending-article-list'
+import ByteMarkdownEditor from '~/pages/components/byte-markdown-editor/index.vue'
 export default {
-  name: "WikiSetting",
+  name: 'WikiSetting',
   components: {
     Cropper,
     UserList,
@@ -96,14 +87,14 @@ export default {
     ByteMarkdownEditor,
   },
   async asyncData({ route, $api }) {
-    const wikiId = route.params.id;
-    const wiki = await $api.getWikiNodeListInfoById(wikiId);
-    console.log();
+    const wikiId = route.params.id
+    const wiki = await $api.getWikiNodeListInfoById(wikiId)
+    console.log()
     return {
       wiki,
       wikiId,
       markdownContent: wiki.desc,
-    };
+    }
   },
   data() {
     return {
@@ -111,63 +102,63 @@ export default {
       loading: false,
       activeCategoryIndex: -1,
       categoryList: [],
-    };
+    }
   },
   mounted() {
-    this.getWikiCategoryList();
+    this.getWikiCategoryList()
   },
   methods: {
     handleMarkdownChange(md) {
-      this.markdownContent = md;
+      this.markdownContent = md
     },
     delWiki() {
       this.$confirm({
-        title: "确认要删除当前知识库吗？",
+        title: '确认要删除当前知识库吗？',
         content: (h) => (
           <div style="color: #606a78;">
             警告：删除该知识库后，知识库下所有内容也将删除，清谨慎操作
           </div>
         ),
-        okText: "确认",
-        cancelText: "取消",
+        okText: '确认',
+        cancelText: '取消',
         onOk: () => {
           this.$api.delWiki(this.wikiId).then((res) => {
             if (res.success) {
-              this.$message.success("删除成功");
+              this.$message.success('删除成功')
               setTimeout(() => {
-                location.replace("/wiki");
-              }, 2000);
+                location.replace('/wiki')
+              }, 2000)
             } else {
-              this.$message.error(res.message);
+              this.$message.error(res.message)
             }
-          });
+          })
         },
-      });
+      })
     },
     onImgChange(url) {
-      this.headImg = url;
-      this.wiki.headImg = url;
+      this.headImg = url
+      this.wiki.headImg = url
     },
     getWikiCategoryList() {
       this.$api.getWikiCategoryList().then((list) => {
-        this.categoryList = list;
-        const categoryId = this.wiki.categoryId;
+        this.categoryList = list
+        const categoryId = this.wiki.categoryId
         if (categoryId) {
           list.forEach((item, index) => {
-            if (item.id === categoryId) this.activeCategoryIndex = index;
-          });
+            if (item.id === categoryId) this.activeCategoryIndex = index
+          })
         }
-      });
+      })
     },
     onUpdateWiki() {
-      if (this.loading) return;
-      this.loading = true;
-      const { id, name, summary, headImg, show } = this.wiki;
-      const { categoryList, activeCategoryIndex } = this;
+      if (this.loading) return
+      this.loading = true
+      const { id, name, summary, headImg, show } = this.wiki
+      const { categoryList, activeCategoryIndex } = this
       if (!name || !summary || activeCategoryIndex === -1) {
-        this.$message.error("知识库名称、类别、摘要不能为空");
-        this.loading = false;
-        return;
+        this.$message.error('知识库名称、类别、摘要不能为空')
+        this.loading = false
+        return
       }
       this.$api
         .updateWiki({
@@ -180,23 +171,23 @@ export default {
           categoryId: categoryList[activeCategoryIndex].id,
         })
         .then((res) => {
-          this.loading = false;
+          this.loading = false
           if (res.success) {
-            this.$message.success("更新成功");
+            this.$message.success('更新成功')
             setTimeout(() => {
-              location.reload();
-            }, 1500);
+              location.reload()
+            }, 1500)
           } else {
-            this.$message.error(res.message);
+            this.$message.error(res.message)
           }
-        });
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="less">
-@import "~/pages/components/byte-markdown-editor/theme.less";
+@import '~/pages/components/byte-markdown-editor/theme.less';
 .page-wiki-setting {
   padding: @g-padding @g-padding * 2;
   .wiki-base-info {

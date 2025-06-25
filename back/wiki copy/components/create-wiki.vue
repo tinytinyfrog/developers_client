@@ -50,9 +50,7 @@
           <a-checkbox v-model="show" />
         </div>
         <div class="input-item submit-box">
-          <a-button class="submit-btn" type="primary" @click="creatWiki">
-            保存
-          </a-button>
+          <a-button class="submit-btn" type="primary" @click="creatWiki"> 保存 </a-button>
         </div>
       </div>
     </div>
@@ -60,12 +58,11 @@
 </template>
 
 <script>
-import Cropper from "@/pages/components/cropper";
-import EventBus from "@/lib/event-bus";
-const defaultHeadImg =
-  "https://static.developers.pub/e50b00dc8fa3437590df5c5561c8e97b";
+import Cropper from '@/pages/components/cropper'
+import EventBus from '@/lib/event-bus'
+const defaultHeadImg = 'https://static.developers.pub/e50b00dc8fa3437590df5c5561c8e97b'
 export default {
-  name: "CreateWiki",
+  name: 'CreateWiki',
   components: {
     Cropper,
   },
@@ -81,40 +78,33 @@ export default {
   },
   data() {
     return {
-      name: "",
-      summary: "",
+      name: '',
+      summary: '',
       show: false,
       loading: false,
       headImg: defaultHeadImg,
       activeCategoryIndex: -1,
-    };
+    }
   },
   methods: {
     closeDrawer() {
-      this.$emit("update:showDrawer", false);
+      this.$emit('update:showDrawer', false)
     },
     clearData() {
-      this.name = this.summary = "";
-      this.show = false;
-      this.headImg = defaultHeadImg;
+      this.name = this.summary = ''
+      this.show = false
+      this.headImg = defaultHeadImg
     },
     onImgChange(url) {
-      this.headImg = url;
+      this.headImg = url
     },
     creatWiki() {
-      this.loading = true;
-      const {
-        name,
-        summary,
-        headImg,
-        show,
-        categoryList,
-        activeCategoryIndex,
-      } = this;
+      this.loading = true
+      const { name, summary, headImg, show, categoryList, activeCategoryIndex } = this
       if (!name || !summary || activeCategoryIndex === -1) {
-        this.$message.error("知识库名称、类别、摘要不能为空");
-        this.loading = false;
-        return;
+        this.$message.error('知识库名称、类别、摘要不能为空')
+        this.loading = false
+        return
       }
       this.$api
         .createWiki({
@@ -125,20 +115,20 @@ export default {
           categoryId: categoryList[activeCategoryIndex].id,
         })
         .then((res) => {
-          this.loading = false;
+          this.loading = false
           if (res.success) {
-            this.$message.success("知识库添加成功");
-            EventBus.$emit("on-update-wiki");
-            this.clearData();
-            this.closeDrawer();
+            this.$message.success('知识库添加成功')
+            EventBus.$emit('on-update-wiki')
+            this.clearData()
+            this.closeDrawer()
           }
         })
         .catch(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

@@ -2,10 +2,7 @@
   <div v-if="sliderData.list.length" class="slider-common-box">
     <div class="title">
       <span>{{ sliderData.title
-      }}<span
-        v-if="sliderData.total"
-        class="total"
-      >（{{ sliderData.total }}）</span></span>
+      }}<span v-if="sliderData.total" class="total">（{{ sliderData.total }}）</span></span>
     </div>
     <div class="slider-list">
       <router-link

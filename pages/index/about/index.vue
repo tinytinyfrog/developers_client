@@ -1,9 +1,7 @@
 <template>
   <div class="page-about-detail">
     <div>
-      <ByteViewer
-        :markdown-content="article.markdownContent || article.htmlContent"
-      />
+      <ByteViewer :markdown-content="article.markdownContent || article.htmlContent" />
     </div>
   </div>
 </template>
@@ -33,7 +31,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "~/pages/components/byte-markdown-editor/theme.less";
+@import '~/pages/components/byte-markdown-editor/theme.less';
 .page-about-detail {
   border-radius: @g-radius;
   align-self: center;

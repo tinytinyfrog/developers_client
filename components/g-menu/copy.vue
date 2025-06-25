@@ -1,31 +1,24 @@
 <template>
   <div class="menu-container">
     <template v-for="(item, index) of userMenu">
-      <a-dropdown
-        v-if="Array.isArray(item.children) && item.children.length > 0"
-        :key="index"
-      >
+      <a-dropdown v-if="Array.isArray(item.children) && item.children.length > 0" :key="index">
         <div
           class="menu-item"
           :class="[activeIndex === index ? 'active' : '']"
           @click="
             (e) => {
-              handleClick(index, item, true);
+              handleClick(index, item, true)
             }
           "
         >
           <img :src="item.icon" class="img"> {{ item.menuName }}
         </div>
-        <a-menu
-          slot="overlay"
-          :selected-keys="[current]"
-          @click="hanleMenuClick"
-        >
+        <a-menu slot="overlay" :selected-keys="[current]" @click="hanleMenuClick">
           <a-menu-item v-for="k of item.children" :key="k.path">
             <a
               @click="
                 () => {
-                  handleGoTo(index, item, k);
+                  handleGoTo(index, item, k)
                 }
               "
             >{{ k.menuName }}</a>
@@ -39,7 +32,7 @@
         :class="[activeIndex === index ? 'active' : '']"
         @click="
           (e) => {
-            handleClick(index, item);
+            handleClick(index, item)
           }
         "
       >
@@ -192,33 +185,18 @@ export default {
         if (this.userMenu[i]?.path && this.userMenu[i].path === to.path) {
           hasNav = true
           navIndex = i
-        } else if (
-          this.userMenu[i]?.children &&
-          this.userMenu[i].children.length > 0
-        ) {
+        } else if (this.userMenu[i]?.children && this.userMenu[i].children.length > 0) {
           const paths = this.userMenu[i].children.map(i => i.path)
-          if (
-            this.userMenu[i].path === '/wiki' &&
-            /\/wiki\/.*\/?$/.test(to.path)
-          ) {
+          if (this.userMenu[i].path === '/wiki' && /\/wiki\/.*\/?$/.test(to.path)) {
             hasNav = true
             navIndex = i
-          } else if (
-            this.userMenu[i].path === '/article' &&
-            /\/article\/.*\/?$/.test(to.path)
-          ) {
+          } else if (this.userMenu[i].path === '/article' && /\/article\/.*\/?$/.test(to.path)) {
             hasNav = true
             navIndex = i
-          } else if (
-            this.userMenu[i].path === '/info' &&
-            /\/info\/.*\/?$/.test(to.path)
-          ) {
+          } else if (this.userMenu[i].path === '/info' && /\/info\/.*\/?$/.test(to.path)) {
             hasNav = true
             navIndex = i
-          } else if (
-            this.userMenu[i].path === '/platform' &&
-            /\/platform\/.*\/?$/.test(to.path)
-          ) {
+          } else if (this.userMenu[i].path === '/platform' && /\/platform\/.*\/?$/.test(to.path)) {
             hasNav = true
             navIndex = i
           } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
@@ -246,8 +224,7 @@ export default {
       this.current = this.$route.path + '?type=' + this.$route.query.type
     }
     if (this.$route.path === '/platform') {
-      this.current =
-        this.$route.path + '?platformId=' + this.$route.query.platformId
+      this.current = this.$route.path + '?platformId=' + this.$route.query.platformId
     }
   },
   beforeDestroy () {
@@ -293,20 +270,11 @@ export default {
           })
           if (this.userMenu.length > 0) {
             for (let i = 0; i < this.userMenu.length; i++) {
-              if (
-                this.userMenu[i]?.path &&
-                this.userMenu[i].path === this.$route.path
-              ) {
+              if (this.userMenu[i]?.path && this.userMenu[i].path === this.$route.path) {
                 this.activeIndex = i
-              } else if (
-                this.userMenu[i]?.children &&
-                this.userMenu[i].children.length > 0
-              ) {
+              } else if (this.userMenu[i]?.children && this.userMenu[i].children.length > 0) {
                 const paths = this.userMenu[i].children.map(i => i.path)
-                if (
-                  this.userMenu[i].path === '/wiki' &&
-                  /\/wiki\/.*\/?$/.test(this.$route.path)
-                ) {
+                if (this.userMenu[i].path === '/wiki' && /\/wiki\/.*\/?$/.test(this.$route.path)) {
                   this.activeIndex = i
                   this.current = this.$route.path
                 } else if (
@@ -327,10 +295,7 @@ export default {
                 ) {
                   this.activeIndex = i
                   this.current = this.$route.path
-                } else if (
-                  paths?.length > 0 &&
-                  paths.includes(this.$route.path)
-                ) {
+                } else if (paths?.length > 0 && paths.includes(this.$route.path)) {
                   this.activeIndex = i
                 }
               }

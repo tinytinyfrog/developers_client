@@ -7,11 +7,7 @@
         </a>
       </p>
       <p>
-        <a
-          class="record-link"
-          href="https://beian.miit.gov.cn/"
-          target="_blank"
-        >
+        <a class="record-link" href="https://beian.miit.gov.cn/" target="_blank">
           浙ICP备2021032878号-1
         </a>
       </p>

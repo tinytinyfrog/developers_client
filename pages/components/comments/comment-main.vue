@@ -12,10 +12,9 @@
     </div>
     <div class="comment-user-info">
       <div class="base-info">
-        <span
-          class="user-name g-hover"
-          @click="$utils.openUserCenter(comment.commentator.id)"
-        >{{ comment.commentator.nickname }}</span>
+        <span class="user-name g-hover" @click="$utils.openUserCenter(comment.commentator.id)">{{
+          comment.commentator.nickname
+        }}</span>
         <span v-if="comment.commentator.id === article.authorId">[作者]</span>
         <g-space :size="1" />
         <template v-if="comment.commentator.job">
@@ -48,15 +47,8 @@
           'commend-border': showFold,
         }"
       >
-        <byte-viewer
-          id="byte-question-comment-container"
-          :markdown-content="comment.content"
-        />
-        <div
-          v-if="showFold"
-          class="action-fold g-hover"
-          @click="onFold(foldType.state)"
-        >
+        <byte-viewer id="byte-question-comment-container" :markdown-content="comment.content" />
+        <div v-if="showFold" class="action-fold g-hover" @click="onFold(foldType.state)">
           <Button type="link">
             {{ foldType[foldType.state].text }}
             <Icon :type="foldType[foldType.state].iconType" />
@@ -64,21 +56,15 @@
         </div>
       </div>
       <div class="comment-action">
-        <span
-          class="action-item g-hover"
-          :class="{ 'g-main-color': showReply }"
-        >
+        <span class="action-item g-hover" :class="{ 'g-main-color': showReply }">
           <Icon type="message" />
           <span v-auth="{ handler: onReply, stopPrevent: true }">{{
-            showReply ? "取消回复" : "回复"
+            showReply ? '取消回复' : '回复'
           }}</span>
         </span>
         <template v-if="isSelf && !comment.isDelete">
           <g-space />
-          <span
-            v-auth="{ handler: () => deleteReply(comment.id) }"
-            class="action-item g-hover"
-          >
+          <span v-auth="{ handler: () => deleteReply(comment.id) }" class="action-item g-hover">
             <Icon type="delete" />
             <span>删除</span>
           </span>
@@ -162,9 +148,7 @@ export default {
   },
   computed: {
     isSelf () {
-      return (
-        this.article.authorId === _get(this.$store, 'state.user.userInfo.id')
-      )
+      return this.article.authorId === _get(this.$store, 'state.user.userInfo.id')
     },
     isMyQuestion () {
       return this.isSelf && _get(this, 'article.category') === 'FAQ'
@@ -205,17 +189,14 @@ export default {
     deleteReply (id) {
       this.$confirm({
         title: '确认要删除当前评论吗',
-        content: h => (
-          <div style="color: #606a78;">温馨提示：删除后不可恢复！</div>
-        ),
+        content: h => <div style="color: #606a78;">温馨提示：删除后不可恢复！</div>,
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
           this.$api.delCommentByCommentId(id).then((res) => {
             if (res.success) {
               this.$message.success('删除成功')
-              if (typeof this.reloadCommentList === 'function')
-                this.reloadCommentList()
+              if (typeof this.reloadCommentList === 'function') this.reloadCommentList()
               return
             }
             this.$message.success(res.message)
@@ -251,8 +232,7 @@ export default {
         .then((res) => {
           if (res.success) {
             this.replyValue = ''
-            if (typeof this.reloadCommentList === 'function')
-              this.reloadCommentList()
+            if (typeof this.reloadCommentList === 'function') this.reloadCommentList()
             this.showReply = false
           } else {
             this.$message.error(res.message)

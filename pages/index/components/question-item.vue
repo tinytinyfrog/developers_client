@@ -2,11 +2,7 @@
   <div class="home-question-item">
     <div
       class="question-item"
-      @click="
-        onNative(
-          `/${question.category === 'WIKI' ? 'wiki' : 'faq'}/${question.id}`
-        )
-      "
+      @click="onNative(`/${question.category === 'WIKI' ? 'wiki' : 'faq'}/${question.id}`)"
     >
       <div class="other-msg">
         <p class="vice-title-message">
@@ -23,9 +19,7 @@
             class="question-user-name g-hover"
             @click.stop.prevent="$utils.openUserCenter(question.authorId)"
           >{{ question.authorNickname }}</span><g-space />
-          <span class="question-time">{{
-            question.createAt | dateCountDown
-          }}</span>
+          <span class="question-time">{{ question.createAt | dateCountDown }}</span>
           <span class="question-tags-box">
             <g-space />
             <span
@@ -51,9 +45,7 @@
         </h2>
       </div>
       <p
-        v-dompurify-html="
-          question.introduction.replace(textReg, '').slice(0, 200)
-        "
+        v-dompurify-html="question.introduction.replace(textReg, '').slice(0, 200)"
         class="question-content g-hidden-line2"
       />
       <div v-if="question.solution" class="solution-answer">
@@ -68,13 +60,8 @@
           {{ question.views }}
         </span>
         <g-space />
-        <span
-          class="operation-item"
-          @click.stop.prevent="openFaqByComment(question.id)"
-        >
-          <Icon class="operation-icon g-hover" type="message" />{{
-            question.comments
-          }}
+        <span class="operation-item" @click.stop.prevent="openFaqByComment(question.id)">
+          <Icon class="operation-icon g-hover" type="message" />{{ question.comments }}
         </span>
       </div>
     </div>

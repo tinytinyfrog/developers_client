@@ -14,60 +14,60 @@
 </template>
 
 <script>
-import EventBus from "@/lib/event-bus";
-import { replaceUrlByQuery } from "@/lib/utils";
+import EventBus from '@/lib/event-bus'
+import { replaceUrlByQuery } from '@/lib/utils'
 
 export default {
-  name: "CategoryTags",
+  name: 'CategoryTags',
   data() {
     return {
-      activeCategory: "全部",
+      activeCategory: '全部',
       currentIndex: 0,
       tagGroup: this.$store.state.tag.tagGroup,
-    };
+    }
   },
   watch: {
-    "$route.query": {
+    '$route.query': {
       deep: true,
       handler(val) {
-        this.currentIndex = 0;
-        this.activeCategory = "全部";
+        this.currentIndex = 0
+        this.activeCategory = '全部'
       },
     },
   },
   mounted() {
-    EventBus.$on("G_CLEAR_GROUP", () => {
-      this.handleCategory("全部");
-    });
-    this.checkCategory();
+    EventBus.$on('G_CLEAR_GROUP', () => {
+      this.handleCategory('全部')
+    })
+    this.checkCategory()
   },
   methods: {
     scrollToTop() {
-      const c = document.documentElement.scrollTop || document.body.scrollTop;
+      const c = document.documentElement.scrollTop || document.body.scrollTop
       if (c > 0) {
-        window.requestAnimationFrame(this.scrollToTop);
-        window.scrollTo(0, c - c / 8);
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - c / 8)
       }
     },
     handleCategory(category) {
-      this.activeCategory = category;
-      replaceUrlByQuery({ category, tagId: "" });
-      EventBus.$emit("G_CATEGORY", category);
-      this.scrollToTop();
+      this.activeCategory = category
+      replaceUrlByQuery({ category, tagId: '' })
+      EventBus.$emit('G_CATEGORY', category)
+      this.scrollToTop()
     },
     checkCategory() {
-      const categoryName = this.$route.query.category;
+      const categoryName = this.$route.query.category
       if (categoryName) {
         this.tagGroup.forEach((category, index) => {
           if (decodeURIComponent(categoryName) === category) {
-            this.currentIndex = index;
-            this.activeCategory = category;
+            this.currentIndex = index
+            this.activeCategory = category
           }
-        });
+        })
       }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

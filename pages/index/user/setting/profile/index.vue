@@ -14,12 +14,7 @@
                 :before-upload="beforeUpload"
                 @change="handleChange"
               >
-                <img
-                  :style="previewStyle"
-                  class="preview-img"
-                  :src="imageUrl"
-                  alt="avatar"
-                >
+                <img :style="previewStyle" class="preview-img" :src="imageUrl" alt="avatar">
               </Upload>
             </FormModeItem>
             <FormModeItem ref="nickname" label="昵称" required prop="nickname">
@@ -27,7 +22,7 @@
                 v-model="form.nickname"
                 @blur="
                   () => {
-                    $refs.nickname.onFieldBlur();
+                    $refs.nickname.onFieldBlur()
                   }
                 "
               />
@@ -42,11 +37,7 @@
               <Button @click="handleBack">
                 返回
               </Button>
-              <Button
-                style="margin-left: 10px"
-                type="primary"
-                @click="onSubmit"
-              >
+              <Button style="margin-left: 10px" type="primary" @click="onSubmit">
                 保存
               </Button>
             </div>
@@ -67,11 +58,7 @@
               <Button @click="handleBack">
                 返回
               </Button>
-              <Button
-                style="margin-left: 10px"
-                type="primary"
-                @click="onSubmitOther"
-              >
+              <Button style="margin-left: 10px" type="primary" @click="onSubmitOther">
                 保存
               </Button>
             </div>
@@ -158,8 +145,7 @@ export default {
         })
     },
     beforeUpload (file) {
-      const isJpgOrPng =
-        file.type === 'image/jpeg' || file.type === 'image/png'
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
       if (!isJpgOrPng) {
         this.$message.error('You can only upload JPG file!')
       }

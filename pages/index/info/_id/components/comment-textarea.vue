@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import { Comment, Input, Button, Form, Alert } from "ant-design-vue";
-const FormItem = Form.Item;
-const Textarea = Input.TextArea;
+import { Comment, Input, Button, Form, Alert } from 'ant-design-vue'
+const FormItem = Form.Item
+const Textarea = Input.TextArea
 export default {
-  name: "LibraryCommentTextarea",
+  name: 'LibraryCommentTextarea',
   components: {
     Comment,
     Textarea,
@@ -51,59 +51,59 @@ export default {
   data() {
     return {
       loading: false,
-      errorMsg: "",
-      commentValue: "",
-    };
+      errorMsg: '',
+      commentValue: '',
+    }
   },
   watch: {
     $route(to) {
-      if (to.hash === "#article-comment") {
+      if (to.hash === '#article-comment') {
         setTimeout(() => {
-          this.$refs.textArea.focus();
-        }, 100);
+          this.$refs.textArea.focus()
+        }, 100)
       }
     },
   },
   methods: {
     handleSubmit() {
-      if (this.loading) return;
+      if (this.loading) return
       if (!this.commentValue) {
-        this.errorMsg = "评论内容不能为空哦~";
-        return;
+        this.errorMsg = '评论内容不能为空哦~'
+        return
       }
-      this.errorMsg = "";
-      this.loading = true;
+      this.errorMsg = ''
+      this.loading = true
       this.$api
         .createCommentByArticle({
           postsId: this.article.id,
           content: this.commentValue,
-          replyId: "",
+          replyId: '',
         })
         .then((res) => {
-          this.loading = false;
-          if (res.message === "success") {
-            this.commentValue = "";
+          this.loading = false
+          if (res.message === 'success') {
+            this.commentValue = ''
             this.$message.success({
               duration: 2,
-              content: "评论成功~",
-            });
-            if (typeof this.reloadCommentList === "function") {
-              this.reloadCommentList();
+              content: '评论成功~',
+            })
+            if (typeof this.reloadCommentList === 'function') {
+              this.reloadCommentList()
             }
-            return;
+            return
           }
           this.$message.error({
             duration: 2,
             content: res.message,
-          });
+          })
         })
         .catch(() => {
-          this.commentValue = "";
-          this.loading = false;
-        });
+          this.commentValue = ''
+          this.loading = false
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

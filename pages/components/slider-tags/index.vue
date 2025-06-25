@@ -1,9 +1,5 @@
 <template>
-  <g-sidebar
-    v-if="$store.state.tag.tags.length"
-    title="推荐标签"
-    background-color="#fff"
-  >
+  <g-sidebar v-if="$store.state.tag.tags.length" title="推荐标签" background-color="#fff">
     <div class="recommend-tags-container">
       <span
         v-for="(tag, key) in $store.state.tag.tags.slice(0, 8)"

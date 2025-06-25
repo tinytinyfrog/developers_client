@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="g-sidebar-container"
-    :style="{ backgroundColor: backgroundColor }"
-  >
+  <div class="g-sidebar-container" :style="{ backgroundColor: backgroundColor }">
     <h2 v-if="title" class="slider-title">
       {{ title }}
     </h2>

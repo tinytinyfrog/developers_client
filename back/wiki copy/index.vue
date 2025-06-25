@@ -12,58 +12,52 @@
       </div>
     </div>
     <div class="wiki-list-box">
-      <CreateWiki
-        :category-list="categoryList"
-        :show-drawer.sync="showDrawer"
-      />
-      <WikiList
-        :category-list="categoryList"
-        :wiki-type="myWiki ? 'self' : 'all'"
-      />
+      <CreateWiki :category-list="categoryList" :show-drawer.sync="showDrawer" />
+      <WikiList :category-list="categoryList" :wiki-type="myWiki ? 'self' : 'all'" />
     </div>
   </div>
 </template>
 
 <script>
-import _get from "lodash/get";
-import { RULE_ENUM } from "@/lib/enum";
-import EventBus from "../../../lib/event-bus";
-import WikiList from "./components/wiki-list";
-import CreateWiki from "./components/create-wiki";
+import _get from 'lodash/get'
+import { RULE_ENUM } from '@/lib/enum'
+import EventBus from '../../../lib/event-bus'
+import WikiList from './components/wiki-list'
+import CreateWiki from './components/create-wiki'
 export default {
-  name: "PageWiki",
+  name: 'PageWiki',
   components: {
     WikiList,
     CreateWiki,
   },
   data() {
-    const perm = _get(this, "$store.state.user.userInfo.perm", 0);
-    let role = _get(this, "$store.state.user.userInfo.role", "");
-    role = role && role !== "USER";
+    const perm = _get(this, '$store.state.user.userInfo.perm', 0)
+    let role = _get(this, '$store.state.user.userInfo.role', '')
+    role = role && role !== 'USER'
     return {
       myWiki: false,
       showDrawer: false,
       categoryList: [],
       canEdit: role || (perm & RULE_ENUM.WIKI) === RULE_ENUM.WIKI,
-    };
+    }
   },
   mounted() {
-    this.getWikiCategoryList();
+    this.getWikiCategoryList()
   },
   methods: {
     onChange() {
-      this.myWiki = !this.myWiki;
+      this.myWiki = !this.myWiki
       this.$nextTick(() => {
-        EventBus.$emit("on-update-wiki");
-      });
+        EventBus.$emit('on-update-wiki')
+      })
     },
     getWikiCategoryList() {
       this.$api.getWikiCategoryList().then((list) => {
-        this.categoryList = list;
-      });
+        this.categoryList = list
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

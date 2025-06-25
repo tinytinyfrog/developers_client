@@ -7,11 +7,9 @@
     >
       <span class="g-flex-align-center">
         <a-icon class="node-icon" type="profile" />
-        <span
-          class="wiki-menu-title g-hidden-line1"
-          :class="{ 'normal-title': !canEdit }"
-          >{{ wiki.postsTitle }}</span
-        >
+        <span class="wiki-menu-title g-hidden-line1" :class="{ 'normal-title': !canEdit }">{{
+          wiki.postsTitle
+        }}</span>
       </span>
       <a-popover
         v-if="canEdit"
@@ -53,9 +51,9 @@
 </template>
 
 <script>
-import EventBus from "@/lib/event-bus";
+import EventBus from '@/lib/event-bus'
 export default {
-  name: "WikiMenuChildren",
+  name: 'WikiMenuChildren',
   props: {
     open: {
       type: Boolean,
@@ -71,75 +69,73 @@ export default {
     },
     nodeId: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
-    const { id } = this.$route.params;
+    const { id } = this.$route.params
     return {
       wikiId: id,
-      articleId: "",
-      nodeTitle: "",
+      articleId: '',
+      nodeTitle: '',
       active: false,
       upLoading: false,
       showEditNodeModal: false,
       currentNode: null,
-    };
+    }
   },
   methods: {
     goWiki(url) {
-      EventBus.$emit("G_UPDATE_MENU", false);
-      this.$router.push(url);
+      EventBus.$emit('G_UPDATE_MENU', false)
+      this.$router.push(url)
     },
     editArticle(node) {
-      node.visible = false;
-      this.showEditNodeModal = true;
-      this.nodeTitle = this.wiki.postsTitle;
+      node.visible = false
+      this.showEditNodeModal = true
+      this.nodeTitle = this.wiki.postsTitle
       // this.$utils.openNewWindow(`/draft/editor/${node.postsId}?t=article`)
     },
     editNodeName() {
-      if (this.upLoading) return;
-      this.upLoading = true;
+      if (this.upLoading) return
+      this.upLoading = true
       this.$api
         .updateNodeName({
           nodeId: this.wiki.nodeId,
           nodeTitle: this.nodeTitle,
         })
         .then((res) => {
-          this.upLoading = false;
+          this.upLoading = false
           if (res.success) {
-            this.showEditNodeModal = false;
-            this.$message.success("更新成功");
-            this.nodeTitle = "";
-            this.$emit("on-update-menu");
+            this.showEditNodeModal = false
+            this.$message.success('更新成功')
+            this.nodeTitle = ''
+            this.$emit('on-update-menu')
           } else {
-            this.$message.error(res.message);
+            this.$message.error(res.message)
           }
-        });
+        })
     },
     delNodeById(node) {
-      node.visible = false;
+      node.visible = false
       this.$confirm({
-        title: "确认要删除当前节点吗",
-        content: (h) => (
-          <div style="color: #606a78;">节点：{node.postsTitle}</div>
-        ),
-        okText: "确认",
-        cancelText: "取消",
+        title: '确认要删除当前节点吗',
+        content: (h) => <div style="color: #606a78;">节点：{node.postsTitle}</div>,
+        okText: '确认',
+        cancelText: '取消',
         onOk: () => {
           this.$api.delWikiNodeById(node.nodeId).then((res) => {
             if (res.success) {
-              this.$message.success("删除成功");
-              this.$emit("on-update-menu");
+              this.$message.success('删除成功')
+              this.$emit('on-update-menu')
             } else {
-              this.$message.error(res.message);
+              this.$message.error(res.message)
             }
-          });
+          })
         },
-      });
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

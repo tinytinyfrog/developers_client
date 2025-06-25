@@ -13,10 +13,8 @@
       <span
         class="nick-name g-hover"
         @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)"
-      >{{ article.authorNickname }}</span><g-space />
-      <span v-if="article.topic"><Icon type="bulb" /> {{ article.topic }}</span><g-space />
-      <span><Icon type="dashboard" />
-        {{ article.createAt | formatDate("YYYY-MM-DD") }}</span>
+      >{{ article.authorNickname }}</span><g-space /> <span v-if="article.topic"><Icon type="bulb" /> {{ article.topic }}</span><g-space />
+      <span><Icon type="dashboard" /> {{ article.createAt | formatDate('YYYY-MM-DD') }}</span>
       <!-- <template v-if="canEdit && !isWiki && !isMobile">
         <g-space />
         <router-link class="g-main-color" :to="{path: `/draft/editor/${article.id}?t=article`}">
@@ -28,18 +26,9 @@
         </span>
       </template> -->
     </div>
-    <byte-viewer
-      id="byte-article-viewer-container"
-      :markdown-content="articleCtx"
-    />
-    <div
-      v-if="article.coverImageUrl || article.imageUrl"
-      style="margin-bottom: 20px"
-    >
-      <img
-        :src="article.coverImageUrl || article.imageUrl"
-        style="width: 100%"
-      >
+    <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
+    <div v-if="article.coverImageUrl || article.imageUrl" style="margin-bottom: 20px">
+      <img :src="article.coverImageUrl || article.imageUrl" style="width: 100%">
     </div>
     <div v-if="article.attachmentJson" class="attach-info">
       <div>附件:</div>
@@ -258,9 +247,7 @@ export default {
       return this.currentIndex > 0 ? this.menus[this.currentIndex - 1] : null
     },
     nextPage () {
-      return this.currentIndex < this.menus.length - 1
-        ? this.menus[this.currentIndex + 1]
-        : null
+      return this.currentIndex < this.menus.length - 1 ? this.menus[this.currentIndex + 1] : null
     }
   },
   mounted () {
@@ -442,9 +429,7 @@ export default {
           this.apLoading = false
           this.approvalTotal = res.total
           this.approvalList =
-            this.apPageNo === 1
-              ? [...res.list]
-              : [...res.list, ...this.approvalList]
+            this.apPageNo === 1 ? [...res.list] : [...res.list, ...this.approvalList]
           this.apFinished = res.total === this.approvalList.length
           this.apPageNo++
         })
@@ -574,7 +559,7 @@ export default {
       position: relative;
       margin-bottom: @g-margin * 2;
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 10px;
         left: -115px;
@@ -583,7 +568,7 @@ export default {
         background: linear-gradient(to left, @g-main-color, #fff);
       }
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 10px;
         right: -115px;

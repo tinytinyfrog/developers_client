@@ -12,14 +12,10 @@
     </div>
     <div class="comment-user-info">
       <div class="base-info">
-        <b
-          class="user-name g-hover"
-          @click="$utils.openUserCenter(comment.commentator.id)"
-        >{{ comment.commentator.nickname }}</b>
-        <span
-          v-if="comment.commentator.id === article.authorId"
-          class="author-tag"
-        >[作者]</span>
+        <b class="user-name g-hover" @click="$utils.openUserCenter(comment.commentator.id)">{{
+          comment.commentator.nickname
+        }}</b>
+        <span v-if="comment.commentator.id === article.authorId" class="author-tag">[作者]</span>
         <span v-if="comment.respondent.id">
           <Icon type="caret-right" class="replay-icon" />
           <span
@@ -27,10 +23,7 @@
             @click="$utils.openUserCenter(comment.respondent.id)"
           >
             <b>{{ comment.respondent.nickname }}</b>
-            <span
-              v-if="comment.respondent.id === article.authorId"
-              class="author-tag"
-            >[作者]</span>
+            <span v-if="comment.respondent.id === article.authorId" class="author-tag">[作者]</span>
           </span>
         </span>
         <g-space :size="1" />
@@ -51,14 +44,11 @@
           :class="{ 'g-main-color': showReply }"
         >
           <Icon ref="msgFocus" type="message" />
-          <span>{{ showReply ? "取消回复" : "回复" }}</span>
+          <span>{{ showReply ? '取消回复' : '回复' }}</span>
         </span>
         <template v-if="isSelf && !comment.isDelete">
           <g-space />
-          <span
-            v-auth="{ handler: () => deleteReply(comment.id) }"
-            class="action-item g-hover"
-          >
+          <span v-auth="{ handler: () => deleteReply(comment.id) }" class="action-item g-hover">
             <Icon type="delete" />
             <span>删除</span>
           </span>
@@ -123,10 +113,7 @@ export default {
   },
   computed: {
     isSelf () {
-      return (
-        _get(this, 'comment.commentator.id') ===
-        _get(this, '$store.state.user.userInfo.id')
-      )
+      return _get(this, 'comment.commentator.id') === _get(this, '$store.state.user.userInfo.id')
     }
   },
   beforeDestroy () {
@@ -164,8 +151,7 @@ export default {
         .then((res) => {
           if (res.success) {
             this.replyValue = ''
-            if (typeof this.reloadCommentList === 'function')
-              this.reloadCommentList()
+            if (typeof this.reloadCommentList === 'function') this.reloadCommentList()
             this.showReply = false
           } else {
             this.$message.error(res.message)

@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-if="userInfo"
-    v-infinite-scroll="handleInfiniteScroll"
-    class="page-user-container"
-  >
+  <div v-if="userInfo" v-infinite-scroll="handleInfiniteScroll" class="page-user-container">
     <div class="page-user-info">
       <UserInfoBg />
       <div class="user-info-content">
@@ -28,15 +24,13 @@
                     <span>入</span>
                     <span>时</span>
                     <span>间</span> </span>：
-                  <span>{{
-                    userInfo.createAt | formatDate("YYYY年MM月DD日")
-                  }}</span>
+                  <span>{{ userInfo.createAt | formatDate('YYYY年MM月DD日') }}</span>
                 </span>
                 <span class="info-item-line">
                   <span class="user-info-item-label">
                     <span>职</span>
                     <span>业</span> </span>：
-                  <span>{{ userInfo.job || "划水专员" }}</span>
+                  <span>{{ userInfo.job || '划水专员' }}</span>
                 </span>
               </p>
               <p class="user-info-item">
@@ -47,7 +41,7 @@
                     <span>简</span>
                     <span>介</span> </span>：
                   <span class="user-signature">{{
-                    userInfo.signature ? userInfo.signature : "这个人太懒了~"
+                    userInfo.signature ? userInfo.signature : '这个人太懒了~'
                   }}</span>
                 </span>
               </p>
@@ -72,7 +66,7 @@
               :ghost="hasFollow"
               :loading="followLoading"
             >
-              {{ hasFollow ? "已关注" : "关注" }}
+              {{ hasFollow ? '已关注' : '关注' }}
             </Button>
           </template>
         </div>
@@ -86,16 +80,8 @@
               <span>文章</span>
               <!-- <span class="achievement-num">{{ userInfo.articleNumb }}</span> -->
             </span>
-            <ArticleItem
-              v-for="(item, index) in articleList"
-              :key="index"
-              :article="item"
-            />
-            <g-empty
-              :list="articleList"
-              :finished="articleFinished"
-              :loading="articleLoading"
-            />
+            <ArticleItem v-for="(item, index) in articleList" :key="index" :article="item" />
+            <g-empty :list="articleList" :finished="articleFinished" :loading="articleLoading" />
           </TabPane>
           <!-- <TabPane key="qa">
             <span slot="tab">
@@ -112,11 +98,7 @@
               :message.sync="item"
               @mark="handleMark"
             />
-            <g-empty
-              :list="messageList"
-              :finished="mFinished"
-              :loading="mLoading"
-            />
+            <g-empty :list="messageList" :finished="mFinished" :loading="mLoading" />
           </TabPane>
           <TabPane v-if="oneSelf" key="collect" tab="收藏">
             <div class="collection-list">
@@ -431,8 +413,7 @@ export default {
         })
         .then((list) => {
           this.mPageNo++
-          this.messageList =
-            this.mPageNo === 1 ? [...list] : [...this.messageList, ...list]
+          this.messageList = this.mPageNo === 1 ? [...list] : [...this.messageList, ...list]
           this.mFinished = list.length < this.mPageSize
         })
         .finally(() => {

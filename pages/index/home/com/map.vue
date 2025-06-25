@@ -11,7 +11,7 @@
                 class="map-item"
                 @click="
                   (e) => {
-                    handleGoto(`/wiki?wikiId=${k.id}`);
+                    handleGoto(`/wiki?wikiId=${k.id}`)
                   }
                 "
               >

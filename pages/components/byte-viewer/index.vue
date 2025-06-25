@@ -1,10 +1,6 @@
 <template>
   <div id="byte-viewer-container" class="byte-viewer-container">
-    <Viewer
-      v-if="markdownContent"
-      :plugins="plugins"
-      :value="markdownContent"
-    />
+    <Viewer v-if="markdownContent" :plugins="plugins" :value="markdownContent" />
   </div>
 </template>
 
@@ -89,6 +85,6 @@ export default {
 
 <style lang="less">
 .byte-viewer-container {
-  @import "../byte-markdown-editor/theme.less";
+  @import '../byte-markdown-editor/theme.less';
 }
 </style>

@@ -5,11 +5,7 @@
         <div class="talent-header">
           <div>
             <a-select v-model="monthValue" style="width: 120px">
-              <a-select-option
-                v-for="(item, index) of months"
-                :key="index"
-                :value="item"
-              >
+              <a-select-option v-for="(item, index) of months" :key="index" :value="item">
                 {{ item }}
               </a-select-option>
             </a-select>
@@ -25,27 +21,19 @@
       <a-spin :spinning="loading">
         <div v-if="talentList.length > 0" class="talent">
           <a-carousel>
-            <div
-              v-for="(item, index) of talentList"
-              :key="index"
-              class="talent-list"
-            >
+            <div v-for="(item, index) of talentList" :key="index" class="talent-list">
               <div v-for="(k, i) of item.child" :key="i" class="talent-item">
                 <div>
                   <img class="img" :src="k.avatar">
                 </div>
-                <div
-                  class="name"
-                  :title="k.nickname || '-'"
-                  @click="(e) => handleOpen(k)"
-                >
-                  {{ k.nickname || "-" }}
+                <div class="name" :title="k.nickname || '-'" @click="(e) => handleOpen(k)">
+                  {{ k.nickname || '-' }}
                 </div>
                 <!-- <div class="info">
                   工号：{{ k.userCode || '-' }}
                 </div> -->
                 <div class="info" :title="k.deptName || '-'">
-                  {{ k.deptName || "-" }}
+                  {{ k.deptName || '-' }}
                 </div>
                 <!-- <div class="text">
                   <div class="name" :title="k.nickname || '-' " @click="e => handleOpen(k)">
@@ -160,7 +148,7 @@ export default {
   width: 100%;
   padding-bottom: 32px;
   .talent-list {
-    background-image: url("~/assets/images/home/talent-bg.png");
+    background-image: url('~/assets/images/home/talent-bg.png');
     height: 336px !important;
     display: flex !important;
     flex-wrap: wrap;

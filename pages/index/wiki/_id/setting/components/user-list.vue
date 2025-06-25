@@ -18,12 +18,7 @@
             {{ d.nickname }}
           </a-select-option>
         </a-select>
-        <a-button
-          class="add-collaborator-btn"
-          type="primary"
-          ghost
-          @click="addCoordination"
-        >
+        <a-button class="add-collaborator-btn" type="primary" ghost @click="addCoordination">
           添加
         </a-button>
       </div>

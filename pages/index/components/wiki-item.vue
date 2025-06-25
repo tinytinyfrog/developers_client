@@ -18,9 +18,7 @@
             {{ article.authorNickname }}
           </span>
           <GSpace />
-          <span class="question-time">{{
-            article.createAtString | dateCountDown
-          }}</span>
+          <span class="question-time">{{ article.createAtString | dateCountDown }}</span>
           <!-- <span class="tag-container">
             <g-space />
             <span

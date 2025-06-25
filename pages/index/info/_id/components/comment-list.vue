@@ -1,10 +1,7 @@
 <template>
   <div v-if="article" v-infinite-scroll="getCommonList">
     <div id="article-comment" class="library-comment-list">
-      <CommentTextarea
-        :article="article"
-        :reload-comment-list="reloadCommentList"
-      />
+      <CommentTextarea :article="article" :reload-comment-list="reloadCommentList" />
       <CommentMain
         v-for="(item, index) in commonList"
         :key="index"
@@ -13,10 +10,7 @@
         :comment="item"
       >
         <template slot-scope="{ deleteReply, updateCurrentLock, currentLock }">
-          <div
-            v-if="item.replies && item.replies.length"
-            style="margin-top: 12px"
-          >
+          <div v-if="item.replies && item.replies.length" style="margin-top: 12px">
             <template v-for="(comment, key) in item.replies">
               <CommentItem
                 v-if="key < currentLock"
@@ -27,13 +21,8 @@
                 :article="article"
               />
             </template>
-            <div
-              v-if="item.replies.length > 5 && currentLock === 5"
-              class="more-reply"
-            >
-              <span
-                class="more-text g-hover"
-                @click="updateCurrentLock(item.replies.length)"
+            <div v-if="item.replies.length > 5 && currentLock === 5" class="more-reply">
+              <span class="more-text g-hover" @click="updateCurrentLock(item.replies.length)"
                 >点击查看更多</span
               >
             </div>
@@ -46,11 +35,11 @@
 </template>
 
 <script>
-import CommentMain from "@/pages/components/comments/comment-main.vue";
-import CommentItem from "@/pages/components/comments/comment-item.vue";
-import CommentTextarea from "./comment-textarea.vue";
+import CommentMain from '@/pages/components/comments/comment-main.vue'
+import CommentItem from '@/pages/components/comments/comment-item.vue'
+import CommentTextarea from './comment-textarea.vue'
 export default {
-  name: "CommentListDetail",
+  name: 'CommentListDetail',
   components: {
     CommentTextarea,
     CommentItem,
@@ -69,26 +58,26 @@ export default {
       loading: false,
       finished: false,
       commonList: [],
-    };
+    }
   },
   mounted() {
-    this.getCommonList();
+    this.getCommonList()
   },
   methods: {
     reloadCommentList() {
-      this.loading = false;
-      this.finished = false;
-      this.pageNo = 1;
-      this.getCommonList();
+      this.loading = false
+      this.finished = false
+      this.pageNo = 1
+      this.getCommonList()
     },
     checkReplies(val) {
-      return val.replies && val.replies.length > 0;
+      return val.replies && val.replies.length > 0
     },
     getCommonList() {
       if (this.loading || this.finished) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       this.$api
         .getCommentListByArticleId({
           id: this.article.id,
@@ -96,20 +85,19 @@ export default {
           pageSize: this.pageSize,
         })
         .then((res) => {
-          this.loading = false;
-          this.commonList =
-            this.pageNo === 1 ? res?.list : [...this.commonList, ...res?.list];
-          this.pageNo++;
+          this.loading = false
+          this.commonList = this.pageNo === 1 ? res?.list : [...this.commonList, ...res?.list]
+          this.pageNo++
           if (res?.list.length < this.pageSize) {
-            this.finished = true;
+            this.finished = true
           }
         })
         .finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="less">

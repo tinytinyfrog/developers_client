@@ -9,11 +9,7 @@
         />
         <div>
           <a-select v-model="monthValue" style="width: 120px">
-            <a-select-option
-              v-for="(item, index) of months"
-              :key="index"
-              :value="item"
-            >
+            <a-select-option v-for="(item, index) of months" :key="index" :value="item">
               {{ item }}
             </a-select-option>
           </a-select>
@@ -26,13 +22,13 @@
           </div>
           <div class="text">
             <div class="name" :title="k.nickname || '-'">
-              {{ k.nickname || "-" }}
+              {{ k.nickname || '-' }}
             </div>
             <div class="info">
-              工号：{{ k.userCode || "-" }}
+              工号：{{ k.userCode || '-' }}
             </div>
             <div class="info">
-              部门：{{ k.deptName || "-" }}
+              部门：{{ k.deptName || '-' }}
             </div>
           </div>
         </div>
@@ -146,7 +142,7 @@ export default {
   justify-content: space-between;
 }
 .talent-list {
-  background-image: url("~/assets/images/home/talent-bg.png");
+  background-image: url('~/assets/images/home/talent-bg.png');
   height: 300px;
   display: flex !important;
   flex-wrap: wrap;

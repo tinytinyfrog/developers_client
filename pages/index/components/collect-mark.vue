@@ -1,10 +1,6 @@
 <template>
   <div class="collect-mark-container">
-    <Popover
-      v-model="visible"
-      trigger="click"
-      :get-popup-container="getPopContainer"
-    >
+    <Popover v-model="visible" trigger="click" :get-popup-container="getPopContainer">
       <template slot="content">
         <div class="collect-content">
           <h3 style="padding-bottom: 10px; margin: 0" class="g-bm-border">
@@ -20,9 +16,7 @@
                 @click="addArticleByCollect(item.collectId)"
               >
                 <span>{{ item.name }}</span>
-                <span
-                  :style="collectCountStyle"
-                >&nbsp;·&nbsp;{{ item.refCount }}篇</span>
+                <span :style="collectCountStyle">&nbsp;·&nbsp;{{ item.refCount }}篇</span>
               </p>
             </template>
             <Empty v-else description="请先添加收藏集" />

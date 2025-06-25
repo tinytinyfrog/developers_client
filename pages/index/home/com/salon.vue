@@ -1,18 +1,10 @@
 <template>
-  <g-card
-    class="half-card"
-    title="沙龙"
-    :go-to="(e) => handleGoto(`/info?type=salon`)"
-  >
+  <g-card class="half-card" title="沙龙" :go-to="(e) => handleGoto(`/info?type=salon`)">
     <template>
       <a-spin :spinning="loading">
         <div v-if="salonList.length > 0" class="salon">
           <a-carousel>
-            <div
-              v-for="(item, index) of salonList"
-              :key="index"
-              class="salon-list"
-            >
+            <div v-for="(item, index) of salonList" :key="index" class="salon-list">
               <div
                 v-for="(k, i) of item.child"
                 :key="i"

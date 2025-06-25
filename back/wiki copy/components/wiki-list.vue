@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import EventBus from "@/lib/event-bus";
+import EventBus from '@/lib/event-bus'
 export default {
-  name: "WikiList",
+  name: 'WikiList',
   props: {
     wikiType: {
       type: String,
-      default: "show",
+      default: 'show',
     },
     categoryList: {
       type: Array,
@@ -61,44 +61,43 @@ export default {
       wikiList: [],
       selfCategoryList: [
         {
-          id: "",
-          name: "全部",
+          id: '',
+          name: '全部',
         },
       ],
-    };
+    }
   },
   watch: {
     categoryList(list) {
       this.selfCategoryList = [
         {
-          id: "",
-          name: "全部",
+          id: '',
+          name: '全部',
         },
-      ].concat(list.filter((item) => item.refCount > 0));
+      ].concat(list.filter((item) => item.refCount > 0))
     },
   },
   mounted() {
-    this.getWikiList();
-    EventBus.$on("on-update-wiki", () => {
-      this.finished = false;
-      this.getWikiList();
-    });
+    this.getWikiList()
+    EventBus.$on('on-update-wiki', () => {
+      this.finished = false
+      this.getWikiList()
+    })
   },
   beforeDestroy() {
-    EventBus.$off("on-update-wiki");
+    EventBus.$off('on-update-wiki')
   },
   methods: {
     getWikiListByCategory(index) {
-      this.activeCategoryIndex = index;
-      this.finished = false;
-      this.getWikiList();
+      this.activeCategoryIndex = index
+      this.finished = false
+      this.getWikiList()
     },
     getWikiList() {
-      if (this.finished || this.loading) return;
-      this.loading = true;
-      const { pageNo, pageSize, selfCategoryList, activeCategoryIndex } = this;
-      const method =
-        this.wikiType === "all" ? "getWikiList" : "getMySelfWikiList";
+      if (this.finished || this.loading) return
+      this.loading = true
+      const { pageNo, pageSize, selfCategoryList, activeCategoryIndex } = this
+      const method = this.wikiType === 'all' ? 'getWikiList' : 'getMySelfWikiList'
       this.$api[method]({
         pageNo,
         pageSize,
@@ -107,16 +106,16 @@ export default {
         },
       })
         .then((list) => {
-          this.loading = false;
-          this.wikiList = pageNo === 1 ? list : [...this.wikiList, ...list];
-          this.finished = list.length < pageSize;
+          this.loading = false
+          this.wikiList = pageNo === 1 ? list : [...this.wikiList, ...list]
+          this.finished = list.length < pageSize
         })
         .catch(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

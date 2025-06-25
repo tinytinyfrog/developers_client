@@ -18,9 +18,7 @@
             {{ article.authorNickname }}
           </span>
           <GSpace />
-          <span class="question-time">{{
-            article.createAt | dateCountDown
-          }}</span>
+          <span class="question-time">{{ article.createAt | dateCountDown }}</span>
           <span class="tag-container">
             <g-space />
             <span
@@ -77,24 +75,15 @@
     <div class="article-operation">
       <span class="article-operation-actions">
         <span class="operation-item">
-          <Icon class="operation-icon g-hover" type="eye" />&nbsp;{{
-            article.views
-          }}
+          <Icon class="operation-icon g-hover" type="eye" />&nbsp;{{ article.views }}
         </span>
         <g-space />
         <span class="operation-item">
-          <Icon class="operation-icon g-hover" type="like" />&nbsp;{{
-            article.approvals
-          }}
+          <Icon class="operation-icon g-hover" type="like" />&nbsp;{{ article.approvals }}
         </span>
         <g-space />
-        <span
-          class="operation-item"
-          @click.stop.prevent="openArticleByComment(article.id)"
-        >
-          <Icon class="operation-icon g-hover" type="message" />&nbsp;{{
-            article.comments
-          }}
+        <span class="operation-item" @click.stop.prevent="openArticleByComment(article.id)">
+          <Icon class="operation-icon g-hover" type="message" />&nbsp;{{ article.comments }}
         </span>
       </span>
       <span class="mobile-tags">

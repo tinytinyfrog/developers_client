@@ -9,19 +9,12 @@
         />
       </div>
       <div v-if="expertList.length > 0">
-        <div
-          v-for="(item, index) of expertList"
-          :key="index"
-          class="expert-item"
-        >
+        <div v-for="(item, index) of expertList" :key="index" class="expert-item">
           <div class="expert-left">
             <img :src="item.imageUrl" class="expert-img">
           </div>
           <div class="expert-right">
-            <div
-              class="expert-title"
-              @click="(e) => handleGoto(`/info/${item.id}?type=expert`)"
-            >
+            <div class="expert-title" @click="(e) => handleGoto(`/info/${item.id}?type=expert`)">
               {{ item.title }}
             </div>
             <div class="expert-content">
@@ -33,7 +26,7 @@
                 {{ item.honorsDomain }}
               </div>
               <div class="expert-divier" />
-              <div>时间：{{ item.createAtString || "-" }}</div>
+              <div>时间：{{ item.createAtString || '-' }}</div>
             </div>
           </div>
         </div>

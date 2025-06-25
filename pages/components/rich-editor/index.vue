@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../byte-markdown-editor/theme.less";
+@import '../byte-markdown-editor/theme.less';
 .common-rich-editor {
   .w-e-toolbar {
     border: 0 !important;

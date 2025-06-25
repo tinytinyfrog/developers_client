@@ -14,37 +14,22 @@
           欢迎来到交付中心门户，登录以继续
         </div>
         <div class="login-form">
-          <a-form
-            :form="form"
-            :label-col="{ span: 24 }"
-            :wrapper-col="{ span: 24 }"
-          >
+          <a-form :form="form" :label-col="{ span: 24 }" :wrapper-col="{ span: 24 }">
             <a-form-item label="账号">
               <a-input
-                v-decorator="[
-                  'email',
-                  { rules: [{ required: true, message: '请输入账号' }] },
-                ]"
+                v-decorator="['email', { rules: [{ required: true, message: '请输入账号' }] }]"
                 placeholder="请输入账号"
               />
             </a-form-item>
             <a-form-item label="密码">
               <a-input-password
-                v-decorator="[
-                  'password',
-                  { rules: [{ required: true, message: '请输入密码' }] },
-                ]"
+                v-decorator="['password', { rules: [{ required: true, message: '请输入密码' }] }]"
                 placeholder="请输入密码"
               />
             </a-form-item>
           </a-form>
         </div>
-        <a-button
-          type="primary"
-          class="login-button"
-          :loading="loading"
-          @click="handleLogin"
-        >
+        <a-button type="primary" class="login-button" :loading="loading" @click="handleLogin">
           登录
         </a-button>
         <a-button class="login-button" @click="handleOpenAuth">
@@ -124,7 +109,7 @@ export default {
 .login-container {
   width: 100%;
   height: 100vh;
-  background: url("@/assets/images/login/bg.png");
+  background: url('@/assets/images/login/bg.png');
   background-size: contain;
   .login-header {
     padding: 44px 52px 0px 52px;

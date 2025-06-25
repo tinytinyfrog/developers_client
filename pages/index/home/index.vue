@@ -9,7 +9,7 @@
           :src="item.imgUrl"
           @click="
             (e) => {
-              handleOpen(item);
+              handleOpen(item)
             }
           "
         >

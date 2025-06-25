@@ -1,9 +1,5 @@
 <template>
-  <g-sidebar
-    v-if="recommend.list.length"
-    :title="recommend.title"
-    background-color="#fff"
-  >
+  <g-sidebar v-if="recommend.list.length" :title="recommend.title" background-color="#fff">
     <router-link
       v-for="(item, index) in recommend.list"
       :key="index"

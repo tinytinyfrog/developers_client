@@ -1,17 +1,10 @@
 <template>
   <div class="page-question-container g-margin-top">
     <div class="question-content">
-      <HomeTitle
-        :title-tags="titleTags"
-        :current-tag-index.sync="currentTagIndex"
-      />
+      <HomeTitle :title-tags="titleTags" :current-tag-index.sync="currentTagIndex" />
       <div class="question-list-box">
         <div v-infinite-scroll="loadData">
-          <QuestionItem
-            v-for="(item, index) in questionList"
-            :key="index"
-            :question="item"
-          />
+          <QuestionItem v-for="(item, index) in questionList" :key="index" :question="item" />
         </div>
         <g-empty :list="questionList" :finished="finished" :loading="loading" />
       </div>
@@ -53,9 +46,7 @@ export default {
     let tagIds = tagId ? [tagId] : []
     if (category && !tagId) {
       const tags = store.state.tag.tags
-      tagIds = tags
-        .filter(item => item.groupName === category)
-        .map(item => item.id)
+      tagIds = tags.filter(item => item.groupName === category).map(item => item.id)
     }
     const data = {
       q,
@@ -165,8 +156,7 @@ export default {
         })
         .then((list) => {
           if (list) {
-            this.questionList =
-              this.pageNo === 1 ? list : [...this.questionList, ...list]
+            this.questionList = this.pageNo === 1 ? list : [...this.questionList, ...list]
             this.pageNo++
             this.finished = list.length < this.pageSize
           }
@@ -223,8 +213,8 @@ export default {
       left: 0;
       right: 0;
       bottom: 0;
-      content: "";
-      background-image: url("https://cdn.jsdelivr.net/gh/umlink/umlink-figure-bed_1@master/images/1633585808102WechatIMG14.jpeg");
+      content: '';
+      background-image: url('https://cdn.jsdelivr.net/gh/umlink/umlink-figure-bed_1@master/images/1633585808102WechatIMG14.jpeg');
       background-repeat: no-repeat;
       background-size: cover;
       border-radius: @g-radius;

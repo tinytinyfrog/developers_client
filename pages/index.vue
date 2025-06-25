@@ -1,10 +1,6 @@
 <template>
   <div class="page-layout-container">
-    <div
-      v-if="showHeadByRouter"
-      class="common-header-box"
-      :class="{ 'transition-head': hideHead }"
-    >
+    <div v-if="showHeadByRouter" class="common-header-box" :class="{ 'transition-head': hideHead }">
       <GHeader />
       <GMenu />
     </div>
@@ -82,13 +78,10 @@ export default {
       // 手机端重定向 打开微信小程序
       const res = await $api
         .getSchemeUrl({
-          path:
-            route.path === '/article'
-              ? '/pages/index/index'
-              : '/pages/new-web-view/index',
-          query: `?scene=${scene}&url=${
-            globalConfig.developerServer
-          }${encodeURIComponent(route.path)}`,
+          path: route.path === '/article' ? '/pages/index/index' : '/pages/new-web-view/index',
+          query: `?scene=${scene}&url=${globalConfig.developerServer}${encodeURIComponent(
+            route.path
+          )}`,
           env_version: 'release'
         })
         .catch(console.log)
@@ -126,9 +119,7 @@ export default {
   watch: {
     $route: {
       handler (newRoute) {
-        this.showHeadByRouter = hideHeadReg.some(
-          reg => !reg.test(newRoute.path)
-        )
+        this.showHeadByRouter = hideHeadReg.some(reg => !reg.test(newRoute.path))
         this.showTag = tagsWhite.includes(newRoute.path)
         if (location.href !== '/article') {
           this.miniPath = `pages/new-web-view/index.html?scene=${this.scene}&url=${location.href}`
@@ -218,9 +209,7 @@ export default {
         return
       }
       const scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop
+        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       EventBus.$emit('G_SCROLLTOP', scrollTop)
       if (scrollTop > this.scrollTop) {
         // 下滑

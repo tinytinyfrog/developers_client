@@ -18,12 +18,7 @@
             {{ d.nickname }}
           </a-select-option>
         </a-select>
-        <a-button
-          class="add-collaborator-btn"
-          type="primary"
-          ghost
-          @click="addCoordination"
-        >
+        <a-button class="add-collaborator-btn" type="primary" ghost @click="addCoordination">
           添加
         </a-button>
       </div>
@@ -58,11 +53,11 @@
 
 <script>
 export default {
-  name: "UserList",
+  name: 'UserList',
   props: {
     wikiId: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -70,74 +65,74 @@ export default {
       dataSource: [],
       columns: [
         {
-          title: "头像",
-          dataIndex: "userAvatar",
-          width: "30%",
-          scopedSlots: { customRender: "userAvatar" },
+          title: '头像',
+          dataIndex: 'userAvatar',
+          width: '30%',
+          scopedSlots: { customRender: 'userAvatar' },
         },
         {
-          title: "昵称",
-          dataIndex: "userNickName",
+          title: '昵称',
+          dataIndex: 'userNickName',
         },
         {
-          title: "操作",
-          dataIndex: "operation",
-          scopedSlots: { customRender: "operation" },
+          title: '操作',
+          dataIndex: 'operation',
+          scopedSlots: { customRender: 'operation' },
         },
       ],
       addLoading: false,
-      teamer: "",
+      teamer: '',
       currentUser: null,
       users: [],
-    };
+    }
   },
   mounted() {
-    this.getUserList();
+    this.getUserList()
   },
   methods: {
     clearState() {
-      this.teamer = "";
-      this.currentUser = null;
+      this.teamer = ''
+      this.currentUser = null
     },
     addCoordination() {
-      if (this.addLoading) return;
-      this.addLoading = true;
+      if (this.addLoading) return
+      this.addLoading = true
       this.$api
         .addWikiCollaborator({
           wikiId: this.wikiId,
           userId: this.currentUser.id,
         })
         .then((res) => {
-          this.addLoading = false;
+          this.addLoading = false
           if (res.success) {
-            this.$message.success("添加成功");
-            this.clearState();
-            this.getUserList();
+            this.$message.success('添加成功')
+            this.clearState()
+            this.getUserList()
           } else {
-            this.$message.error(res.message);
+            this.$message.error(res.message)
           }
-        });
+        })
     },
     handleSearch(val) {
-      this.teamer = val;
+      this.teamer = val
       this.$api.getUserByName(val).then((list) => {
-        this.users = list;
-      });
+        this.users = list
+      })
     },
     handleChange(val) {
       this.users.forEach((item) => {
         if (item.id === +val) {
-          this.teamer = item.nickname;
-          this.currentUser = item;
+          this.teamer = item.nickname
+          this.currentUser = item
         }
-      });
+      })
     },
     onCellChange(key, dataIndex, value) {
-      const dataSource = [...this.dataSource];
-      const target = dataSource.find((item) => item.key === key);
+      const dataSource = [...this.dataSource]
+      const target = dataSource.find((item) => item.key === key)
       if (target) {
-        target[dataIndex] = value;
-        this.dataSource = dataSource;
+        target[dataIndex] = value
+        this.dataSource = dataSource
       }
     },
     onDelete(data) {
@@ -148,12 +143,12 @@ export default {
         })
         .then((res) => {
           if (res.success) {
-            this.$message.success("删除成功");
-            this.getUserList();
+            this.$message.success('删除成功')
+            this.getUserList()
           } else {
-            this.$message.error(res.message);
+            this.$message.error(res.message)
           }
-        });
+        })
     },
     getUserList() {
       this.$api
@@ -161,11 +156,11 @@ export default {
           wikiId: this.wikiId,
         })
         .then((users) => {
-          this.dataSource = [...users];
-        });
+          this.dataSource = [...users]
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

@@ -10,10 +10,7 @@
     >
     <slot />
     <a-modal v-model="showCropper" title="裁剪头像" width="600px">
-      <div
-        class="cropper-content"
-        style="display: flex; min-width: 350px; height: 350px"
-      >
+      <div class="cropper-content" style="display: flex; min-width: 350px; height: 350px">
         <vueCropper
           ref="cropper"
           :img="option.img"
@@ -45,12 +42,7 @@
         <a-button key="back" @click="retryUpload">
           重新上传
         </a-button>
-        <a-button
-          key="submit"
-          type="primary"
-          :loading="loading"
-          @click="upload"
-        >
+        <a-button key="submit" type="primary" :loading="loading" @click="upload">
           开始上传
         </a-button>
       </template>

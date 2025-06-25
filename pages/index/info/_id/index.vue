@@ -168,7 +168,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "~/pages/components/byte-markdown-editor/theme.less";
+@import '~/pages/components/byte-markdown-editor/theme.less';
 .page-library-detail {
   display: flex;
   width: 100%;

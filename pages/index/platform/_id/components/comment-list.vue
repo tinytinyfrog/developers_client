@@ -1,10 +1,7 @@
 <template>
   <div v-if="article" v-infinite-scroll="getCommonList">
     <div id="article-comment" class="library-comment-list">
-      <CommentTextarea
-        :article="article"
-        :reload-comment-list="reloadCommentList"
-      />
+      <CommentTextarea :article="article" :reload-comment-list="reloadCommentList" />
       <CommentMain
         v-for="(item, index) in commonList"
         :key="index"
@@ -13,10 +10,7 @@
         :comment="item"
       >
         <template slot-scope="{ deleteReply, updateCurrentLock, currentLock }">
-          <div
-            v-if="item.replies && item.replies.length"
-            style="margin-top: 12px"
-          >
+          <div v-if="item.replies && item.replies.length" style="margin-top: 12px">
             <template v-for="(comment, key) in item.replies">
               <CommentItem
                 v-if="key < currentLock"
@@ -27,10 +21,7 @@
                 :article="article"
               />
             </template>
-            <div
-              v-if="item.replies.length > 5 && currentLock === 5"
-              class="more-reply"
-            >
+            <div v-if="item.replies.length > 5 && currentLock === 5" class="more-reply">
               <span
                 class="more-text g-hover"
                 @click="updateCurrentLock(item.replies.length)"
@@ -96,8 +87,7 @@ export default {
         })
         .then((res) => {
           this.loading = false
-          this.commonList =
-            this.pageNo === 1 ? res?.list : [...this.commonList, ...res?.list]
+          this.commonList = this.pageNo === 1 ? res?.list : [...this.commonList, ...res?.list]
           this.pageNo++
           if (res?.list.length < this.pageSize) {
             this.finished = true

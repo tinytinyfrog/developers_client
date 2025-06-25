@@ -1,18 +1,10 @@
 <template>
-  <g-card
-    class="half-card"
-    title="专家墙"
-    :go-to="(e) => handleGoto(`/info?type=expert`)"
-  >
+  <g-card class="half-card" title="专家墙" :go-to="(e) => handleGoto(`/info?type=expert`)">
     <template>
       <a-spin :spinning="loading">
         <div v-if="expertList.length > 0" class="expert">
           <a-carousel>
-            <div
-              v-for="(item, index) of expertList"
-              :key="index"
-              class="expert-list"
-            >
+            <div v-for="(item, index) of expertList" :key="index" class="expert-list">
               <div
                 v-for="(k, i) of item.child"
                 :key="i"
@@ -24,17 +16,14 @@
                   <img class="medal" src="~/assets/images/home/medal.png">
                 </div>
                 <div class="text">
-                  <div
-                    class="name"
-                    :title="`${k.honorsOwner || '-'}(${k.userCode || '-'})`"
-                  >
-                    {{ `${k.honorsOwner || "-"}(${k.userCode || "-"})` }}
+                  <div class="name" :title="`${k.honorsOwner || '-'}(${k.userCode || '-'})`">
+                    {{ `${k.honorsOwner || '-'}(${k.userCode || '-'})` }}
                   </div>
                   <div class="info" :title="k.honorsDomain || '-'">
-                    擅长领域：{{ k.honorsDomain || "-" }}
+                    擅长领域：{{ k.honorsDomain || '-' }}
                   </div>
                   <div class="info" :title="k.honorsDept || '-'">
-                    部门：{{ k.honorsDept || "-" }}
+                    部门：{{ k.honorsDept || '-' }}
                   </div>
                 </div>
               </div>
@@ -96,7 +85,7 @@ export default {
   width: 100%;
   padding-bottom: 32px;
   .expert-list {
-    background-image: url("~/assets/images/home/expert-bg.png");
+    background-image: url('~/assets/images/home/expert-bg.png');
     height: 300px;
     display: flex !important;
     flex-wrap: wrap;

@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "WikiSetting",
-};
+  name: 'WikiSetting',
+}
 </script>
 
 <style lang="less" scoped></style>

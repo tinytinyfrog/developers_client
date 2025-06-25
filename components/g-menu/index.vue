@@ -1,12 +1,7 @@
 <template>
   <nav class="menu-container">
     <template v-for="(item, index) of userMenu">
-      <a-dropdown
-        v-if="hasChildren(item)"
-        :key="index"
-        :trigger="['hover']"
-        placement="bottomLeft"
-      >
+      <a-dropdown v-if="hasChildren(item)" :key="index" :trigger="['hover']" placement="bottomLeft">
         <div
           class="menu-item"
           :class="{ active: activeIndex === index }"
@@ -22,11 +17,7 @@
           :selected-keys="[current]"
           @click="handleMenuClick"
         >
-          <a-menu-item
-            v-for="child of item.children"
-            :key="child.path"
-            class="dropdown-item"
-          >
+          <a-menu-item v-for="child of item.children" :key="child.path" class="dropdown-item">
             <a @click="() => handleGoTo(index, item, child)">
               {{ child.menuName }}
             </a>
@@ -106,8 +97,7 @@ export default {
       this.current = this.$route.path + '?type=' + this.$route.query.type
     }
     if (this.$route.path === '/platform') {
-      this.current =
-        this.$route.path + '?platformId=' + this.$route.query.platformId
+      this.current = this.$route.path + '?platformId=' + this.$route.query.platformId
     }
   },
   beforeDestroy () {
@@ -468,7 +458,7 @@ export default {
 // 添加一个平滑的加载动画
 .menu-item {
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 0;
     left: 0;

@@ -86,9 +86,7 @@ export default {
       },
       pageSize: 6
     })
-    recommendData.list = list
-      .filter(item => item.id !== article.id)
-      .slice(0, 5)
+    recommendData.list = list.filter(item => item.id !== article.id).slice(0, 5)
     const directoryList =
       JSON.parse(article.directory || '[]').map((item) => {
         item.class = 'anchor-first-title'
@@ -133,8 +131,7 @@ export default {
       }
     },
     scrollFun () {
-      const scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
       setViewHistoryTop({ [this.id]: scrollTop })
     },
     listenScroll () {
@@ -178,7 +175,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "~/pages/components/byte-markdown-editor/theme.less";
+@import '~/pages/components/byte-markdown-editor/theme.less';
 .page-library-detail {
   display: flex;
   width: 100%;

@@ -9,10 +9,7 @@
         :comment="item"
       >
         <template slot-scope="{ deleteReply }">
-          <div
-            v-if="item.replies && item.replies.length"
-            style="margin-top: 12px"
-          >
+          <div v-if="item.replies && item.replies.length" style="margin-top: 12px">
             <CommentItem
               v-for="(comment, key) in item.replies"
               :key="key"
@@ -81,8 +78,7 @@ export default {
         })
         .then((res) => {
           this.loading = false
-          this.commonList =
-            this.pageNo === 1 ? res?.list : [...this.commonList, ...res?.list]
+          this.commonList = this.pageNo === 1 ? res?.list : [...this.commonList, ...res?.list]
           this.pageNo++
           if (res?.list.length < this.pageSize) {
             this.finished = true

@@ -26,10 +26,7 @@
                     <template slot="title">
                       删除该草稿
                     </template>
-                    <a-icon
-                      type="delete"
-                      @click.stop.prevent="delDraft(item.id)"
-                    />
+                    <a-icon type="delete" @click.stop.prevent="delDraft(item.id)" />
                   </a-tooltip>
                   <span> {{ item.title }}</span>
                 </a-menu-item>
@@ -93,11 +90,7 @@
                     </a-tooltip>
                     <a-tooltip title="预览">
                       <a-icon
-                        style="
-                          margin-right: 4px;
-                          color: #0070ff;
-                          cursor: pointer;
-                        "
+                        style="margin-right: 4px; color: #0070ff; cursor: pointer"
                         type="eye"
                         @click="(e) => handlePreview(item)"
                       />
@@ -121,14 +114,8 @@
       destroy-on-close
       @ok="onPublish"
     >
-      <div
-        :style="
-          Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })
-        "
-      >
-        <span
-          :style="labelStyle"
-        ><span style="color: red">*</span>选择分类：</span>
+      <div :style="Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })">
+        <span :style="labelStyle"><span style="color: red">*</span>选择分类：</span>
         <div :style="contentStyle">
           <span
             v-for="(item, index) in tagGroup"
@@ -150,11 +137,7 @@
             style="width: 400px"
             @change="handleTagChange"
           >
-            <SelectOption
-              v-for="(item, index) in filteredOptions"
-              :key="index"
-              :value="item.name"
-            >
+            <SelectOption v-for="(item, index) in filteredOptions" :key="index" :value="item.name">
               {{ item.name }}
             </SelectOption>
           </Select>
@@ -174,25 +157,19 @@
         </div>
         <template v-if="!isOriginal">
           <div :style="categoryItemStyle">
-            <span
-              :style="labelStyle"
-            ><span style="color: red">*</span>原文标题：</span>
+            <span :style="labelStyle"><span style="color: red">*</span>原文标题：</span>
             <div :style="contentStyle">
               <Input v-model="originalTitle" placeholder="文章为原创则忽略" />
             </div>
           </div>
           <div :style="categoryItemStyle">
-            <span
-              :style="labelStyle"
-            ><span style="color: red">*</span>原文作者：</span>
+            <span :style="labelStyle"><span style="color: red">*</span>原文作者：</span>
             <div :style="contentStyle">
               <Input v-model="originalAuthor" placeholder="文章为原创则忽略" />
             </div>
           </div>
           <div :style="categoryItemStyle">
-            <span
-              :style="labelStyle"
-            ><span style="color: red">*</span>原文地址：</span>
+            <span :style="labelStyle"><span style="color: red">*</span>原文地址：</span>
             <div :style="contentStyle">
               <Input v-model="originalUrl" placeholder="文章为原创则忽略" />
             </div>
@@ -211,14 +188,8 @@
       destroy-on-close
       @ok="onPublish"
     >
-      <div
-        :style="
-          Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })
-        "
-      >
-        <span
-          :style="labelStyle"
-        ><span style="color: red">*</span>选择公司：</span>
+      <div :style="Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })">
+        <span :style="labelStyle"><span style="color: red">*</span>选择公司：</span>
         <div :style="contentStyle">
           <span
             v-for="(item, index) in companyList"
@@ -229,14 +200,8 @@
           >{{ item.name }}</span>
         </div>
       </div>
-      <div
-        :style="
-          Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })
-        "
-      >
-        <span
-          :style="labelStyle"
-        ><span style="color: red">*</span>选择分类：</span>
+      <div :style="Object.assign({}, categoryItemStyle, { alignItems: 'flex-start' })">
+        <span :style="labelStyle"><span style="color: red">*</span>选择分类：</span>
         <div :style="contentStyle">
           <span
             v-for="(item, index) in referralCategoryList"
@@ -253,11 +218,7 @@
       :markdown-content="markdownContent"
       @change="handleMarkdownChange"
     />
-    <RichEditor
-      v-show="!isMarkDown"
-      :html-content="htmlContent"
-      @change="handleRichTextChange"
-    />
+    <RichEditor v-show="!isMarkDown" :html-content="htmlContent" @change="handleRichTextChange" />
   </div>
 </template>
 
@@ -446,9 +407,7 @@ export default {
       window.open(
         'https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' +
           window.encodeURIComponent(
-            this.base64Encode(
-              this.fileList[0].url || this.fileList[0].response.data
-            )
+            this.base64Encode(this.fileList[0].url || this.fileList[0].response.data)
           )
       )
     },
@@ -510,9 +469,7 @@ export default {
       )
     },
     getDraft () {
-      return localStorage.getItem(MDDRAFT)
-        ? JSON.parse(localStorage.getItem(MDDRAFT))
-        : null
+      return localStorage.getItem(MDDRAFT) ? JSON.parse(localStorage.getItem(MDDRAFT)) : null
     },
     clearDraft () {
       localStorage.removeItem(MDDRAFT)
@@ -556,9 +513,7 @@ export default {
         const content = this.markdownContent || this.htmlContent
         if (this.type !== 'article') return
         if (!this.articleTitle || !content) return
-        this.$route.query.flag === 'platform'
-          ? this.savePlatform(true)
-          : this.saveArticle(true)
+        this.$route.query.flag === 'platform' ? this.savePlatform(true) : this.saveArticle(true)
       }, 3000)
     },
     handleTagChange (tags) {
@@ -576,9 +531,7 @@ export default {
       this.selectTags = []
       this.selectTagIds = []
       if (this.activeCategory > 0) {
-        this.tags = this.allTags.filter(
-          item => item.groupName === this.tagGroup[index]
-        )
+        this.tags = this.allTags.filter(item => item.groupName === this.tagGroup[index])
         return
       }
       this.tags = [...this.allTags]
@@ -616,10 +569,7 @@ export default {
       }
       const saveMap = {
         qa: 'saveFq',
-        article:
-          this.$route.query.flag === 'platform'
-            ? 'savePlatform'
-            : 'saveArticle',
+        article: this.$route.query.flag === 'platform' ? 'savePlatform' : 'saveArticle',
         wiki: 'saveWiki'
       }
       if (this.type) {
@@ -628,9 +578,7 @@ export default {
       this.confirmModal = false
     },
     getArticleImgs () {
-      const id = this.isMarkDown
-        ? 'library-markdown-editor'
-        : 'library-rich-editor'
+      const id = this.isMarkDown ? 'library-markdown-editor' : 'library-rich-editor'
       const headImg = []
       const imgs = document.getElementById(id).getElementsByTagName('img')
       for (let i = 0; i < imgs.length; i++) {

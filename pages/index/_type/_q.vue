@@ -2,25 +2,12 @@
   <div v-infinite-scroll="onScroll" class="common-search-page">
     <div class="base-msg">
       <span class="tips-title">{{ title }}:</span>
-      <span
-        ref="keywords"
-        class="keywords g-main-color"
-        :contenteditable="canEdit"
-      >
+      <span ref="keywords" class="keywords g-main-color" :contenteditable="canEdit">
         {{ keywords }}</span>
-      <Button
-        v-if="type === 'collect'"
-        type="link"
-        icon="edit"
-        @click="onEdit"
-      />
+      <Button v-if="type === 'collect'" type="link" icon="edit" @click="onEdit" />
     </div>
     <template v-for="(item, index) in topicList">
-      <ArticleItem
-        v-if="item.category === 'ARTICLE'"
-        :key="index"
-        :article="item"
-      />
+      <ArticleItem v-if="item.category === 'ARTICLE'" :key="index" :article="item" />
       <QuestionItem v-else :key="index" :question="item" />
     </template>
     <Empty v-if="!topicList.length" :description="false" />
@@ -197,8 +184,7 @@ export default {
         pageSize: this.pageSize
       })
         .then((list) => {
-          this.topicList =
-            this.pageNo === 1 ? list : [...this.topicList, ...list]
+          this.topicList = this.pageNo === 1 ? list : [...this.topicList, ...list]
           this.pageNo++
           this.finished = list.length < this.pageSize
         })

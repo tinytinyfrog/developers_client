@@ -36,27 +36,22 @@
               />
             </div>
             <div class="submit-item submit-btn">
-              <a-button type="primary" :loading="loading" @click="pushArticle">
-                提交
-              </a-button>
+              <a-button type="primary" :loading="loading" @click="pushArticle"> 提交 </a-button>
             </div>
           </div>
         </a-collapse-panel>
       </a-collapse>
     </div>
-    <byte-viewer
-      id="byte-article-viewer-container"
-      :markdown-content="wikiInfo.desc"
-    />
+    <byte-viewer id="byte-article-viewer-container" :markdown-content="wikiInfo.desc" />
     <CommentList :article="article" />
   </div>
 </template>
 
 <script>
-import ByteViewer from "@/pages/components/byte-viewer/index.vue";
-import CommentList from "@/pages/index/article/_id/components/comment-list.vue";
+import ByteViewer from '@/pages/components/byte-viewer/index.vue'
+import CommentList from '@/pages/index/article/_id/components/comment-list.vue'
 export default {
-  name: "WikiInfoDetail",
+  name: 'WikiInfoDetail',
   components: {
     ByteViewer,
     CommentList,
@@ -68,50 +63,50 @@ export default {
     },
   },
   data() {
-    const wikiInfo = this.wikiInfo;
+    const wikiInfo = this.wikiInfo
     const article = wikiInfo
       ? {
           id: wikiInfo.descPostsId,
           authorId: wikiInfo.ownerId,
         }
-      : null;
+      : null
     return {
       article,
       loading: false,
       activeKey: 0,
-      articleUrl: "",
-    };
+      articleUrl: '',
+    }
   },
   methods: {
     collapseChange() {
       this.$nextTick(() => {
-        this.$refs.articleUrl.focus();
-      });
+        this.$refs.articleUrl.focus()
+      })
     },
     pushArticle() {
-      if (this.loading) return;
-      this.loading = true;
+      if (this.loading) return
+      this.loading = true
       this.$api
         .createWikiNodeRecord({
           wikiId: this.wikiInfo.id,
           content: this.articleUrl,
         })
         .then((res) => {
-          this.loading = false;
+          this.loading = false
           if (res.success) {
-            this.articleUrl = "";
-            this.$message.success("提交成功");
-            return;
+            this.articleUrl = ''
+            this.$message.success('提交成功')
+            return
           }
-          this.$message.error(res.message);
-        });
+          this.$message.error(res.message)
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="less">
-@import "~/pages/components/byte-markdown-editor/theme.less";
+@import '~/pages/components/byte-markdown-editor/theme.less';
 .page-wiki-detail {
   height: 100%;
   padding: @g-padding * 2;

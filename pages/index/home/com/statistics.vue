@@ -5,11 +5,7 @@
         <div class="statistics">
           <div v-for="(item, index) of statisticList" :key="index">
             <div class="statistics-item">
-              <div
-                v-for="(k, v) of item.child"
-                :key="v"
-                class="statistics-card"
-              >
+              <div v-for="(k, v) of item.child" :key="v" class="statistics-card">
                 <div class="statistics-card-left">
                   <div class="img-inner-wrap">
                     <img :src="k.icon">
@@ -127,7 +123,7 @@ export default {
   padding: 16px 32px;
   margin-bottom: 30px;
   height: 324px;
-  background-image: url("~/assets/images/home/statistics-bg.png");
+  background-image: url('~/assets/images/home/statistics-bg.png');
   .statistics-item {
     display: flex;
     column-gap: 10px;
@@ -178,7 +174,7 @@ export default {
     height: 28px;
     width: 100%;
     margin-bottom: 14px;
-    background-image: url("~/assets/images/home/statistics-item-bg.png");
+    background-image: url('~/assets/images/home/statistics-item-bg.png');
   }
 }
 </style>

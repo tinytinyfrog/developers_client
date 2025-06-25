@@ -1,11 +1,7 @@
 <template>
   <g-sidebar v-if="banners.length">
     <a-carousel effect="fade" autoplay>
-      <div
-        v-for="(item, index) in banners"
-        :key="index"
-        style="vertical-align: middle"
-      >
+      <div v-for="(item, index) in banners" :key="index" style="vertical-align: middle">
         <img
           style="width: 100%; cursor: pointer; height: 255px"
           :src="item.imgUrl"
@@ -18,24 +14,24 @@
 
 <script>
 export default {
-  name: "SliderBanner",
+  name: 'SliderBanner',
   data() {
     return {
       banners: [],
-    };
+    }
   },
   mounted() {
-    this.getAdBanner();
+    this.getAdBanner()
   },
   methods: {
     getAdBanner() {
-      this.$api.getBannerList(["SIDEBAR_CAROUSEL"]).then((res) => {
-        console.log(res);
+      this.$api.getBannerList(['SIDEBAR_CAROUSEL']).then((res) => {
+        console.log(res)
         if (res.success) {
-          this.banners = res.data;
+          this.banners = res.data
         }
-      });
+      })
     },
   },
-};
+}
 </script>

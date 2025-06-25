@@ -55,16 +55,13 @@
               </div>
             </div>
             <div class="item-right">
-              <a-avatar
-                class="item-avatar"
-                :src="item.authorAvatar || defaultImg"
-              />
+              <a-avatar class="item-avatar" :src="item.authorAvatar || defaultImg" />
               <div class="name" :title="item.authorNickname">
                 {{ item.authorNickname }}
               </div>
               <div class="divier" />
               <div>
-                {{ item.createAtDate || "-" }}
+                {{ item.createAtDate || '-' }}
               </div>
             </div>
           </div>

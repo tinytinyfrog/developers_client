@@ -199,15 +199,11 @@ export default {
         // 得到下一次距离截止时间的秒数。
         const nextShowTimeSeconds = getCurrentShowTimeSeconds() // 注意getCurrentShowTimeSeconds这里掉了括号“（）”也就是说没有执行函数。
         const nextHours = parseInt(nextShowTimeSeconds / 3600)
-        const nextMinutes = parseInt(
-          (nextShowTimeSeconds - nextHours * 3600) / 60
-        )
+        const nextMinutes = parseInt((nextShowTimeSeconds - nextHours * 3600) / 60)
         const nextSeconds = parseInt(nextShowTimeSeconds % 60)
 
         const curHours = parseInt(curShowTimeSeconds / 3600)
-        const curMinutes = parseInt(
-          (curShowTimeSeconds - curHours * 3600) / 60
-        )
+        const curMinutes = parseInt((curShowTimeSeconds - curHours * 3600) / 60)
         const curSeconds = parseInt(curShowTimeSeconds % 60)
         // 如果时间发生改变，将改变后的时间赋予给当前时间；根据改变的是哪个数字，来给该数字添加小球。
         if (nextSeconds !== curSeconds) {
@@ -217,41 +213,21 @@ export default {
             addBalls(MARGIN_LEFT, MARGIN_TOP, parseInt(curHours / 10))
           }
           if (parseInt(curHours % 10) !== parseInt(nextHours % 10)) {
-            addBalls(
-              MARGIN_LEFT + 15 * (RADIUS + 1),
-              MARGIN_TOP,
-              parseInt(curHours % 10)
-            )
+            addBalls(MARGIN_LEFT + 15 * (RADIUS + 1), MARGIN_TOP, parseInt(curHours % 10))
           }
 
           if (parseInt(curMinutes / 10) !== parseInt(nextMinutes / 10)) {
-            addBalls(
-              MARGIN_LEFT + 39 * (RADIUS + 1),
-              MARGIN_TOP,
-              parseInt(curMinutes / 10)
-            )
+            addBalls(MARGIN_LEFT + 39 * (RADIUS + 1), MARGIN_TOP, parseInt(curMinutes / 10))
           }
           if (parseInt(curMinutes % 10) !== parseInt(nextMinutes % 10)) {
-            addBalls(
-              MARGIN_LEFT + 54 * (RADIUS + 1),
-              MARGIN_TOP,
-              parseInt(curMinutes % 10)
-            )
+            addBalls(MARGIN_LEFT + 54 * (RADIUS + 1), MARGIN_TOP, parseInt(curMinutes % 10))
           }
 
           if (parseInt(curSeconds / 10) !== parseInt(nextSeconds / 10)) {
-            addBalls(
-              MARGIN_LEFT + 78 * (RADIUS + 1),
-              MARGIN_TOP,
-              parseInt(curSeconds / 10)
-            )
+            addBalls(MARGIN_LEFT + 78 * (RADIUS + 1), MARGIN_TOP, parseInt(curSeconds / 10))
           }
           if (parseInt(curSeconds % 10) !== parseInt(nextSeconds % 10)) {
-            addBalls(
-              MARGIN_LEFT + 93 * (RADIUS + 1),
-              MARGIN_TOP,
-              parseInt(curSeconds % 10)
-            )
+            addBalls(MARGIN_LEFT + 93 * (RADIUS + 1), MARGIN_TOP, parseInt(curSeconds % 10))
           }
         }
         updateBalls() // 更新每个小球的运动状态。
@@ -316,38 +292,13 @@ export default {
         const seconds = parseInt(curShowTimeSeconds % 60) // 所有的秒数对分钟求余得到秒数
 
         renderdigit(MARGIN_LEFT, MARGIN_TOP, parseInt(hours / 10), cxt) // 时钟的十位数
-        renderdigit(
-          MARGIN_LEFT + 15 * (RADIUS + 1),
-          MARGIN_TOP,
-          parseInt(hours % 10),
-          cxt
-        ) // 时钟的个位数
+        renderdigit(MARGIN_LEFT + 15 * (RADIUS + 1), MARGIN_TOP, parseInt(hours % 10), cxt) // 时钟的个位数
         renderdigit(MARGIN_LEFT + 30 * (RADIUS + 1), MARGIN_TOP, 10, cxt) // 冒号":"的粒子化
-        renderdigit(
-          MARGIN_LEFT + 39 * (RADIUS + 1),
-          MARGIN_TOP,
-          parseInt(minutes / 10),
-          cxt
-        ) // 分钟十位数粒子化
-        renderdigit(
-          MARGIN_LEFT + 54 * (RADIUS + 1),
-          MARGIN_TOP,
-          parseInt(minutes % 10),
-          cxt
-        ) // 分钟个位数粒子化
+        renderdigit(MARGIN_LEFT + 39 * (RADIUS + 1), MARGIN_TOP, parseInt(minutes / 10), cxt) // 分钟十位数粒子化
+        renderdigit(MARGIN_LEFT + 54 * (RADIUS + 1), MARGIN_TOP, parseInt(minutes % 10), cxt) // 分钟个位数粒子化
         renderdigit(MARGIN_LEFT + 69 * (RADIUS + 1), MARGIN_TOP, 10, cxt) // 冒号粒子化
-        renderdigit(
-          MARGIN_LEFT + 78 * (RADIUS + 1),
-          MARGIN_TOP,
-          parseInt(seconds / 10),
-          cxt
-        ) // 秒针十位数粒子化
-        renderdigit(
-          MARGIN_LEFT + 93 * (RADIUS + 1),
-          MARGIN_TOP,
-          parseInt(seconds % 10),
-          cxt
-        ) // 秒针个位数粒子化
+        renderdigit(MARGIN_LEFT + 78 * (RADIUS + 1), MARGIN_TOP, parseInt(seconds / 10), cxt) // 秒针十位数粒子化
+        renderdigit(MARGIN_LEFT + 93 * (RADIUS + 1), MARGIN_TOP, parseInt(seconds % 10), cxt) // 秒针个位数粒子化
 
         // 绘制balls容器中的每一个小球。
         for (let i = 0; i < balls.length; i++) {

@@ -14,11 +14,7 @@
           <div class="input-form">
             <div class="input-item">
               <span class="label">知识库名称：</span>
-              <a-input
-                v-model="wiki.name"
-                placeholder="请输入知识库名称"
-                :disabled="disabled"
-              />
+              <a-input v-model="wiki.name" placeholder="请输入知识库名称" :disabled="disabled" />
             </div>
             <div class="input-item">
               <span class="label">知识库名称：</span>
@@ -70,10 +66,7 @@
         <h4 class="desc-title">
           其它信息<span class="g-sub-title">（更新日志等）</span>
         </h4>
-        <ByteMarkdownEditor
-          :markdown-content="markdownContent"
-          @change="handleMarkdownChange"
-        />
+        <ByteMarkdownEditor :markdown-content="markdownContent" @change="handleMarkdownChange" />
       </a-tab-pane>
       <a-tab-pane key="2" tab="协作者" force-render>
         <UserList :wiki-id="wikiId" />
@@ -199,7 +192,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "~/pages/components/byte-markdown-editor/theme.less";
+@import '~/pages/components/byte-markdown-editor/theme.less';
 .page-wiki-setting {
   padding: @g-padding @g-padding * 2;
   .wiki-base-info {

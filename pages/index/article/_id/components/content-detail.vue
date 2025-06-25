@@ -14,16 +14,13 @@
         class="nick-name g-hover"
         @click.stop.prevent="$utils.openNewWindow(`/user/${article.authorId}`)"
       >{{ article.authorNickname }}</span><g-space /> <span><Icon type="eye" /> {{ article.views }}</span><g-space />
-      <span><Icon type="dashboard" />
-        {{ article.createAt | formatDate("YYYY-MM-DD") }}</span>
+      <span><Icon type="dashboard" /> {{ article.createAt | formatDate('YYYY-MM-DD') }}</span>
       <template v-if="canEdit && !isMobile">
         <g-space />
         <router-link
           class="g-main-color"
           :to="{
-            path: `/draft/editor/${article.id}?t=${
-              isWiki ? 'wiki' : 'article'
-            }`,
+            path: `/draft/editor/${article.id}?t=${isWiki ? 'wiki' : 'article'}`,
           }"
         >
           编辑
@@ -32,10 +29,7 @@
         <span class="g-main-color g-hover" @click="onDelArticle"> 删除 </span>
       </template>
     </div>
-    <byte-viewer
-      id="byte-article-viewer-container"
-      :markdown-content="articleCtx"
-    />
+    <byte-viewer id="byte-article-viewer-container" :markdown-content="articleCtx" />
     <div v-if="article.attachmentJson" class="attach-info">
       <div>附件:</div>
       <div
@@ -105,10 +99,7 @@
       </p>
       <p>
         转载自:
-        <a
-          :href="article.originalUrl"
-          target="_blank"
-        >《{{ article.originalTitle }}》</a>，如有侵权，请联系本站删除。
+        <a :href="article.originalUrl" target="_blank">《{{ article.originalTitle }}》</a>，如有侵权，请联系本站删除。
       </p>
     </div>
     <div
@@ -120,17 +111,11 @@
         <Icon type="like" :theme="hasLike ? 'filled' : 'outlined'" />
       </div>
       <p class="approval-tips-line">
-        {{
-          approvalTotal > 0 ? `${approvalTotal}人已点赞` : "真诚点赞 诚不我欺"
-        }}
+        {{ approvalTotal > 0 ? `${approvalTotal}人已点赞` : '真诚点赞 诚不我欺' }}
       </p>
       <div class="approval-box">
         <template v-for="(user, index) in approvalList.slice(0, 6)">
-          <GUserPopover
-            :key="index"
-            class="approval-img"
-            :user-id="user.userId"
-          >
+          <GUserPopover :key="index" class="approval-img" :user-id="user.userId">
             <img
               :src="user.userAvatar"
               alt=""
@@ -166,21 +151,14 @@
                 <span>
                   <GUserPopover :key="index" :user-id="user.userId">
                     <img
-                      style="
-                        width: 30px;
-                        height: 30px;
-                        border-radius: 50%;
-                        margin-right: 15px;
-                      "
+                      style="width: 30px; height: 30px; border-radius: 50%; margin-right: 15px"
                       :src="user.userAvatar"
                       alt=""
                     >
                   </GUserPopover>
                   <span class="g-hover">{{ user.userName }}</span>
                 </span>
-                <span style="color: #999">{{
-                  user.createAt | formatDate("YYYY-MM-DD")
-                }}</span>
+                <span style="color: #999">{{ user.createAt | formatDate('YYYY-MM-DD') }}</span>
               </p>
             </div>
           </template>
@@ -204,7 +182,7 @@
             type="like"
             two-tone-color="#004fc4"
           />
-          <span>{{ hasLike ? "已" : "" }}点赞</span>
+          <span>{{ hasLike ? '已' : '' }}点赞</span>
         </span>
         <template>
           <span
@@ -213,12 +191,8 @@
             :class="{ 'g-main-color': hasCollect }"
             class="action-box g-hover"
           >
-            <Icon
-              class="action-btn"
-              :theme="!userInfo ? 'outlined' : 'filled'"
-              type="star"
-            />
-            <span>{{ hasCollect ? "已" : "" }}收藏</span>
+            <Icon class="action-btn" :theme="!userInfo ? 'outlined' : 'filled'" type="star" />
+            <span>{{ hasCollect ? '已' : '' }}收藏</span>
           </span>
           <CollectMark
             v-else
@@ -226,27 +200,14 @@
             container="collect-mark-box"
             @on-success="hasCollect = true"
           >
-            <span
-              class="action-box g-hover"
-              :class="{ 'g-main-color': hasCollect }"
-            >
-              <Icon
-                class="action-btn"
-                theme="outlined"
-                type="star"
-                two-tone-color="#004fc4"
-              />
-              <span>{{ hasCollect ? "已" : "" }}收藏</span>
+            <span class="action-box g-hover" :class="{ 'g-main-color': hasCollect }">
+              <Icon class="action-btn" theme="outlined" type="star" two-tone-color="#004fc4" />
+              <span>{{ hasCollect ? '已' : '' }}收藏</span>
             </span>
           </CollectMark>
         </template>
         <span v-auth="{ handler: onComment }" class="action-box g-hover">
-          <Icon
-            class="action-btn"
-            theme="outlined"
-            type="message"
-            two-tone-color="#004fc4"
-          />
+          <Icon class="action-btn" theme="outlined" type="message" two-tone-color="#004fc4" />
           <span>评论</span>
         </span>
       </div>
@@ -337,9 +298,7 @@ export default {
       return this.currentIndex > 0 ? this.menus[this.currentIndex - 1] : null
     },
     nextPage () {
-      return this.currentIndex < this.menus.length - 1
-        ? this.menus[this.currentIndex + 1]
-        : null
+      return this.currentIndex < this.menus.length - 1 ? this.menus[this.currentIndex + 1] : null
     }
   },
   mounted () {
@@ -522,9 +481,7 @@ export default {
           this.apLoading = false
           this.approvalTotal = res.total
           this.approvalList =
-            this.apPageNo === 1
-              ? [...res.list]
-              : [...res.list, ...this.approvalList]
+            this.apPageNo === 1 ? [...res.list] : [...res.list, ...this.approvalList]
           this.apFinished = res.total === this.approvalList.length
           this.apPageNo++
         })
@@ -654,7 +611,7 @@ export default {
       position: relative;
       margin-bottom: @g-margin * 2;
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 10px;
         left: -115px;
@@ -663,7 +620,7 @@ export default {
         background: linear-gradient(to left, @g-main-color, #fff);
       }
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 10px;
         right: -115px;

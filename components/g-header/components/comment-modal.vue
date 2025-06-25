@@ -19,17 +19,8 @@
         <a-icon type="number" class="g-active" />
         请仔细描述你的问题，方便答题者回答哦~
       </div>
-      <a-input
-        class="question-title"
-        placeholder="请输入您的问题"
-        auto-focus
-        size="large"
-      />
-      <a-textarea
-        class="question-describe"
-        placeholder="若需要，请对问题进行简单描述~"
-        :rows="4"
-      />
+      <a-input class="question-title" placeholder="请输入您的问题" auto-focus size="large" />
+      <a-textarea class="question-describe" placeholder="若需要，请对问题进行简单描述~" :rows="4" />
       <div class="other-info">
         <a-select
           class="category"
@@ -55,19 +46,12 @@
           style="width: 100%"
           @change="onHandleTagChange"
         >
-          <a-select-option
-            v-for="item in filteredOptions"
-            :key="item"
-            :value="item"
-          >
+          <a-select-option v-for="item in filteredOptions" :key="item" :value="item">
             {{ item }}
           </a-select-option>
         </a-select>
       </div>
-      <div
-        class="ask-footer-btn-box"
-        style="padding-top: 20px; text-align: right"
-      >
+      <div class="ask-footer-btn-box" style="padding-top: 20px; text-align: right">
         <a-button class="question-cancel-btn" @click="onClose">
           取消
         </a-button>

@@ -1,9 +1,5 @@
 <template>
-  <g-card
-    class="half-card"
-    title="事故复盘"
-    :go-to="(e) => handleGoto(`/wiki?wikiId=1052942`)"
-  >
+  <g-card class="half-card" title="事故复盘" :go-to="(e) => handleGoto(`/wiki?wikiId=1052942`)">
     <template>
       <a-spin :spinning="loading">
         <div v-if="reviewList.length > 0" class="info-content">
@@ -22,12 +18,9 @@
               </div>
             </div>
             <div class="item-right">
-              <a-avatar
-                style="width: 20px; height: 20px"
-                :src="item.authorAvatar || defaultImg"
-              />
+              <a-avatar style="width: 20px; height: 20px" :src="item.authorAvatar || defaultImg" />
               <div class="name">
-                {{ item.authorNickname || "-" }}
+                {{ item.authorNickname || '-' }}
               </div>
               <div class="divier" />
               <div>

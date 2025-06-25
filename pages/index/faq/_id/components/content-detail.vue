@@ -1,9 +1,5 @@
 <template>
-  <section
-    v-if="question"
-    ref="question"
-    class="question-detail-content-detail"
-  >
+  <section v-if="question" ref="question" class="question-detail-content-detail">
     <div class="question-main-content">
       <h1 class="question-title">
         {{ question.title }}
@@ -18,14 +14,10 @@
         <g-space />
         <span><Icon type="eye" /> {{ question.views }}</span>
         <g-space />
-        <span><Icon type="dashboard" />
-          {{ question.createAt | dateCountDown }}</span>
+        <span><Icon type="dashboard" /> {{ question.createAt | dateCountDown }}</span>
         <template v-if="canEdit">
           <g-space />
-          <router-link
-            class="g-main-color"
-            :to="{ path: `/draft/editor/${question.id}?t=qa` }"
-          >
+          <router-link class="g-main-color" :to="{ path: `/draft/editor/${question.id}?t=qa` }">
             编辑
           </router-link>
           <g-space />
@@ -73,26 +65,15 @@
         </span>
         <span>
           <a-button v-if="nextPage" type="link" @click="onNewArticle(nextPage)">
-            <span class="cur-title g-hidden-line1">{{
-              nextPage.postsTitle
-            }}</span><a-icon type="right" />
+            <span class="cur-title g-hidden-line1">{{ nextPage.postsTitle }}</span><a-icon type="right" />
           </a-button>
         </span>
       </div>
       <div class="action-container">
-        <Button
-          v-auth="{ handler: onApproval }"
-          type="primary"
-          icon="star"
-          :ghost="hasLike"
-        >
-          {{ hasLike ? "已关注" : "关注问题" }}
+        <Button v-auth="{ handler: onApproval }" type="primary" icon="star" :ghost="hasLike">
+          {{ hasLike ? '已关注' : '关注问题' }}
         </Button>
-        <Button
-          v-auth="{ handler: () => (showDrawer = true) }"
-          type="primary"
-          icon="edit"
-        >
+        <Button v-auth="{ handler: () => (showDrawer = true) }" type="primary" icon="edit">
           写回答
         </Button>
       </div>
@@ -227,9 +208,7 @@ export default {
       return this.currentIndex > 0 ? this.menus[this.currentIndex - 1] : null
     },
     nextPage () {
-      return this.currentIndex < this.menus.length - 1
-        ? this.menus[this.currentIndex + 1]
-        : null
+      return this.currentIndex < this.menus.length - 1 ? this.menus[this.currentIndex + 1] : null
     }
   },
   mounted () {
@@ -253,9 +232,7 @@ export default {
     },
     checkAdoptHeight () {
       if (this.question.solution && this.question.solution.userId) {
-        const adoptHeight = document.getElementById(
-          'best-answer-viewer-container'
-        ).offsetHeight
+        const adoptHeight = document.getElementById('best-answer-viewer-container').offsetHeight
         this.showAdopt = adoptHeight > 500
       }
     },
@@ -266,9 +243,7 @@ export default {
       this.markdownContent = val
     },
     handleSubmit () {
-      const commentValue = this.isMarkDown
-        ? this.markdownContent
-        : this.htmlContent
+      const commentValue = this.isMarkDown ? this.markdownContent : this.htmlContent
       if (!commentValue) {
         this.errorMsg = '评论内容不能为空哦~'
         return
@@ -389,10 +364,7 @@ export default {
         .then((res) => {
           this.apLoading = false
           this.approvalTotal = res.total
-          this.approvalList =
-            this.apPageNo === 1
-              ? res.list
-              : [...this.approvalList, ...res.list]
+          this.approvalList = this.apPageNo === 1 ? res.list : [...this.approvalList, ...res.list]
           this.apFinished = res.total === this.approvalList.length
           this.apPageNo++
         })

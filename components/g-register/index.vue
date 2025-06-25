@@ -9,22 +9,12 @@
       :closable="false"
     >
       <div class="login-item">
-        <Input
-          ref="nicknameInput"
-          v-model="nickname"
-          size="large"
-          placeholder="请输入昵称"
-        >
+        <Input ref="nicknameInput" v-model="nickname" size="large" placeholder="请输入昵称">
           <Icon slot="prefix" type="user" />
         </Input>
       </div>
       <div class="login-item">
-        <Input
-          ref="nicknameInput"
-          v-model="email"
-          size="large"
-          placeholder="请输入邮箱"
-        >
+        <Input ref="nicknameInput" v-model="email" size="large" placeholder="请输入邮箱">
           <Icon slot="prefix" type="mail" />
         </Input>
       </div>
@@ -95,14 +85,7 @@ export default {
       crmPassword: '',
       showLogin: this.show,
       errorMessage: '',
-      mentionsList: [
-        '163.com',
-        'qq.com',
-        'gmail.com',
-        'fixmail.com',
-        'outlook.com',
-        'icloud.com'
-      ]
+      mentionsList: ['163.com', 'qq.com', 'gmail.com', 'fixmail.com', 'outlook.com', 'icloud.com']
     }
   },
   watch: {
@@ -141,8 +124,7 @@ export default {
             this.$store.dispatch('user/getUserInfo', this)
             this.$notification.success({
               message: '注册成功！',
-              description:
-                '恭喜您成为开发者客栈的一份子，希望大家一起维护充实这个客栈，一起成长~'
+              description: '恭喜您成为开发者客栈的一份子，希望大家一起维护充实这个客栈，一起成长~'
             })
           } else {
             cookieUtils.clearToken()

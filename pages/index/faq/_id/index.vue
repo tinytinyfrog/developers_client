@@ -1,10 +1,7 @@
 <template>
   <div class="page-question-detail g-margin-top">
     <div class="page-question-info">
-      <ContentDetail
-        :question="question"
-        :directory-list.sync="directoryList"
-      />
+      <ContentDetail :question="question" :directory-list.sync="directoryList" />
       <CommentList :article="question" />
     </div>
     <CommonSlider>
@@ -108,8 +105,7 @@ export default {
       }
     },
     scrollFun () {
-      const scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
       setViewHistoryTop({ [this.id]: scrollTop })
     },
     listenScroll () {
@@ -153,7 +149,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "~/pages/components/byte-markdown-editor/theme.less";
+@import '~/pages/components/byte-markdown-editor/theme.less';
 .page-question-detail {
   display: flex;
   width: 100vw;

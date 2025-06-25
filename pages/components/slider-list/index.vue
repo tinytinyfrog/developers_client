@@ -12,11 +12,9 @@
         class="slider-item"
         target="_blank"
       >
-        <span class="article-title g-hidden-line1 g-hover">{{
-          item.title
-        }}</span>
+        <span class="article-title g-hidden-line1 g-hover">{{ item.title }}</span>
         <span v-if="showTime" class="article-time">{{
-          item.createAt | formatDate("YYYY/MM")
+          item.createAt | formatDate('YYYY/MM')
         }}</span>
       </router-link>
     </div>
@@ -25,7 +23,7 @@
 
 <script>
 export default {
-  name: "SliderCommonBox", // 1
+  name: 'SliderCommonBox', // 1
   props: {
     sliderData: {
       type: Object,
@@ -38,10 +36,10 @@ export default {
   },
   methods: {
     onMore() {
-      location.href = this.sliderData.path;
+      location.href = this.sliderData.path
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

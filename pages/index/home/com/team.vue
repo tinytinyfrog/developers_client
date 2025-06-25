@@ -1,18 +1,11 @@
 <template>
-  <g-card
-    class="full-card"
-    title="优秀团队"
-    :go-to="(e) => handleGoto(`/info?type=team`)"
-  >
+  <g-card class="full-card" title="优秀团队" :go-to="(e) => handleGoto(`/info?type=team`)">
     <template>
       <a-spin :spinning="loading">
         <div v-if="teamList.length > 0" class="team team-bg">
           <el-carousel type="card" height="445px" style="width: 840px">
             <el-carousel-item v-for="(item, index) of teamList" :key="index">
-              <div
-                class="team-item"
-                @click="(e) => handleGoto(`/info/${item.id}?type=team`)"
-              >
+              <div class="team-item" @click="(e) => handleGoto(`/info/${item.id}?type=team`)">
                 <img :src="item.imageUrl">
                 <div class="team-project">
                   {{ item.honorsOwner }}
@@ -103,7 +96,7 @@ export default {
   }
 }
 .team-bg {
-  background-image: url("@/assets/images/home/team-bg.png");
+  background-image: url('@/assets/images/home/team-bg.png');
 }
 .team-empty {
   display: flex;

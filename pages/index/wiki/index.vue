@@ -25,7 +25,7 @@
               :class="tagIndex === item.value ? 'active-tag' : ''"
               @click="
                 (e) => {
-                  handleTag(item);
+                  handleTag(item)
                 }
               "
             >
@@ -41,11 +41,7 @@
           </a-button>
         </div>
         <div v-infinite-scroll="loadData" class="home-list-box">
-          <WikiItem
-            v-for="(item, index) in wikiList"
-            :key="index"
-            :article="item"
-          />
+          <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
         </div>
         <g-empty :list="wikiList" :finished="finished" :loading="loading" />
       </div>
@@ -189,9 +185,7 @@ export default {
       this.clearStatus()
       this.loadData()
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(
-          item => item.path === to.fullPath
-        )
+        this.menuIndex = this.menuList.findIndex(item => item.path === to.fullPath)
       } else {
         this.menuIndex = -1
       }
@@ -205,9 +199,7 @@ export default {
       }
       this.menuList = menuList
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(
-          item => item.path === this.$route.fullPath
-        )
+        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
       } else {
         this.menuIndex = -1
       }
@@ -215,15 +207,11 @@ export default {
   },
   mounted () {
     this.loadData()
-    const res = this.$store.state.menu.menuList.filter(
-      i => i.path === '/wiki'
-    )
+    const res = this.$store.state.menu.menuList.filter(i => i.path === '/wiki')
     if (res?.length > 0 && res[0].children) {
       this.menuList = res[0].children
       if (this.menuList.length > 0) {
-        this.menuIndex = this.menuList.findIndex(
-          item => item.path === this.$route.fullPath
-        )
+        this.menuIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
       }
     } else {
       this.menuIndex = -1
@@ -237,9 +225,7 @@ export default {
       this.tagIndex = item.value
     },
     handleWrite () {
-      this.$utils.openNewWindow(
-        `/draft/editor/new?t=wiki&wikiId=${this.$route.query.wikiId}`
-      )
+      this.$utils.openNewWindow(`/draft/editor/new?t=wiki&wikiId=${this.$route.query.wikiId}`)
     },
     handleGoto (item) {
       this.$router.push(item.path)
@@ -265,8 +251,7 @@ export default {
         })
         .then((list) => {
           if (list) {
-            this.wikiList =
-              this.pageNo === 1 ? list : [...this.wikiList, ...list]
+            this.wikiList = this.pageNo === 1 ? list : [...this.wikiList, ...list]
             this.pageNo++
             this.finished = list.length < this.pageSize
           }
@@ -276,18 +261,16 @@ export default {
         })
     },
     fetchWikiTag () {
-      this.$api
-        .getWikiTag({ wikiId: this.$route.query.wikiId, tags: [] })
-        .then((res) => {
-          if (res.length > 0) {
-            this.tagList = res.map(i => ({
-              label: i.tagName,
-              value: i.tagId
-            }))
-          }
-          console.log(this.tagList, 'taglist', res)
-          this.tagList.unshift({ label: '全部', value: 0 })
-        })
+      this.$api.getWikiTag({ wikiId: this.$route.query.wikiId, tags: [] }).then((res) => {
+        if (res.length > 0) {
+          this.tagList = res.map(i => ({
+            label: i.tagName,
+            value: i.tagId
+          }))
+        }
+        console.log(this.tagList, 'taglist', res)
+        this.tagList.unshift({ label: '全部', value: 0 })
+      })
     }
   }
 }
@@ -413,8 +396,8 @@ export default {
       left: 0;
       right: 0;
       bottom: 0;
-      content: "";
-      background-image: url("https://cdn.jsdelivr.net/gh/umlink/umlink-figure-bed_1@master/images/1633585808102WechatIMG14.jpeg");
+      content: '';
+      background-image: url('https://cdn.jsdelivr.net/gh/umlink/umlink-figure-bed_1@master/images/1633585808102WechatIMG14.jpeg');
       background-repeat: no-repeat;
       background-size: cover;
       opacity: 0.3;

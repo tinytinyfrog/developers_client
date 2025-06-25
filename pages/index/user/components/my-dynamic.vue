@@ -1,10 +1,5 @@
 <template>
-  <Tabs
-    class="dynamic-tabs"
-    type="card"
-    :default-active-key="tabIndex"
-    @change="changeTabindex"
-  >
+  <Tabs class="dynamic-tabs" type="card" :default-active-key="tabIndex" @change="changeTabindex">
     <TabPane key="comment" class="tabs-content" force-render>
       <span slot="tab">
         评论
@@ -16,9 +11,7 @@
         class="comment-item"
         @click="
           $utils.openNewWindow(
-            `/${item.postsCategory === 'ARTICLE' ? 'article' : 'faq'}/${
-              item.postsId
-            }`
+            `/${item.postsCategory === 'ARTICLE' ? 'article' : 'faq'}/${item.postsId}`
           )
         "
       >

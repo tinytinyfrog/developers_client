@@ -157,8 +157,7 @@ export default {
         })
         .then((list) => {
           if (list) {
-            this.contentList =
-              this.pageNo === 1 ? list : [...this.contentList, ...list]
+            this.contentList = this.pageNo === 1 ? list : [...this.contentList, ...list]
             this.pageNo++
             this.finished = list.length < this.pageSize
           }
@@ -176,8 +175,7 @@ export default {
         .getFollowArticleList(this.pageSize, this.pageNo)
         .then((list) => {
           if (list) {
-            this.contentList =
-              this.pageNo === 1 ? list : [...this.contentList, ...list]
+            this.contentList = this.pageNo === 1 ? list : [...this.contentList, ...list]
             this.pageNo++
             this.finished = list.length < this.pageSize
           }

@@ -28,11 +28,11 @@
 
 <script>
 export default {
-  name: "PendingArticleList",
+  name: 'PendingArticleList',
   props: {
     wikiId: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -42,15 +42,15 @@ export default {
       loading: false,
       pageNo: 1,
       pageSize: 100,
-    };
+    }
   },
   mounted() {
-    this.getPendingList();
+    this.getPendingList()
   },
   methods: {
     getPendingList() {
-      if (this.finished || this.loading) return;
-      this.loading = true;
+      if (this.finished || this.loading) return
+      this.loading = true
       this.$api
         .getWikiNodeCheckRecordList({
           filter: {
@@ -60,17 +60,17 @@ export default {
           pageSize: this.pageSize,
         })
         .then((list) => {
-          this.loading = false;
-          this.finished = true;
+          this.loading = false
+          this.finished = true
           // list.forEach(item => {
           //   item.
           // })
-          this.checkList = list;
-        });
+          this.checkList = list
+        })
     },
     handleCheck() {},
   },
-};
+}
 </script>
 
 <style lang="less">

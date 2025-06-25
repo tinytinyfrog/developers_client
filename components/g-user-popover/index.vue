@@ -32,12 +32,10 @@
                   size="small"
                   :ghost="userInfo.follow"
                   :loading="fLoading"
-                >{{ userInfo.follow ? "已关注" : "关注" }}</Button>
+                >{{ userInfo.follow ? '已关注' : '关注' }}</Button>
               </p>
               <p>
-                <span :style="signatureStyle">{{
-                  userInfo.job || "搬砖工~"
-                }}</span>
+                <span :style="signatureStyle">{{ userInfo.job || '搬砖工~' }}</span>
               </p>
               <p class="honour-icon" style="font-size: 16px; margin-top: 5px">
                 <Tooltip v-if="userInfo.github" placement="top">
@@ -74,20 +72,12 @@
               </p>
             </div>
           </div>
-          <p
-            v-if="userInfo.signature"
-            class="g-hidden-line2"
-            :style="signatureStyle"
-          >
+          <p v-if="userInfo.signature" class="g-hidden-line2" :style="signatureStyle">
             {{ userInfo.signature }}
           </p>
           <div
             class="other-honr"
-            style="
-              margin-top: 15px;
-              display: flex;
-              justify-content: space-between;
-            "
+            style="margin-top: 15px; display: flex; justify-content: space-between"
           >
             <span :style="infoItemStyle">
               <span style="font-weight: bold">{{ userInfo.fasNumb }}</span>

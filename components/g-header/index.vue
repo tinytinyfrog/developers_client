@@ -10,11 +10,7 @@
             @click="$router.push('/')"
           >
           <a-divider type="vertical" class="a-divider" />
-          <img
-            class="intro-logo"
-            src="~/assets/images/header/intro.png"
-            alt=""
-          >
+          <img class="intro-logo" src="~/assets/images/header/intro.png" alt="">
           <InputSearch
             v-model="searchVal"
             placeholder="请输入关键字进行搜索"
@@ -51,11 +47,7 @@
                 <a-menu-item>
                   <a href="javascript:;" @click="handleChangePwd">修改密码</a>
                 </a-menu-item>
-                <a-menu-item
-                  v-if="
-                    userInfo && ['ADMIN', 'SUPER_ADMIN'].includes(userInfo.role)
-                  "
-                >
+                <a-menu-item v-if="userInfo && ['ADMIN', 'SUPER_ADMIN'].includes(userInfo.role)">
                   <span @click="handleOpenAdmin">后台管理</span>
                 </a-menu-item>
                 <a-menu-item>
@@ -73,26 +65,16 @@
       </div>
     </div>
     <Modal v-model="showChangePwd" title="修改密码" @on-ok="handleSubmit">
-      <a-form
-        :form="form"
-        :label-col="{ span: 24 }"
-        :wrapper-col="{ span: 24 }"
-      >
+      <a-form :form="form" :label-col="{ span: 24 }" :wrapper-col="{ span: 24 }">
         <a-form-item label="旧密码">
           <a-input
-            v-decorator="[
-              'oldPassword',
-              { rules: [{ required: true, message: '请输入旧密码' }] },
-            ]"
+            v-decorator="['oldPassword', { rules: [{ required: true, message: '请输入旧密码' }] }]"
             placeholder="请输入旧密码"
           />
         </a-form-item>
         <a-form-item label="新密码">
           <a-input-password
-            v-decorator="[
-              'newPassword',
-              { rules: [{ required: true, message: '请输入新密码' }] },
-            ]"
+            v-decorator="['newPassword', { rules: [{ required: true, message: '请输入新密码' }] }]"
             placeholder="请输入新密码"
           />
         </a-form-item>
@@ -101,10 +83,7 @@
             v-decorator="[
               'newPassword1',
               {
-                rules: [
-                  { required: true, message: '请确认新密码' },
-                  { validator: validatePwd },
-                ],
+                rules: [{ required: true, message: '请确认新密码' }, { validator: validatePwd }],
               },
             ]"
             placeholder="请确认新密码"
@@ -248,17 +227,17 @@ export default {
     validatePwd (rule, value, callback) {
       /* eslint-disable */
       if (!value) {
-        callback("请确认密码");
+        callback('请确认密码')
       }
-      if (value && value !== this.form.getFieldValue("newPassword")) {
-        callback("密码不一致");
+      if (value && value !== this.form.getFieldValue('newPassword')) {
+        callback('密码不一致')
       }
-      callback();
+      callback()
     },
     async handleSubmit() {
-      this.loading = true;
+      this.loading = true
       try {
-        const value = await this.form.validateFields();
+        const value = await this.form.validateFields()
         this.$api
           .updatePwd({
             ...value,
@@ -268,119 +247,117 @@ export default {
               // this.$store.dispatch('user/getUserInfo', this)
               this.$notification.success({
                 duration: 2,
-                message: "修改成功，请重新登录",
-              });
-              this.showChangePwd = false;
-              cookieUtils.clearToken();
-              await this.$store.dispatch("user/getUserInfo", {
+                message: '修改成功，请重新登录',
+              })
+              this.showChangePwd = false
+              cookieUtils.clearToken()
+              await this.$store.dispatch('user/getUserInfo', {
                 $api: this.$api,
                 clear: true,
-              });
-              location.href = "/login";
+              })
+              location.href = '/login'
             } else {
               this.$notification.error({
                 duration: 2,
                 message: data.message,
-              });
+              })
             }
-          });
+          })
       } catch (e) {
-        console.log(e);
+        console.log(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     getPopContainer() {
-      return document.getElementById("g-header-container");
+      return document.getElementById('g-header-container')
     },
     async onReadAll() {
       // EventBus.$emit('G_MSG_ITEM_COUNT')
-      const res = await this.$api.markMessageStateAll();
+      const res = await this.$api.markMessageStateAll()
       if (res.success) {
-        this.getMessageCount();
-        EventBus.$emit("G_MSG_ITEM_COUNT");
+        this.getMessageCount()
+        EventBus.$emit('G_MSG_ITEM_COUNT')
       }
     },
     getMessageCount() {
       if (this.$store.state.user.userInfo) {
         this.$api.getMessageCount().then((count) => {
-          this.msgCount = count;
-        });
+          this.msgCount = count
+        })
       }
     },
     handleSetting(action) {
-      this.showInfoItem = false;
+      this.showInfoItem = false
       if (action.method) {
-        this[action.method]();
+        this[action.method]()
       }
       if (action.path) {
-        this.$router.push(action.path);
+        this.$router.push(action.path)
       }
     },
     handleWrite() {
-      this.$utils.openNewWindow(
-        `/draft/editor/new?t=wiki&wikiId=${this.wikiId}`
-      );
-      this.$utils.openNewWindow("/draft/editor/new?t=article");
+      this.$utils.openNewWindow(`/draft/editor/new?t=wiki&wikiId=${this.wikiId}`)
+      this.$utils.openNewWindow('/draft/editor/new?t=article')
       // this.$router.push('/draft/editor/new?t=article')
     },
     logout() {
-      console.log("coming");
+      console.log('coming')
       this.$confirm({
-        title: "确认需要退出吗？",
-        content: "要不再溜达溜达~",
-        okText: "确认",
-        cancelText: "取消",
+        title: '确认需要退出吗？',
+        content: '要不再溜达溜达~',
+        okText: '确认',
+        cancelText: '取消',
         onCancel: () => {},
         onOk: async () => {
           this.$api.logout({
             token: cookieUtils.getToken(),
-          });
-          cookieUtils.clearToken();
-          await this.$store.dispatch("user/getUserInfo", {
+          })
+          cookieUtils.clearToken()
+          await this.$store.dispatch('user/getUserInfo', {
             $api: this.$api,
             clear: true,
-          });
-          location.href = "/login";
+          })
+          location.href = '/login'
         },
-      });
+      })
     },
     currentSearch(type) {
-      EventBus.$emit("G_SEARCH", {
+      EventBus.$emit('G_SEARCH', {
         type,
         value: this.searchVal,
-      });
-      const newUrl = `/${type}/${this.searchVal}`;
-      const stateObject = 0;
-      const title = type;
-      history.replaceState(stateObject, title, newUrl);
+      })
+      const newUrl = `/${type}/${this.searchVal}`
+      const stateObject = 0
+      const title = type
+      history.replaceState(stateObject, title, newUrl)
     },
     onSearch() {
       if (!this.searchVal) {
-        return;
+        return
       }
-      const url = location.href;
+      const url = location.href
       if (/\/search\/.+/.test(url)) {
-        this.currentSearch("search");
-        return;
+        this.currentSearch('search')
+        return
       }
-      this.$router.push(`/search/${this.searchVal}`);
+      this.$router.push(`/search/${this.searchVal}`)
       // this.$utils.openNewWindow(`/search/${this.searchVal}`)
     },
     handleLogin() {
       // this.$router.push('/login')
-      location.href = location.origin + "/login";
+      location.href = location.origin + '/login'
       // location.href = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
       // location.href = 'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
     },
     handleGoto() {
-      this.$router.push("/user");
+      this.$router.push('/user')
     },
     handleOpenAdmin() {
-      window.open(location.origin + "/wiki-admin/#/admin/");
+      window.open(location.origin + '/wiki-admin/#/admin/')
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

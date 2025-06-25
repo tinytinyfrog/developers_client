@@ -14,10 +14,7 @@
             <img :src="item.coverImageUrl" class="info-img">
           </div>
           <div class="info-right">
-            <div
-              class="info-title"
-              @click="(e) => handleGoto(`/info/${item.id}?type=news`)"
-            >
+            <div class="info-title" @click="(e) => handleGoto(`/info/${item.id}?type=news`)">
               {{ item.title }}
             </div>
             <div class="info-content">

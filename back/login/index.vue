@@ -10,60 +10,43 @@
         <div class="login-title">嗨，您好！</div>
         <div class="login-desc">欢迎来到交付中心门户，登录以继续</div>
         <div class="login-form">
-          <a-form
-            :form="form"
-            :label-col="{ span: 24 }"
-            :wrapper-col="{ span: 24 }"
-          >
+          <a-form :form="form" :label-col="{ span: 24 }" :wrapper-col="{ span: 24 }">
             <a-form-item label="账号">
               <a-input
-                v-decorator="[
-                  'email',
-                  { rules: [{ required: true, message: '请输入账号' }] },
-                ]"
+                v-decorator="['email', { rules: [{ required: true, message: '请输入账号' }] }]"
                 placeholder="请输入账号"
               />
             </a-form-item>
             <a-form-item label="密码">
               <a-input-password
-                v-decorator="[
-                  'password',
-                  { rules: [{ required: true, message: '请输入密码' }] },
-                ]"
+                v-decorator="['password', { rules: [{ required: true, message: '请输入密码' }] }]"
                 placeholder="请输入密码"
               />
             </a-form-item>
           </a-form>
         </div>
-        <a-button
-          type="primary"
-          class="login-button"
-          :loading="loading"
-          @click="handleLogin"
-        >
+        <a-button type="primary" class="login-button" :loading="loading" @click="handleLogin">
           登录
         </a-button>
-        <a-button class="login-button" @click="handleOpenAuth">
-          拓维认证中心登录
-        </a-button>
+        <a-button class="login-button" @click="handleOpenAuth"> 拓维认证中心登录 </a-button>
       </div>
     </div>
   </div>
 </template>
 <script>
-import cookieUtils from "@/lib/cookie-utils";
+import cookieUtils from '@/lib/cookie-utils'
 // import autofit from 'autofit.js'
 export default {
   data() {
     const form = this.$form.createForm(this, {
       password: undefined,
       email: undefined,
-    });
+    })
     return {
-      errorMessage: "",
+      errorMessage: '',
       form,
       loading: false,
-    };
+    }
   },
   // mounted () {
   //   autofit.init({
@@ -75,51 +58,51 @@ export default {
   // },
   methods: {
     async handleLogin() {
-      this.loading = true;
+      this.loading = true
       try {
-        const value = await this.form.validateFields();
+        const value = await this.form.validateFields()
         this.$api
           .login({
             ...value,
           })
           .then((data) => {
             if (data.data) {
-              cookieUtils.setToken(data.data);
-              this.errorMessage = "";
-              this.$store.dispatch("user/getUserInfo", this);
+              cookieUtils.setToken(data.data)
+              this.errorMessage = ''
+              this.$store.dispatch('user/getUserInfo', this)
               this.$notification.success({
                 duration: 2,
-                message: "登录成功！",
-              });
-              this.$router.push("/home");
+                message: '登录成功！',
+              })
+              this.$router.push('/home')
             } else {
-              cookieUtils.clearToken();
-              this.errorMessage = data.message;
+              cookieUtils.clearToken()
+              this.errorMessage = data.message
               this.$notification.error({
                 duration: 2,
                 message: this.errorMessage,
-              });
+              })
             }
-          });
+          })
       } catch (e) {
-        console.log(e);
+        console.log(e)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     handleOpenAuth() {
       // location.href = 'http://it.talkweb.com.cn/idaas/login?client_id=1834156237792284674&redirect_uri=http%3A%2F%2F192.168.35.12%3A19102%2F%23%2FloginRedirect&response_type=code'
       location.href =
-        "https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code";
+        'https://it.talkweb.com.cn/idaas/login?client_id=1899739142530338818&redirect_uri=https://delivery.paas.talkweb.com.cn/auth&response_type=code'
     },
   },
-};
+}
 </script>
 <style scoped lang="less">
 .login-container {
   width: 100%;
   height: 100vh;
-  background: url("@/assets/images/login/bg.png");
+  background: url('@/assets/images/login/bg.png');
   background-size: contain;
   .login-header {
     padding: 44px 52px 0px 52px;

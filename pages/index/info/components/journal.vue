@@ -9,11 +9,7 @@
         />
       </div>
       <div v-if="journalList.length > 0" class="journal-list">
-        <div
-          v-for="(item, index) of journalList"
-          :key="index"
-          class="journal-item"
-        >
+        <div v-for="(item, index) of journalList" :key="index" class="journal-item">
           <img :src="item.coverImageUrl" class="journal-img">
           <div class="journal-mask">
             <div>

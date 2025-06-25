@@ -93,9 +93,7 @@ export default {
         }
       })
       const method =
-        this.ctxType === 'ARTICLE'
-          ? this.$api.getArticleDetail
-          : this.$api.getQuestionDetail
+        this.ctxType === 'ARTICLE' ? this.$api.getArticleDetail : this.$api.getQuestionDetail
       await method(this.nodeId).then((res) => {
         article = res
       })
@@ -110,7 +108,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "~/pages/components/byte-markdown-editor/theme.less";
+@import '~/pages/components/byte-markdown-editor/theme.less';
 .page-wiki-node-detail {
   width: 60%;
   min-height: 100vh;

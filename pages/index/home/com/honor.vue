@@ -1,9 +1,5 @@
 <template>
-  <g-card
-    class="half-card"
-    title="荣誉墙"
-    :go-to="(e) => handleGoto(`/info?type=honor`)"
-  >
+  <g-card class="half-card" title="荣誉墙" :go-to="(e) => handleGoto(`/info?type=honor`)">
     <template>
       <a-spin :spinning="loading">
         <div v-if="honorList.length > 0" class="honor">
@@ -12,9 +8,7 @@
               v-for="(item, index) of honorList"
               :key="index"
               class="honor-list"
-              :class="[
-                item.child.length === 3 ? 'honor-around' : 'honor-start',
-              ]"
+              :class="[item.child.length === 3 ? 'honor-around' : 'honor-start']"
             >
               <div
                 v-for="(k, i) of item.child"

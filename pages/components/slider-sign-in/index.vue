@@ -7,13 +7,8 @@
           <span v-if="nickname" class="nickname">{{ nickname }}&nbsp;</span>
           <span>{{ timeGreeting() }}好!</span>
         </span>
-        <Button
-          v-auth="{ handler: onSignIn }"
-          type="primary"
-          :ghost="hasSignIn"
-          :loading="loading"
-        >
-          {{ hasSignIn ? "已签到" : "签到" }}
+        <Button v-auth="{ handler: onSignIn }" type="primary" :ghost="hasSignIn" :loading="loading">
+          {{ hasSignIn ? '已签到' : '签到' }}
         </Button>
       </div>
       <div class="good-life">
