@@ -2,25 +2,25 @@
   <g-card class="half-card" title="荣誉墙" :go-to="(e) => handleGoto(`/info?type=honor`)">
     <template>
       <a-spin :spinning="loading">
-        <div v-if="honorList.length > 0" class="honor">
+        <div v-if="pagedHonorList.length > 0" class="honor">
           <a-carousel>
             <div
-              v-for="(item, index) of honorList"
+              v-for="(page, index) of pagedHonorList"
               :key="index"
-              class="honor-list"
-              :class="[item.child.length === 3 ? 'honor-around' : 'honor-start']"
+              class="honor-list-page"
             >
               <div
-                v-for="(k, i) of item.child"
-                :key="i"
+                v-for="item of page"
+                :key="item.id"
                 class="honor-item"
-                @click="(e) => handleGoto(`/info/${k.id}?type=team`)"
+                :style="{ visibility: item.isPlaceholder ? 'hidden' : 'visible' }"
+                @click="() => !item.isPlaceholder && handleGoto(`/info/${item.id}?type=team`)"
               >
                 <div>
-                  <img class="img" :src="k.imageUrl">
+                  <img class="img" :src="item.imageUrl" :alt="item.title">
                 </div>
                 <div class="text">
-                  {{ k.title }}
+                  {{ item.title }}
                 </div>
               </div>
             </div>
@@ -33,15 +33,14 @@
     </template>
   </g-card>
 </template>
+
 <script lang="js" name="Honor">
 export default {
   name: 'Honor',
   data () {
-    const honorList = []
-    const loading = false
     return {
-      honorList,
-      loading
+      pagedHonorList: [],
+      loading: false
     }
   },
   beforeMount () {
@@ -55,54 +54,64 @@ export default {
       const params = {
         honorsType: '2'
       }
+      this.loading = true
       this.$api.getHonorList(params).then((res) => {
-        if (res.length <= 3) {
-          this.honorList = [{
-            child: res
-          }]
+        if (res && res.length > 0) {
+          const chunkSize = 3
+          const result = []
+          for (let i = 0; i < res.length; i += chunkSize) {
+            result.push(res.slice(i, i + chunkSize))
+          }
+          // Pad the last page with placeholders to ensure consistent spacing
+          const lastPage = result[result.length - 1]
+          if (lastPage && lastPage.length < chunkSize) {
+            const numPlaceholders = chunkSize - lastPage.length
+            for (let i = 0; i < numPlaceholders; i++) {
+              lastPage.push({ id: `placeholder-${i}`, isPlaceholder: true })
+            }
+          }
+          this.pagedHonorList = result
         } else {
-          this.honorList = [{
-            child: res.splice(0, 3)
-          }, {
-            child: res.splice(0, 3)
-          }]
+          this.pagedHonorList = []
         }
+      }).finally(() => {
+        this.loading = false
       })
     }
   }
 }
 </script>
+
 <style scoped lang="less">
 .honor {
   padding: 16px;
   padding-bottom: 32px;
-  .honor-list {
-    display: flex !important;
-    width: 100%;
-    .honor-item {
-      width: 180px;
-      height: 300px;
-      padding: 16px 0px;
-      padding-bottom: 10px;
-      cursor: pointer;
-      .img {
-        width: 180px;
-        height: 222px;
-      }
-      .text {
-        text-align: center;
-        margin-top: 16px;
-        color: rgb(40, 40, 40);
-        font-size: 14px;
-        font-weight: 400;
-      }
-    }
-  }
-  .honor-around {
+
+  .honor-list-page {
+    display: flex !important; /* Override Ant Design Carousel styles */
     justify-content: space-around;
+    align-items: center;
   }
-  .honor-start {
-    justify-content: start;
+
+  .honor-item {
+    width: 180px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    .img {
+      width: 100%;
+      height: 222px;
+      object-fit: fill;
+    }
+
+    .text {
+      text-align: center;
+      margin-top: 16px;
+      color: rgb(40, 40, 40);
+      font-size: 14px;
+      font-weight: 400;
+    }
   }
 }
 
