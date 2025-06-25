@@ -38,7 +38,7 @@ import SHA1 from 'crypto-js/sha1'
 import globalConfig from '../global'
 import EventBus from '../lib/event-bus'
 import { setWxShare } from '../lib/wx-share'
-import Tags from './index/components/tags'
+const Tags = () => import('./index/components/tags')
 // import Category from './index/components/category'
 
 const tagsWhite = ['/faq', '/article']
@@ -140,11 +140,11 @@ export default {
     // if (!this.$store.state.user.userInfo) {
     //   cookieUtils.clearToken()
     // }
-    window.addEventListener('scroll', this.scrollThrottle)
+    window.addEventListener('scroll', this.scrollThrottle, { passive: true })
     // this.wxOauth()
   },
   destroyed () {
-    window.removeEventListener('scroll', this.scrollThrottle)
+    window.removeEventListener('scroll', this.scrollThrottle, { passive: true })
   },
   methods: {
     async getSignature (nonceStr, timestamp) {

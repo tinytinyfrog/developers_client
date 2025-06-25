@@ -46,18 +46,19 @@
   </div>
 </template>
 <script>
-import Post from './com/post.vue'
-import AiPost from './com/ai-post.vue'
-import Map from './com/map.vue'
-import Case from './com/case.vue'
-import Review from './com/review.vue'
-import Journal from './com/journal.vue'
-import Salon from './com/salon.vue'
-import Expert from './com/expert.vue'
-import Honor from './com/honor.vue'
-import Team from './com/team.vue'
-import Talent from './com/talent.vue'
-import Statistics from './com/statistics.vue'
+// 组件懒加载优化
+const Post = () => import('./com/post.vue')
+const AiPost = () => import('./com/ai-post.vue')
+const Map = () => import('./com/map.vue')
+const Case = () => import('./com/case.vue')
+const Review = () => import('./com/review.vue')
+const Journal = () => import('./com/journal.vue')
+const Salon = () => import('./com/salon.vue')
+const Expert = () => import('./com/expert.vue')
+const Honor = () => import('./com/honor.vue')
+const Team = () => import('./com/team.vue')
+const Talent = () => import('./com/talent.vue')
+const Statistics = () => import('./com/statistics.vue')
 
 const defaultImg = require('@/assets/images/home/default-user.png')
 const bannerDefaultImg = require('@/assets/images/banner.png')
