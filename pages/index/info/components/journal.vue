@@ -123,7 +123,6 @@ export default {
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   max-width: 1300px;
-  margin: 0 auto;
   .journal-item {
     width: 100%;
     height: 360px;
