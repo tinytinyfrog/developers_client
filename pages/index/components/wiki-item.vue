@@ -19,15 +19,19 @@
           </span>
           <GSpace />
           <span class="question-time">{{ article.createAtString | dateCountDown }}</span>
-          <!-- <span class="tag-container">
+          <span v-if="article.tags.length > 0" class="tag-container">
             <g-space />
-            <span
-              v-for="(item, index) in article.tags"
-              :key="index"
-              class="g-tag g-hover"
-              @click.stop.prevent="handleTagSearch(item)"
-            >{{ item.name }}</span>
-          </span> -->
+            <template v-for="(item, index) in article.tags">
+              <span
+                v-if="item.name"
+                :key="index"
+                class="g-tag g-hover"
+                @click.stop.prevent="handleTagSearch(item)"
+              >
+                {{ item.name }}
+              </span>
+            </template>
+          </span>
         </p>
         <div class="title-line">
           <!-- <Tag v-if="article.official" color="pink">
