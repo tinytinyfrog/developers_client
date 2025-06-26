@@ -15,25 +15,29 @@
           </div>
         </div>
       </div>
-      <div v-if="menuList.length > 0" class="info-content">
-        <Info v-if="menuList[activeIndex].path === '/info?type=news'" />
-        <Expert v-if="menuList[activeIndex].path === '/info?type=expert'" />
-        <Honor v-if="menuList[activeIndex].path === '/info?type=honor'" />
-        <Team v-if="menuList[activeIndex].path === '/info?type=team'" />
-        <Talent v-if="menuList[activeIndex].path === '/info?type=talent'" />
-        <Salon v-if="menuList[activeIndex].path === '/info?type=salon'" />
-        <Journal v-if="menuList[activeIndex].path === '/info?type=journal'" />
-      </div>
-    </template>
-    <div v-else class="info-empty-container">
-      <a-result status="403" sub-title="对不起,你没访问权限">
-        <template #extra>
-          <a-button type="primary" @click="handleBackHome">
-            返回首页
-          </a-button>
+      <a-spin :spinning="menuLoading" class="info-spin">
+        <template v-if="!menuLoading">
+          <div v-if="menuList.length > 0" class="info-content">
+            <Info v-if="menuList[activeIndex].path === '/info?type=news'" />
+            <Expert v-if="menuList[activeIndex].path === '/info?type=expert'" />
+            <Honor v-if="menuList[activeIndex].path === '/info?type=honor'" />
+            <Team v-if="menuList[activeIndex].path === '/info?type=team'" />
+            <Talent v-if="menuList[activeIndex].path === '/info?type=talent'" />
+            <Salon v-if="menuList[activeIndex].path === '/info?type=salon'" />
+            <Journal v-if="menuList[activeIndex].path === '/info?type=journal'" />
+          </div>
+          <div v-else class="info-empty-container">
+            <a-result status="403" sub-title="对不起,你没访问权限">
+              <template #extra>
+                <a-button type="primary" @click="handleBackHome">
+                  返回首页
+                </a-button>
+              </template>
+            </a-result>
+          </div>
         </template>
-      </a-result>
-    </div>
+      </a-spin>
+    </template>
   </div>
 </template>
 <script lang="js" name="InfoPage">
@@ -100,13 +104,11 @@ export default {
     Journal
   },
   data () {
-    const activeIndex = 999999
-    const infoList = []
-    const menuList = []
     return {
-      menuList,
-      activeIndex,
-      infoList
+      menuLoading: true,
+      menuList: [],
+      activeIndex: 0,
+      infoList: []
     }
   },
   watch: {
@@ -117,33 +119,36 @@ export default {
         this.activeIndex = -1
       }
     },
-    '$store.state.menu.menuList' (menu) {
-      let menuList = []
-      const res = menu.filter(i => i.path === '/info')
-      if (res?.length > 0 && res[0].children) {
-        menuList = res[0].children
-      }
-      this.menuList = menuList
-      console.log(this.menuList, 'ddd')
-      if (this.menuList.length > 0) {
-        this.activeIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
-      } else {
-        this.activeIndex = -1
-      }
+    '$store.state.menu.menuList': {
+      handler () {
+        this.fetchMenuList()
+      },
+      immediate: true
     }
   },
   mounted () {
-    const res = this.$store.state.menu.menuList.filter(i => i.path === '/info')
-    if (res?.length > 0 && res[0].children) {
-      this.menuList = res[0].children
-      if (this.menuList.length > 0) {
-        this.activeIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
-      }
-    } else {
-      this.activeIndex = -1
-    }
+    this.fetchMenuList()
   },
   methods: {
+    fetchMenuList () {
+      this.menuLoading = true
+      try {
+        let menuList = []
+        const menu = this.$store.state.menu.menuList
+        const res = menu.filter(i => i.path === '/info')
+        if (res?.length > 0 && res[0].children) {
+          menuList = res[0].children
+        }
+        this.menuList = menuList
+        if (this.menuList.length > 0) {
+          this.activeIndex = this.menuList.findIndex(item => item.path === this.$route.fullPath)
+        } else {
+          this.activeIndex = -1
+        }
+      } finally {
+        this.menuLoading = false
+      }
+    },
     handleClick (item, index) {
       this.$router.push(item.path)
       this.activeIndex = index
@@ -155,12 +160,19 @@ export default {
 }
 </script>
 <style scoped lang="less">
-.info-container {
+.info-spin {
   width: 100%;
-  height: calc(100vh - 140px);
+  flex: 1;
+  min-width: 0;
   display: flex;
-  background: #fff;
+  flex-direction: column;
+}
+
+.info-container {
   display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
   background: #f7f8fa;
   .info-menu {
     width: 265px;

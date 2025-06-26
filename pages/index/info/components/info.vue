@@ -1,6 +1,6 @@
 <template>
   <a-spin :spinning="loading">
-    <div>
+    <div class="info-content">
       <div class="info-header">
         <a-input-search
           v-model="inputValue"
@@ -126,6 +126,14 @@ export default {
 }
 </script>
 <style scoped lang="less">
+.info-content {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 .info-header {
   margin-bottom: 10px;
 }

@@ -1,38 +1,43 @@
 <template>
   <a-spin :spinning="loading">
-    <div>
-      <div class="expert-header">
-        <a-input-search
-          v-model="inputValue"
-          placeholder="请输入关键字进行搜索"
-          style="width: 320px"
-        />
-      </div>
-      <div v-if="expertList.length > 0">
-        <div v-for="(item, index) of expertList" :key="index" class="expert-item">
-          <div class="expert-left">
-            <img :src="item.imageUrl" class="expert-img">
-          </div>
-          <div class="expert-right">
-            <div class="expert-title" @click="(e) => handleGoto(`/info/${item.id}?type=expert`)">
-              {{ item.title }}
+    <div v-if="error" class="error-message">
+      {{ error }}
+    </div>
+    <div v-else>
+      <div>
+        <div class="expert-header">
+          <a-input-search
+            v-model="inputValue"
+            placeholder="请输入关键字进行搜索"
+            style="width: 320px"
+          />
+        </div>
+        <div v-if="expertList.length > 0">
+          <div v-for="(item, index) of expertList" :key="index" class="expert-item">
+            <div class="expert-left">
+              <img :src="item.imageUrl" class="expert-img">
             </div>
-            <div class="expert-content">
-              {{ item.summary }}
-            </div>
-            <div class="expert-bottom">
-              <div class="bottom-left">
-                <img src="~/assets/images/info/info.png" class="bottom-img">
-                {{ item.honorsDomain }}
+            <div class="expert-right">
+              <div class="expert-title" @click="(e) => handleGoto(`/info/${item.id}?type=expert`)">
+                {{ item.title }}
               </div>
-              <div class="expert-divier" />
-              <div>时间：{{ item.createAtString || '-' }}</div>
+              <div class="expert-content">
+                {{ item.summary }}
+              </div>
+              <div class="expert-bottom">
+                <div class="bottom-left">
+                  <img src="~/assets/images/info/info.png" class="bottom-img">
+                  {{ item.honorsDomain }}
+                </div>
+                <div class="expert-divier" />
+                <div>时间：{{ item.createAtString || '-' }}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div v-else>
-        <a-empty />
+        <div v-else>
+          <a-empty />
+        </div>
       </div>
       <div class="expert-pagination">
         <a-pagination
@@ -44,6 +49,11 @@
           :show-total="(total) => `总共${total}条`"
         />
       </div>
+    </div>
+    show-quick-jumper
+    :show-total="(total) => `总共${total}条`"
+    />
+    </div>
     </div>
   </a-spin>
 </template>
@@ -73,13 +83,8 @@
 //   icon: salon1Img
 // }, {
 //   title: '资讯标题展示信息文案',
-//   content: '低代码开发平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率。低代码开过可视化界面和少量代码快速构建应用程序的工具，显著降低平台(Low-Code Development Platform，LCDP)是一种通过可视化界面和少量代码快速构建应用程序的工具，显著降低了开发门槛并提升了效率',
-//   type: '资讯中心',
-//   createAt: '2025-03-21',
-//   icon: salon2Img
-// }]
 export default {
-  name: 'HonorContent',
+  name: 'Expert',
   components: {},
   data () {
     const expertList = []
@@ -88,13 +93,15 @@ export default {
     const loading = false
     const inputValue = undefined
     const total = 0
+    const error = null
     return {
       expertList,
       pageSize,
       current,
       loading,
       inputValue,
-      total
+      total,
+      error
     }
   },
   watch: {
@@ -127,6 +134,14 @@ export default {
           this.expertList = res.list
           this.total = res.total
         }
+      }).catch((e) => {
+        if (e && e.response && e.response.status === 403) {
+          this.error = '暂无权限访问，请联系管理员'
+          this.expertList = []
+        } else {
+          this.error = '加载失败，请稍后重试'
+          this.expertList = []
+        }
       }).finally(() => {
         this.loading = false
       })
@@ -151,6 +166,14 @@ export default {
 }
 </script>
 <style scoped lang="less">
+.error-message {
+  padding: 60px 0 40px 0;
+  text-align: center;
+  color: #ff4d4f;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
 .expert-header {
   margin-bottom: 10px;
 }

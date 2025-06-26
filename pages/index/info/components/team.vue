@@ -113,6 +113,7 @@ export default {
 .team-list {
   display: flex;
   column-gap: 20px;
+  flex-wrap: wrap;
   row-gap: 20px;
   .team-item {
     cursor: pointer;
