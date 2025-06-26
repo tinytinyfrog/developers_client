@@ -119,18 +119,23 @@ export default {
   margin-bottom: 10px;
 }
 .salon-list {
-  display: flex;
-  column-gap: 20px;
-  row-gap: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1300px;
+  margin: 0 auto;
   .salon-item {
-    width: 304px;
+    width: 100%;
     height: 360px;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
     .salon-img {
       width: 100%;
-      height: 360px;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transition: transform 0.3s ease;
     }
     .salon-mask {
       position: absolute;
@@ -143,8 +148,6 @@ export default {
       font-weight: 400;
       background: rgba(0, 0, 0, 0.7);
       transition: height 0.3s ease;
-      .mask-title {
-      }
       .mask-summary {
         display: none;
       }
@@ -154,6 +157,9 @@ export default {
     }
   }
   .salon-item:hover {
+    .salon-img {
+      transform: scale(1.1);
+    }
     .salon-mask {
       height: 360px;
       transition: height 0.3s ease;
@@ -174,6 +180,21 @@ export default {
         font-weight: 400;
       }
     }
+  }
+}
+@media (max-width: 1200px) {
+  .salon-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 992px) {
+  .salon-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .salon-list {
+    grid-template-columns: 1fr;
   }
 }
 
