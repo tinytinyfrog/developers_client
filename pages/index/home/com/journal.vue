@@ -14,7 +14,7 @@
                 <div>
                   <img class="img" :src="k.coverImageUrl">
                 </div>
-                <div class="text">
+                <div class="text" :title="k.summary">
                   {{ k.summary }}
                 </div>
               </div>
@@ -117,6 +117,12 @@ export default {
       .img {
         width: 100%;
         height: 145px;
+        object-fit: cover;
+        object-position: top;
+        transition: transform 0.3s ease;
+        &:hover {
+          transform: scale(1.1);
+        }
       }
       .text {
         margin-top: 16px;

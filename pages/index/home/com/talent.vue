@@ -181,6 +181,9 @@ export default {
         overflow: hidden; /* 隐藏溢出的内容 */
         text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
         cursor: pointer;
+        &:hover {
+          color: rgb(0, 112, 255);
+        }
       }
       .info {
         color: rgb(89, 89, 89);
