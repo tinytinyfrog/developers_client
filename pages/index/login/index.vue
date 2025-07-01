@@ -41,6 +41,7 @@
 </template>
 <script>
 import cookieUtils from '@/lib/cookie-utils'
+import autofit from 'autofit.js'
 export default {
   data () {
     const form = this.$form.createForm(this, {
@@ -54,16 +55,13 @@ export default {
     }
   },
   mounted () {
-    // 使用抽离的 autofit 工具
-    this._autofitDomId = 'login-container'
-    this._autofitWidth = 1920
-    this._autofitHeight = 1080
-    this._autofitOrigin = 'left top'
-    this.$autofit = require('@/lib/autofit').default
-    this.$autofit.init(this._autofitDomId, this._autofitWidth, this._autofitHeight, this._autofitOrigin)
+    autofit.init({
+      renderDom: '#login-container',
+      resize: true
+    })
   },
   beforeDestroy () {
-    if (this.$autofit) this.$autofit.off()
+    autofit.off()
   },
   methods: {
     async handleLogin () {
@@ -108,10 +106,6 @@ export default {
 }
 </script>
 <style scoped lang="less">
-#login-container {
-  opacity: 0;
-  transition: opacity 0.1s;
-}
 .login-container {
   width: 100%;
   height: 100vh;

@@ -3,14 +3,15 @@
     <div class="home-article-item">
       <div class="item-content" @click="onNative(`/wiki/${article.postsId}`)">
         <p class="vice-title-message">
-          <!-- <GUserPopover :user-id="article.authorId">
+          <GUserPopover :user-id="article.authorId">
             <Avatar
+              v-if="article.authorAvatar"
               class="user-header g-avatar-border"
               size="small"
               :src="article.authorAvatar"
               @click="$utils.openUserCenter(article.authorId)"
             />
-          </GUserPopover> -->
+          </GUserPopover>
           <span
             class="user-name g-hover"
             @click.stop.prevent="$utils.openUserCenter(article.authorId)"

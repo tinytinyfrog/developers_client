@@ -22,6 +22,7 @@
       </div>
       <div class="item">
         <Map />
+        <AiProject />
       </div>
       <div class="item">
         <Review />
@@ -59,6 +60,7 @@ const Honor = () => import('./com/honor.vue')
 const Team = () => import('./com/team.vue')
 const Talent = () => import('./com/talent.vue')
 const Statistics = () => import('./com/statistics.vue')
+const AiProject = () => import('./com/ai-project.vue')
 
 const defaultImg = require('@/assets/images/home/default-user.png')
 const bannerDefaultImg = require('@/assets/images/banner.png')
@@ -76,7 +78,8 @@ export default {
     Honor,
     Team,
     Talent,
-    Statistics
+    Statistics,
+    AiProject
   },
   data () {
     const bannerList = [

@@ -3,7 +3,10 @@
     <template>
       <a-spin :spinning="loading">
         <div v-if="teamList.length > 0" class="team team-bg">
-          <marquee :items="teamList" @active-item-click="(item) => handleGoto(`/info/${item.id}?type=team`)">
+          <marquee
+            :items="teamList"
+            @active-item-click="(item) => handleGoto(`/info/${item.id}?type=team`)"
+          >
             <template v-slot:default="{ item }">
               <div class="team-item">
                 <img :src="item.imageUrl">
@@ -190,6 +193,7 @@ export default {
 }
 .team-bg {
   background-image: url('@/assets/images/home/team-bg.png');
+  background-size: cover;
 }
 .team-empty {
   display: flex;

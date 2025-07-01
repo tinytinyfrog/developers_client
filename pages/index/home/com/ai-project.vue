@@ -1,67 +1,86 @@
 <template>
-  <g-card class="half-card" title="知识地图" hide-more>
+  <g-card class="half-card" title="AI项目实践" hide-more>
     <a-spin :spinning="loading">
       <template>
-        <div v-if="mapList.length > 0" class="map">
+        <div v-if="projectList.length > 0" class="project">
           <a-carousel>
-            <div v-for="(item, index) of mapList" :key="index" class="map-list">
+            <div v-for="(item, index) of projectList" :key="index" class="project-list">
               <div
                 v-for="(k, i) of item.child"
                 :key="i"
-                class="map-item"
+                class="project-item"
                 @click="
                   (e) => {
-                    handleGoto(`/wiki?wikiId=${k.id}`)
+                    handleGoto(k.actionUrl)
                   }
                 "
               >
-                <img class="img" :src="k.headImg">
-                <div class="map-title">
-                  {{ k.name }}
+                <img class="img" :src="k.imgUrl">
+                <div class="project-title">
+                  <div :title="k.name" class="truncate">
+                    <a-tag :color="stateColor[k.state]">
+                      {{ k.stateDesc }}
+                    </a-tag>
+                    {{ k.name }}
+                  </div>
                 </div>
               </div>
             </div>
           </a-carousel>
         </div>
-        <div v-else class="map map-empty">
+        <div v-else class="project project-empty">
           <a-empty />
         </div>
       </template>
     </a-spin>
   </g-card>
 </template>
-<script lang="js" name="Map">
+<script lang="js" name="Project">
+import cookieUtils from '../../../../lib/cookie-utils'
+
 export default {
-  name: 'Map',
+  name: 'Project',
   data () {
-    const mapList = []
+    const projectList = []
     const loading = false
+    const stateColor = {
+      ONLINE: 'green',
+      TESTING: 'purple',
+      DEVELOPING: 'blue',
+      PLANNING: 'orange'
+    }
     return {
-      mapList,
-      loading
+      projectList,
+      loading,
+      stateColor
     }
   },
   beforeMount () {
-    this.fetchWikiMaps()
+    this.fetchWikiprojects()
   },
   methods: {
     handleClick (e) {
       console.log(e, 'e')
     },
     handleGoto (path) {
-      this.$router.push(path)
+      if (cookieUtils.getToken()) {
+        window.open(path)
+      } else {
+        this.$message.warning('请先登录！')
+      }
     },
-    fetchWikiMaps () {
-      const params = { pageNo: 1, pageSize: 100, filter: { categoryId: '' } }
+    fetchWikiprojects () {
+      const params = { pageNo: 1, pageSize: 100, filter: { } }
       this.loading = true
-      this.$api.getWikiMaps(params).then((res) => {
+      this.$api.getAiPracticeList(params).then((res) => {
+        console.log(res, 'res')
         if (Array.isArray(res)) {
           const list = []
           const count = Math.ceil(res.length / 2)
           for (let i = 0; i < count; i++) {
             list.push({ child: res.splice(0, 2) })
           }
-          this.mapList = list
+          this.projectList = list
         }
       }).finally(() => {
         this.loading = false
@@ -71,13 +90,13 @@ export default {
 }
 </script>
 <style scoped lang="less">
-.map {
+.project {
   padding: 36px 0px;
-  .map-list {
+  .project-list {
     display: flex !important;
     column-gap: 30px;
     justify-content: center;
-    .map-item {
+    .project-item {
       max-width: 250px;
       border-radius: 4px;
       box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.12);
@@ -86,7 +105,7 @@ export default {
         width: 218px;
         height: 140px;
       }
-      .map-title {
+      .project-title {
         margin: 26px 0px 6px 0px;
         width: 100%;
         color: rgb(40, 40, 40);
@@ -105,10 +124,17 @@ export default {
     overflow: hidden;
   }
 }
-.map-empty {
+.project-empty {
   height: 332px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.truncate {
+  text-align: center;
+  width: 218px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

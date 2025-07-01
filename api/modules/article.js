@@ -2,24 +2,28 @@ import _get from 'lodash/get'
 const articleApi = ($axios) => {
   return {
     getUserArticleList ({ userId = '', typeId = '', pageSize = 20, pageNo = 1 }) {
-      return $axios.post('/rest/article/user-page', {
-        pageSize,
-        pageNo,
-        filter: {
-          typeId,
-          userId
-        }
-      }).then((res) => {
-        return _get(res, 'data.data', [])
-      })
+      return $axios
+        .post('/rest/article/user-page', {
+          pageSize,
+          pageNo,
+          filter: {
+            typeId,
+            userId
+          }
+        })
+        .then((res) => {
+          return _get(res, 'data.data', [])
+        })
     },
     getActivityList (pageSize = 5, pageNo = 1) {
-      return $axios.post('/rest/posts/activity/list', {
-        pageSize,
-        pageNo
-      }).then((res) => {
-        return _get(res, 'data.data', [])
-      })
+      return $axios
+        .post('/rest/posts/activity/list', {
+          pageSize,
+          pageNo
+        })
+        .then((res) => {
+          return _get(res, 'data.data', [])
+        })
     },
     // getNoticeList (pageSize = 8, pageNo = 1) {
     //   return $axios.post('/rest/posts/notice/list', {
@@ -30,56 +34,66 @@ const articleApi = ($axios) => {
     //   })
     // },
     getPostList (params) {
-      return $axios.post('/rest/posts/list', {
-        ...params
-      }).then((res) => {
-        return _get(res, params.data ? 'data.data' : 'data.data.list', [])
-      })
+      return $axios
+        .post('/rest/posts/list', {
+          ...params
+        })
+        .then((res) => {
+          return _get(res, params.data ? 'data.data' : 'data.data.list', [])
+        })
     },
     getNoticeList (pageSize = 5, pageNo = 1) {
-      return $axios.post('/rest/posts/list', {
-        filter: {
-          category: 'ARTICLE',
-          tagIds: [376]
-        },
-        pageSize,
-        pageNo
-      }).then((res) => {
-        return _get(res, 'data.data.list', [])
-      })
+      return $axios
+        .post('/rest/posts/list', {
+          filter: {
+            category: 'ARTICLE',
+            tagIds: [376]
+          },
+          pageSize,
+          pageNo
+        })
+        .then((res) => {
+          return _get(res, 'data.data.list', [])
+        })
     },
     getTopicList ({ filter, pageSize = 20, pageNo = 1 }) {
-      return $axios.post('/rest/posts/list', {
-        pageSize,
-        pageNo,
-        filter: {
-          ...filter
-        }
-      }).then((res) => {
-        return _get(res, 'data.data.list', [])
-      })
+      return $axios
+        .post('/rest/posts/list', {
+          pageSize,
+          pageNo,
+          filter: {
+            ...filter
+          }
+        })
+        .then((res) => {
+          return _get(res, 'data.data.list', [])
+        })
     },
     getSearchList ({ filter, pageSize = 20, pageNo = 1 }) {
-      return $axios.post('/rest/search/page-posts-search', {
-        pageSize,
-        pageNo,
-        filter
-      }).then((res) => {
-        return _get(res, 'data.data.list', [])
-      })
+      return $axios
+        .post('/rest/search/page-posts-search', {
+          pageSize,
+          pageNo,
+          filter
+        })
+        .then((res) => {
+          return _get(res, 'data.data.list', [])
+        })
     },
     getFollowArticleList (pageSize = 20, pageNo = 1) {
-      return $axios.post('/rest/posts/page-posts-food', {
-        pageSize,
-        pageNo,
-        filter: {}
-      }).then((res) => {
-        return _get(res, 'data.data.list', [])
-      })
+      return $axios
+        .post('/rest/posts/page-posts-food', {
+          pageSize,
+          pageNo,
+          filter: {}
+        })
+        .then((res) => {
+          return _get(res, 'data.data.list', [])
+        })
     },
     /**
      * 获取文章详情
-    */
+     */
     async getArticleDetail (id) {
       return await $axios.post(`/rest/article/info/${id}`).then((res) => {
         return _get(res, 'data.data', null)
@@ -87,7 +101,7 @@ const articleApi = ($axios) => {
     },
     /**
      * 添加文章
-    */
+     */
     saveNewArticle (article) {
       return $axios.post('/rest/article/save', article).then((res) => {
         return _get(res, 'data', null)
@@ -95,7 +109,7 @@ const articleApi = ($axios) => {
     },
     /**
      * 添加平台文章
-    */
+     */
     saveNewPlatformArticle (article) {
       return $axios.post('rest/platform/saveOrUpdate', article).then((res) => {
         return _get(res, 'data', null)
@@ -111,7 +125,7 @@ const articleApi = ($axios) => {
     },
     /**
      * 获取文章的所有类别
-    */
+     */
     getArticleTypes () {
       return $axios.post('/rest/article/type/all').then((res) => {
         return _get(res, 'data.data', [])
@@ -119,7 +133,7 @@ const articleApi = ($axios) => {
     },
     /**
      * 获取文章的所有类别
-    */
+     */
     getArticleTags () {
       return $axios.post('/rest/tag/query-all').then((res) => {
         return _get(res, 'data.data', [])
@@ -127,27 +141,31 @@ const articleApi = ($axios) => {
     },
     /**
      * 获取评价列表
-    */
+     */
     getCommentListByArticleId ({ id = '', pageSize = 20, pageNo = 1 }) {
-      return $axios.post('/rest/comment/page', {
-        filter: id,
-        pageNo,
-        pageSize
-      }).then((res) => {
-        return _get(res, 'data.data', [])
-      })
+      return $axios
+        .post('/rest/comment/page', {
+          filter: id,
+          pageNo,
+          pageSize
+        })
+        .then((res) => {
+          return _get(res, 'data.data', [])
+        })
     },
     /**
      * 评价
      */
     createCommentByArticle ({ postsId = '', content = '', replyId }) {
-      return $axios.post('/rest/comment/create', {
-        postsId,
-        content,
-        replyId
-      }).then((res) => {
-        return _get(res, 'data', null)
-      })
+      return $axios
+        .post('/rest/comment/create', {
+          postsId,
+          content,
+          replyId
+        })
+        .then((res) => {
+          return _get(res, 'data', null)
+        })
     },
     /**
      * 删除评论
@@ -185,23 +203,27 @@ const articleApi = ($axios) => {
      * 获取点赞列表
      */
     getApprovalListByArticle ({ pageSize = 8, pageNo = 1, filter = '' }) {
-      return $axios.post('/rest/approval/list/user', {
-        pageSize,
-        pageNo,
-        filter
-      }).then((res) => {
-        return _get(res, 'data.data', [])
-      })
+      return $axios
+        .post('/rest/approval/list/user', {
+          pageSize,
+          pageNo,
+          filter
+        })
+        .then((res) => {
+          return _get(res, 'data.data', [])
+        })
     },
     /**
      * ��nrd�片上传
      */
     uploadImageByArticle (data) {
-      return $axios.post('/rest/file/image/upload-wang-editor', data, {
-        header: 'multipart/form-data'
-      }).then((res) => {
-        return _get(res, 'data.data', [])
-      })
+      return $axios
+        .post('/rest/file/image/upload-wang-editor', data, {
+          header: 'multipart/form-data'
+        })
+        .then((res) => {
+          return _get(res, 'data.data', [])
+        })
     },
     /**
      * 获取随机推荐 - 随便看看
@@ -217,6 +239,22 @@ const articleApi = ($axios) => {
     setArticleScore (params) {
       return $axios.post('/rest/posts/difficulty-score', params).then((res) => {
         return _get(res, 'data')
+      })
+    },
+    /**
+     *  获取 ai 实践列表
+     */
+    getAiPracticeList (params) {
+      return $axios.post('/rest/widget-config/page', params).then((res) => {
+        return _get(res, 'data.data.list', [])
+      })
+    },
+    /**
+     *  获取项目状态
+     */
+    getProjectState () {
+      return $axios.get('/rest/accredit/enum-constant-list/WidgetStateEn').then((res) => {
+        return _get(res, 'data.data', [])
       })
     }
   }

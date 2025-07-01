@@ -1,80 +1,82 @@
 <template>
-  <g-card class="half-card" title="AI学习天地" :go-to="() => handleGoto('/article?tagId=1042840')">
+  <g-card
+    class="half-card"
+    title="AI学习天地"
+    :go-to="() => debouncedHandleGoto('/article?tagId=1042840')"
+    hide-more
+  >
     <template>
-      <a-spin :spinning="loading">
-        <div v-if="aiList.length > 0" class="info-content">
-          <div class="block">
-            <div
-              v-if="aiList[0]"
-              class="block-item"
-              @click="(e) => handleGoto(`/article/${aiList[0].id}`)"
-            >
-              <div>
-                <img
-                  class="img"
-                  :src="
-                    aiList[0].headImg && aiList[0].headImg !== '[]'
-                      ? getImgUrl(aiList[0].headImg)
-                      : default1Img
-                  "
-                >
-              </div>
-              <div class="content" :title="aiList[0] && aiList[0].title">
-                {{ aiList[0] && aiList[0].introduction }}
-              </div>
-            </div>
-            <div
-              v-if="aiList[1]"
-              class="block-item"
-              @click="(e) => handleGoto(`/article/${aiList[1].id}`)"
-            >
-              <div>
-                <img
-                  class="img"
-                  :src="
-                    aiList[1].headImg && aiList[1].headImg !== '[]'
-                      ? getImgUrl(aiList[1].headImg)
-                      : default2Img
-                  "
-                >
-              </div>
-              <div class="content" :title="aiList[1] && aiList[1].title">
-                {{ aiList[1] && aiList[1].introduction }}
-              </div>
-            </div>
-          </div>
-          <template v-if="aiList.length > 2">
-            <div
-              v-for="(item, index) of aiList.filter((item, index) => index > 1)"
-              :key="index"
-              class="info-item"
-              @click="(e) => handleGoto(`/article/${item.id}`)"
-            >
-              <div class="full-item">
-                <div class="tag">
-                  <a-tag color="blue">
-                    {{ item.categoryDesc }}
-                  </a-tag>
+      <div class="info-content">
+        <ai-project-banner />
+        <div style="margin-top: 12px">
+          <a-tabs v-model="activeKey" @change="callback">
+            <a-tab-pane key="1" tab="AI赋能工程">
+              <a-spin :spinning="loading">
+                <template v-if="aiList.length > 0">
+                  <div
+                    v-for="(item, index) of aiList"
+                    :key="index"
+                    class="info-item"
+                    @click="(e) => debouncedHandleGoto(`/article/${item.id}`)"
+                  >
+                    <div class="full-item">
+                      <div class="tag">
+                        <a-tag color="blue">
+                          {{ item.categoryDesc }}
+                        </a-tag>
+                      </div>
+                      <div class="content" :title="item.introduction">
+                        {{ item.title }}
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <div v-else class="info-empty">
+                  <a-empty />
                 </div>
-                <div class="content" :title="item.introduction">
-                  {{ item.title }}
+              </a-spin>
+            </a-tab-pane>
+            <a-tab-pane key="2" tab="专题培训课" force-render>
+              <a-spin :spinning="loading">
+                <template v-if="aiList.length > 0">
+                  <div
+                    v-for="(item, index) of aiList"
+                    :key="index"
+                    class="info-item"
+                    @click="(e) => debouncedHandleGoto(`/article/${item.id}`)"
+                  >
+                    <div class="full-item">
+                      <div class="tag">
+                        <a-tag color="blue">
+                          {{ item.categoryDesc }}
+                        </a-tag>
+                      </div>
+                      <div class="content" :title="item.introduction">
+                        {{ item.title }}
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <div v-else class="info-empty">
+                  <a-empty />
                 </div>
-              </div>
-            </div>
-          </template>
+              </a-spin>
+            </a-tab-pane>
+          </a-tabs>
         </div>
-        <div v-else class="info-content info-empty">
-          <a-empty />
-        </div>
-      </a-spin>
+      </div>
     </template>
   </g-card>
 </template>
 <script lang="js" name="AiPOST">
+import AiProjectBanner from './ai-project-banner.vue'
 const default1Img = require('@/assets/images/home/bg1.png')
 const default2Img = require('@/assets/images/home/bg2.png')
 export default {
   name: 'AiPost',
+  components: {
+    AiProjectBanner
+  },
   data () {
     const aiList = []
     const loading = false
@@ -82,15 +84,36 @@ export default {
       aiList,
       loading,
       default1Img,
-      default2Img
+      default2Img,
+      activeKey: '1'
     }
   },
-
+  watch: {
+    activeKey (nVal, oVal) {
+      if (nVal !== oVal) {
+        this.fetchAiPostList()
+      }
+    }
+  },
+  created () {
+    this.debouncedHandleGoto = this.debounce(this.handleGoto, 300)
+  },
   beforeMount () {
     this.fetchAiPostList()
   },
   methods: {
+    debounce (func, wait) {
+      let timeout
+      return function (...args) {
+        const context = this
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+          func.apply(context, args)
+        }, wait)
+      }
+    },
     handleGoto (path) {
+      // 添加防抖
       this.$router.push(path)
     },
     getImgUrl (urlList) {
@@ -107,7 +130,7 @@ export default {
     },
     fetchAiPostList () {
       const params = {
-        pageSize: 7, pageNo: 1, filter: { category: 'ARTICLE', tagIds: [1042840] }
+        pageSize: 5, pageNo: 1, filter: { category: 'ARTICLE', tagIds: [this.activeKey === '1' ? 1042840 : 1042847] }
       }
       this.loading = true
       this.$api.getPostList(params).then((res) => {
@@ -331,6 +354,7 @@ export default {
   }
 }
 .info-empty {
+  height: 322px;
   display: flex;
   justify-content: center;
   align-items: center;
