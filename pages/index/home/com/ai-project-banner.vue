@@ -20,13 +20,19 @@
 </template>
 
 <script>
+import cookieUtils from '../../../../lib/cookie-utils'
+
 export default {
   name: 'AiProjectBanner',
   methods: {
     handleOpen () {
-      window.open(
-        'https://it.talkweb.com.cn/idaas/login?client_id=1819198879570042881&response_type=code&redirect_uri=https://aidp.talkweb.com.cn/#/loginRedirect?appId=1104dc4a0e2542cd9183d02abe94ff55&preview=true'
-      )
+      if (cookieUtils.getToken()) {
+        window.open(
+          'https://it.talkweb.com.cn/idaas/login?client_id=1819198879570042881&response_type=code&redirect_uri=https://aidp.talkweb.com.cn/#/loginRedirect?appId=1104dc4a0e2542cd9183d02abe94ff55&preview=true'
+        )
+      } else {
+        this.$message.warning('请先登录')
+      }
     }
   }
 }
