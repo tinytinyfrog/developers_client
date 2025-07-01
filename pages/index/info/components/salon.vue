@@ -119,12 +119,11 @@ export default {
   margin-bottom: 10px;
 }
 .salon-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
-  max-width: 1300px;
   .salon-item {
-    width: 100%;
+    width: 304px;
     height: 360px;
     position: relative;
     cursor: pointer;

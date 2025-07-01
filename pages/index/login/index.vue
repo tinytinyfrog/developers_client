@@ -14,7 +14,12 @@
           欢迎来到交付中心门户，登录以继续
         </div>
         <div class="login-form">
-          <a-form :form="form" :label-col="{ span: 24 }" :wrapper-col="{ span: 24 }">
+          <a-form
+            :form="form"
+            :label-col="{ span: 24 }"
+            :wrapper-col="{ span: 24 }"
+            @keyup.enter="handleLogin"
+          >
             <a-form-item label="账号">
               <a-input
                 v-decorator="['email', { rules: [{ required: true, message: '请输入账号' }] }]"
@@ -29,7 +34,7 @@
             </a-form-item>
           </a-form>
         </div>
-        <a-button type="primary" class="login-button" :loading="loading" @click="handleLogin">
+        <a-button type="primary" class="login-button" :loading="loading" @click="debounceLogin">
           登录
         </a-button>
         <a-button class="login-button" @click="handleOpenAuth">
@@ -51,7 +56,8 @@ export default {
     return {
       errorMessage: '',
       form,
-      loading: false
+      loading: false,
+      debounceTimer: null
     }
   },
   mounted () {
@@ -59,12 +65,36 @@ export default {
       renderDom: '#login-container',
       resize: true
     })
+    window.addEventListener('keyup', this.handleKeyUp)
   },
   beforeDestroy () {
     autofit.off()
+    window.removeEventListener('keyup', this.handleKeyUp)
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer)
+    }
   },
   methods: {
+    debounceLogin () {
+      if (this.loading) return
+
+      // 清除之前的定时器
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer)
+      }
+
+      // 设置新的定时器
+      this.debounceTimer = setTimeout(() => {
+        this.handleLogin()
+      }, 300) // 300ms 内只执行一次
+    },
+    handleKeyUp (event) {
+      if (event.key === 'Enter') {
+        this.debounceLogin()
+      }
+    },
     async handleLogin () {
+      if (this.loading) return
       this.loading = true
       try {
         const value = await this.form.validateFields()
