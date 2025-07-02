@@ -114,6 +114,7 @@ export default {
       background: rgb(241, 247, 254);
       height: 300px;
       padding: 16px;
+      cursor: pointer;
       .img {
         width: 100%;
         height: 145px;

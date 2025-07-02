@@ -109,7 +109,7 @@ export default {
         margin: 26px 0px 6px 0px;
         width: 100%;
         color: rgb(40, 40, 40);
-
+        cursor: pointer;
         font-size: 16px;
         font-weight: 400;
         display: flex;

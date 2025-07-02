@@ -12,7 +12,7 @@
           一站式完成 AI 应用开发、调试与交付!
         </p>
       </div>
-      <a-button class="enter-btn" type="primary" ghost @click="handleOpen">
+      <a-button v-if="isLogin" class="enter-btn" type="primary" ghost @click="handleOpen">
         立即进入
       </a-button>
     </div>
@@ -20,10 +20,15 @@
 </template>
 
 <script>
-import cookieUtils from '../../../../lib/cookie-utils'
+import cookieUtils from '@/lib/cookie-utils'
 
 export default {
   name: 'AiProjectBanner',
+  computed: {
+    isLogin () {
+      return cookieUtils.getToken()
+    }
+  },
   methods: {
     handleOpen () {
       if (cookieUtils.getToken()) {

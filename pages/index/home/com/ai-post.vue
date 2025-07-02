@@ -9,7 +9,7 @@
       <div class="info-content">
         <ai-project-banner />
         <div style="margin-top: 12px">
-          <a-tabs v-model="activeKey" @change="callback">
+          <a-tabs v-model="activeKey">
             <a-tab-pane key="1" tab="AI赋能工程">
               <a-spin :spinning="loading">
                 <template v-if="aiList.length > 0">
@@ -263,6 +263,7 @@ export default {
         -webkit-line-clamp: 5;
         -webkit-box-orient: vertical;
         height: 108px;
+        cursor: pointer;
       }
     }
   }
@@ -272,84 +273,57 @@ export default {
     justify-content: space-between;
     padding: 18px 12px;
     border-bottom: 1px solid rgb(226, 232, 246);
-    cursor: pointer;
     .full-item {
       display: flex;
       column-gap: 8px;
       width: 100%;
       align-items: center;
     }
-    .item-left {
-      display: flex;
-      column-gap: 8px;
-      flex: 1;
-      align-items: center;
-      width: 0;
-      .review-icon {
-        width: 24px;
-        height: 24px;
-        border-radius: 2px;
-        background: rgb(250, 100, 1);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
 
-      .case-icon {
-        width: 24px;
-        height: 24px;
-        border-radius: 2px;
-        background: rgb(28, 196, 121);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .img {
-        width: 14px;
-        height: 14px;
-      }
-      .tag {
-        min-width: 40px;
-      }
-      .content {
-        flex: 1;
-        color: rgb(40, 40, 40);
-        font-size: 14px;
-        font-weight: 400;
-        white-space: nowrap; /* 防止文本换行 */
-        overflow: hidden; /* 隐藏溢出的内容 */
-        text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
-      }
-      .content-warning {
-        flex: 1;
-        color: rgb(250, 100, 1);
-        font-size: 14px;
-        font-weight: 400;
-        white-space: nowrap; /* 防止文本换行 */
-        overflow: hidden; /* 隐藏溢出的内容 */
-        text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
-      }
-    }
-    .item-right {
+    .review-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 2px;
+      background: rgb(250, 100, 1);
       display: flex;
-      column-gap: 8px;
+      justify-content: center;
       align-items: center;
-      min-width: 38%;
-      .item-avatar {
-        width: 24px;
-        height: 24px;
-      }
-      .name {
-        width: 60px;
-        white-space: nowrap; /* 防止文本换行 */
-        overflow: hidden; /* 隐藏溢出的内容 */
-        text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
-      }
-      .divier {
-        width: 1px;
-        background: rgb(196, 196, 196);
-        height: 18px;
-      }
+    }
+
+    .case-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 2px;
+      background: rgb(28, 196, 121);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img {
+      width: 14px;
+      height: 14px;
+    }
+    .tag {
+      min-width: 40px;
+    }
+    .content {
+      flex: 1;
+      color: rgb(40, 40, 40);
+      font-size: 14px;
+      font-weight: 400;
+      white-space: nowrap; /* 防止文本换行 */
+      overflow: hidden; /* 隐藏溢出的内容 */
+      text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
+      cursor: pointer;
+    }
+    .content-warning {
+      flex: 1;
+      color: rgb(250, 100, 1);
+      font-size: 14px;
+      font-weight: 400;
+      white-space: nowrap; /* 防止文本换行 */
+      overflow: hidden; /* 隐藏溢出的内容 */
+      text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
     }
   }
 }

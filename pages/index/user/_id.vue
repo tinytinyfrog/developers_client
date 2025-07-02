@@ -528,7 +528,7 @@ export default {
   .page-user-dynamic {
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: center;
     border-radius: @g-radius;
   }
   .dynamic-content {

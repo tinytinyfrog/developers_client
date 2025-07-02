@@ -148,7 +148,6 @@ export default {
       margin-bottom: 20px;
       display: flex;
       column-gap: 20px;
-      cursor: pointer;
       .card-header {
         display: flex;
         height: 54px;
