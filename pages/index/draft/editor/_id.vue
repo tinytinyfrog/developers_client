@@ -39,7 +39,6 @@
               发布
             </Button>
             <a-upload
-              v-show="fileList.length === 0 || uploading"
               action="/developers-server/rest/file/file/upload"
               accept=".docx,.doc,.xls,.ppt,.pdf"
               :show-upload-list="false"
@@ -403,12 +402,10 @@ export default {
       const base64String = btoa(String.fromCharCode.apply(null, uint8Array))
       return base64String
     },
-    handlePreview () {
+    handlePreview (item) {
       window.open(
         'https://delivery.paas.talkweb.com.cn/kkfile/onlinePreview?url=' +
-          window.encodeURIComponent(
-            this.base64Encode(this.fileList[0].url || this.fileList[0].response.data)
-          )
+          window.encodeURIComponent(this.base64Encode(item.url || item.response.data))
       )
     },
     handleUploadChange (info) {
