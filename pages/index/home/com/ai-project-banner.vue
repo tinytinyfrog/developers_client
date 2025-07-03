@@ -12,9 +12,11 @@
           一站式完成 AI 应用开发、调试与交付!
         </p>
       </div>
-      <a-button v-if="isLogin" class="enter-btn" type="primary" ghost @click="handleOpen">
-        立即进入
-      </a-button>
+      <div v-if="isLogin">
+        <a-button class="enter-btn" type="primary" ghost @click="handleOpen">
+          立即进入
+        </a-button>
+      </div>
     </div>
   </div>
 </template>
@@ -24,9 +26,14 @@ import cookieUtils from '@/lib/cookie-utils'
 
 export default {
   name: 'AiProjectBanner',
+  // data () {
+  //   return {
+  //     isLogin: cookieUtils.getToken()
+  //   }
+  // },
   computed: {
     isLogin () {
-      return cookieUtils.getToken()
+      return !!cookieUtils.getToken()
     }
   },
   methods: {
