@@ -12,7 +12,7 @@
           一站式完成 AI 应用开发、调试与交付!
         </p>
       </div>
-      <div v-if="isLogin">
+      <div v-if="isLogin" class="btn-wrap">
         <a-button class="enter-btn" type="primary" ghost @click="handleOpen">
           立即进入
         </a-button>
@@ -33,7 +33,7 @@ export default {
   // },
   computed: {
     isLogin () {
-      return !!cookieUtils.getToken()
+      return !!this.$store.state.user.userInfo
     }
   },
   methods: {
