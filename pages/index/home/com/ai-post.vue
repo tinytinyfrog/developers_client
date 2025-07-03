@@ -263,7 +263,6 @@ export default {
         -webkit-line-clamp: 5;
         -webkit-box-orient: vertical;
         height: 108px;
-        cursor: pointer;
       }
     }
   }
@@ -272,6 +271,7 @@ export default {
     column-gap: 20px;
     justify-content: space-between;
     padding: 18px 12px;
+    cursor: pointer;
     border-bottom: 1px solid rgb(226, 232, 246);
     .full-item {
       display: flex;

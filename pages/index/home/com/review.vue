@@ -106,6 +106,7 @@ export default {
     justify-content: space-between;
     padding: 18px 12px;
     border-bottom: 1px solid rgb(226, 232, 246);
+    cursor: pointer;
     .full-item {
       display: flex;
       column-gap: 8px;
@@ -152,7 +153,6 @@ export default {
         white-space: nowrap; /* 防止文本换行 */
         overflow: hidden; /* 隐藏溢出的内容 */
         text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
-        cursor: pointer;
       }
       .content-warning {
         flex: 1;

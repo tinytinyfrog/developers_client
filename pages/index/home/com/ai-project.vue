@@ -101,6 +101,7 @@ export default {
       border-radius: 4px;
       box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.12);
       padding: 14px;
+      cursor: pointer;
       .img {
         width: 218px;
         height: 140px;
@@ -109,7 +110,6 @@ export default {
         margin: 26px 0px 6px 0px;
         width: 100%;
         color: rgb(40, 40, 40);
-        cursor: pointer;
         font-size: 16px;
         font-weight: 400;
         display: flex;
