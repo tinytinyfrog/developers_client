@@ -57,9 +57,9 @@ export default {
       this.$api.getWikiMaps(params).then((res) => {
         if (Array.isArray(res)) {
           const list = []
-          const count = Math.ceil(res.length / 2)
+          const count = Math.ceil(res.length / 3)
           for (let i = 0; i < count; i++) {
-            list.push({ child: res.splice(0, 2) })
+            list.push({ child: res.splice(0, 3) })
           }
           this.mapList = list
         }
@@ -75,16 +75,16 @@ export default {
   padding: 36px 0px;
   .map-list {
     display: flex !important;
-    column-gap: 30px;
+    column-gap: 20px;
     justify-content: center;
     .map-item {
-      max-width: 250px;
+      max-width: 220px;
       border-radius: 4px;
       box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.12);
       padding: 14px;
       cursor: pointer;
       .img {
-        width: 218px;
+        width: 192px;
         height: 140px;
       }
       .map-title {
