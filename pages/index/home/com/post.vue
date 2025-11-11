@@ -60,6 +60,10 @@
                 {{ item.authorNickname }}
               </div>
               <div class="divier" />
+              <div class="views" :title="item.views">
+                <a-icon style="margin-right: 4px" type="eye" />{{ item.views }}
+              </div>
+              <div class="divier" />
               <div>
                 {{ item.createAtDate || '-' }}
               </div>
@@ -354,6 +358,12 @@ export default {
       }
       .name {
         width: 80px;
+        white-space: nowrap; /* 防止文本换行 */
+        overflow: hidden; /* 隐藏溢出的内容 */
+        text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */
+      }
+      .views {
+        width: 60px;
         white-space: nowrap; /* 防止文本换行 */
         overflow: hidden; /* 隐藏溢出的内容 */
         text-overflow: ellipsis; /* 显示省略符号来代表被修剪的文本 */

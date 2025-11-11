@@ -1,7 +1,7 @@
 <template>
   <div class="page-layout-container">
     <div v-if="showHeadByRouter" class="common-header-box" :class="{ 'transition-head': hideHead }">
-      <GHeader />
+      <GHeader v-if="!showHeaderByRouter" />
       <GMenu />
     </div>
     <Tags v-show="showTag" />
@@ -44,6 +44,8 @@ const Tags = () => import('./index/components/tags')
 const tagsWhite = ['/faq', '/article']
 /// /\/wiki\/.*\/?$/,
 const hideHeadReg = [/\/auth/, /\/login/, /\/draft\/editor\/.*\/?$/] // 白名单
+
+const hideHeaderReg = [/\/home/]
 
 export default {
   name: 'Home',
@@ -114,6 +116,9 @@ export default {
   computed: {
     showHeadByRouter () {
       return !hideHeadReg.some(reg => reg.test(this.$route.path))
+    },
+    showHeaderByRouter () {
+      return !hideHeaderReg.some(reg => reg.test(this.$route.path))
     }
   },
   watch: {

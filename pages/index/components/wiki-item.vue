@@ -1,5 +1,46 @@
 <template>
-  <div v-if="article" class="home-article-item-container">
+  <!-- 新布局 - 与post.vue保持一致 -->
+  <div v-if="article" class="info-item" @click="onNative(`/wiki/${article.postsId}`)">
+    <div class="item-left">
+      <!-- <div style="width: 14px">
+        <img v-if="article.icon" :src="article.icon" class="img">
+      </div> -->
+      <!-- <div class="tag">
+        <a-tag color="blue">
+          {{ article.categoryDesc || 'Wiki' }}
+        </a-tag>
+      </div> -->
+      <div class="content" :title="article.postsTitle">
+        {{ article.postsTitle }}
+      </div>
+    </div>
+    <div class="item-right">
+      <GUserPopover :user-id="article.authorId">
+        <Avatar
+          v-if="article.authorAvatar"
+          class="user-header g-avatar-border"
+          size="small"
+          :src="article.authorAvatar"
+          @click="$utils.openUserCenter(article.authorId)"
+        />
+      </GUserPopover>
+      <!-- <a-avatar class="item-avatar" :src="article.authorAvatar || defaultImg" /> -->
+      <div class="name" :title="article.authorNickname">
+        {{ article.authorNickname }}
+      </div>
+      <div class="divier" />
+      <div class="views" :title="article.views">
+        <a-icon style="margin-right: 4px" type="eye" />{{ article.views }}
+      </div>
+      <div class="divier" />
+      <div>
+        {{ article.createAtString || '-' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- 老布局 - 保留注释 -->
+  <!-- <div v-if="article" class="home-article-item-container">
     <div class="home-article-item">
       <div class="item-content" @click="onNative(`/wiki/${article.postsId}`)">
         <p class="vice-title-message">
@@ -35,21 +76,9 @@
           </span>
         </p>
         <div class="title-line">
-          <!-- <Tag v-if="article.official" color="pink">
-            官
-          </Tag>
-          <Tag v-if="article.top" color="blue">
-            顶
-          </Tag>
-          <Tag v-if="article.marrow" color="green">
-            精
-          </Tag> -->
           <h2 class="title g-hover">
             {{ article.postsTitle }}
           </h2>
-          <!-- <Tag v-if="article.state !== 'PASS'" color="'red'">
-            {{ article.solutionDesc }}
-          </Tag> -->
         </div>
         <div class="article-content-box">
           <p
@@ -77,30 +106,7 @@
         alt=""
       >
     </div>
-    <!-- <div class="article-operation">
-      <span class="article-operation-actions">
-        <span class="operation-item">
-          <Icon class="operation-icon g-hover" type="eye" />&nbsp;{{ article.views }}
-        </span>
-        <g-space />
-        <span class="operation-item">
-          <Icon class="operation-icon g-hover" type="like" />&nbsp;{{ article.approvals }}
-        </span>
-        <g-space />
-        <span class="operation-item" @click.stop.prevent="openArticleByComment(article.id)">
-          <Icon class="operation-icon g-hover" type="message" />&nbsp;{{ article.comments }}
-        </span>
-      </span>
-      <span class="mobile-tags">
-        <span
-          v-for="(item, index) in article.tags.slice(0, 2)"
-          :key="index"
-          class="mobile-tag g-hover"
-          @click.stop.prevent="handleTagSearch(item)"
-        >{{ item.name }}</span>
-      </span>
-    </div> -->
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -118,8 +124,10 @@ export default {
     }
   },
   data () {
+    const defaultImg = require('@/assets/images/home/default-user.png')
     return {
-      textReg: /[#|-|>|[x\]]/gi
+      textReg: /[#|-|>|[x\]]/gi,
+      defaultImg
     }
   },
   computed: {
@@ -146,9 +154,80 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/* 新布局样式 - 与post.vue保持一致 */
+.info-item {
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
+  padding: 18px 12px;
+  border-bottom: 1px solid rgb(226, 232, 246);
+  cursor: pointer;
+
+  .item-left {
+    display: flex;
+    column-gap: 8px;
+    flex: 1;
+    align-items: center;
+    width: 0;
+
+    .img {
+      width: 14px;
+      height: 14px;
+    }
+
+    .tag {
+      min-width: 40px;
+    }
+
+    .content {
+      flex: 1;
+      color: rgb(40, 40, 40);
+      font-size: 14px;
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .item-right {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    min-width: 28%;
+
+    .item-avatar {
+      width: 24px;
+      height: 24px;
+    }
+
+    .name {
+      width: 80px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .views {
+      width: 60px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .divier {
+      width: 1px;
+      background: rgb(196, 196, 196);
+      height: 18px;
+    }
+  }
+}
+
+/* 老布局样式 - 保留注释 */
+/*
 .home-article-item-container {
   flex: 1;
-  padding: 15px @g-padding * 2;
+  padding: 8px @g-padding * 2;
   border-bottom: 1px solid @border-3-color;
   background-color: #fff;
   &:hover {
@@ -159,7 +238,6 @@ export default {
   }
   .home-article-item {
     display: flex;
-    align-items: center;
     min-height: 100px;
     cursor: pointer;
     justify-content: space-between;
@@ -189,21 +267,19 @@ export default {
         color: #1d2129;
         font-size: @font-first;
         font-weight: bold;
-        margin-bottom: 6px;
       }
       .article-simple-content {
         color: @font-color-second;
         font-size: @font-third;
         line-height: 28px;
         word-break: break-all;
-        margin-bottom: 10px;
       }
       .vice-title-message {
         display: flex;
         align-items: center;
         color: @font-color-third;
         font-size: @font-fourth;
-        margin-bottom: 16px;
+        margin-bottom: 8px;
       }
       .user-header {
         width: 20px;
@@ -257,7 +333,6 @@ export default {
       .vice-title-message {
         margin-bottom: 10px !important;
       }
-
       .title {
         color: #1d2129;
         font-size: 18px !important;
@@ -273,7 +348,6 @@ export default {
           border-radius: @g-radius;
         }
       }
-
       .article-simple-content {
         font-size: @font-fourth !important;
       }
@@ -286,10 +360,8 @@ export default {
       align-items: center;
       justify-content: space-between;
       font-size: 10px !important;
-
       .mobile-tags {
         display: inline !important;
-
         .mobile-tag {
           color: @font-color-third;
           border-radius: @g-radius;
@@ -300,13 +372,11 @@ export default {
         }
       }
     }
-
     .item-content {
       span {
         white-space: nowrap;
         word-break: keep-all;
       }
-
       .tag-container {
         display: none;
       }
@@ -327,4 +397,5 @@ export default {
     }
   }
 }
+*/
 </style>

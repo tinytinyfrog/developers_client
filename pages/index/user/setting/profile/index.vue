@@ -166,7 +166,8 @@ export default {
         if (valid) {
           this.$api
             .updateUserInfo({
-              ...this.form
+              ...this.form,
+              avatar: this.imageUrl
             })
             .then((res) => {
               if (res.success) {

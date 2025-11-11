@@ -1,6 +1,6 @@
 const information = {
-  title: '交付中心门户',
-  keywords: '交付中心门户',
-  description: '交付中心门户'
+  title: '数字化交付中心门户',
+  keywords: '数字化交付中心门户',
+  description: '数字化交付中心门户'
 }
 export default information

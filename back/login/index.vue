@@ -8,7 +8,7 @@
     <div class="login-content">
       <div class="login-block">
         <div class="login-title">嗨，您好！</div>
-        <div class="login-desc">欢迎来到交付中心门户，登录以继续</div>
+        <div class="login-desc">欢迎来到数字化交付中心门户，登录以继续</div>
         <div class="login-form">
           <a-form :form="form" :label-col="{ span: 24 }" :wrapper-col="{ span: 24 }">
             <a-form-item label="账号">

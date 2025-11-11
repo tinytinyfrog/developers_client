@@ -1,6 +1,14 @@
 <template>
   <div class="g-footer-container">
-    湘ICP证2-2-2025007 拓维信息系统股份有限公司版权所有
+    <div>
+      <span> 版权所有：拓维信息系统股份有限公司 </span>
+    </div>
+    <div>
+      <span>友情链接：</span>
+      <span><a href="https://www.csdn.net">CSDN</a></span>
+      <span><a href="https://segmentfault.com/">思否</a></span>
+      <span><a href="https://it.talkweb.com.cn">拓维信息</a></span>
+    </div>
   </div>
 </template>
 
@@ -21,6 +29,6 @@ export default {
   border-radius: @g-radius;
   background-color: #fff;
   text-align: center;
-  line-height: 84px;
+  padding: 20px 0;
 }
 </style>

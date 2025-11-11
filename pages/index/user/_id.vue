@@ -1,7 +1,10 @@
 <template>
   <div v-if="userInfo" v-infinite-scroll="handleInfiniteScroll" class="page-user-container">
     <div class="page-user-info">
-      <UserInfoBg />
+      <!-- <UserInfoBg /> -->
+      <div>
+        <img :src="userInfoBgImg">
+      </div>
       <div class="user-info-content">
         <div class="user-header-box">
           <img
@@ -166,7 +169,9 @@ import ArticleItem from '../components/article-item.vue'
 import { replaceUrlByQuery } from '../../../lib/utils'
 import MyDynamic from './components/my-dynamic'
 import NoticeBlock from './components/notice-block.vue'
-import UserInfoBg from './components/user-info-bg'
+// import UserInfoBg from './components/user-info-bg'
+
+const userInfoBgImg = require('@/assets/images/user-info-bg.png')
 
 const TabPane = Tabs.TabPane
 
@@ -182,8 +187,8 @@ export default {
     Icon,
     TabPane,
     Empty,
-    MyDynamic,
-    UserInfoBg
+    MyDynamic
+    // UserInfoBg
   },
   async asyncData ({ store, route, redirect, $api }) {
     let userInfo = store.state.user.userInfo
@@ -268,7 +273,8 @@ export default {
       questionList: [],
       messageList: [],
       fileList: [],
-      collections: []
+      collections: [],
+      userInfoBgImg
     }
   },
   mounted () {

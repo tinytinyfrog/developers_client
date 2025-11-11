@@ -255,8 +255,12 @@ export default {
   },
   methods: {
     handleWrite () {
-      // this.$utils.openNewWindow('/draft/editor/new?t=wiki')
-      this.$utils.openNewWindow('/draft/editor/new?t=article')
+      // 获取当前路由的tagId,传递到编辑器
+      const { tagId } = this.$route.query
+      const url = tagId
+        ? `/draft/editor/new?t=article&menuTagId=${tagId}`
+        : '/draft/editor/new?t=article'
+      this.$utils.openNewWindow(url)
       // this.$router.push('/draft/editor/new?t=article')
     },
     handleGoto (item) {

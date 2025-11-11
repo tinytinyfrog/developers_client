@@ -50,9 +50,6 @@
         />
       </div>
     </div>
-    show-quick-jumper
-    :show-total="(total) => `总共${total}条`"
-    />
     </div>
     </div>
   </a-spin>

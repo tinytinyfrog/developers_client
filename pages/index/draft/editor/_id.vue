@@ -252,7 +252,7 @@ export default {
   async asyncData ({ route, $api, store }) {
     const userRole = userRoleStatus(store)
     const id = route.params.id // 文章或问题id
-    const { t, wikiId } = route.query
+    const { t, wikiId, menuTagId } = route.query
     let fileList = []
     let content = {
       title: '',
@@ -280,6 +280,7 @@ export default {
       tagGroup,
       type: t,
       wikiId,
+      menuTagId, // 从菜单传递过来的tagId
       originalTitle: content.originalTitle || '',
       originalAuthor: content.originalAuthor || '',
       originalUrl: content.originalUrl || '',
@@ -295,6 +296,7 @@ export default {
   },
   data () {
     return {
+      menuTagId: '', // 从菜单传递过来的tagId
       articleUrl: '',
       codeType: 'js',
       codeTypeList: ['js', 'ts', 'java', 'css', 'shell', 'xml', 'html'],
@@ -374,8 +376,28 @@ export default {
       }
     }
   },
-  mounted () {
-    this.getArticleTags()
+  async mounted () {
+    await this.getArticleTags()
+
+    // 如果有menuTagId,自动选中对应的分类和标签
+    if (this.menuTagId && this.id === 'new') {
+      const tagId = parseInt(this.menuTagId)
+      const targetTag = this.allTags.find(tag => tag.id === tagId)
+
+      if (targetTag) {
+        // 找到标签对应的分类
+        const categoryIndex = this.tagGroup.findIndex(group => group === targetTag.groupName)
+        if (categoryIndex > 0) {
+          this.activeCategory = categoryIndex
+          this.tags = this.allTags.filter(item => item.groupName === targetTag.groupName)
+        }
+
+        // 自动选中该标签
+        this.selectTags = [targetTag.name]
+        this.selectTagIds = [targetTag.id]
+      }
+    }
+
     this.getDraftList()
     this.checkoutLogin()
     const content = this.content.markdownContent || this.content.htmlContent

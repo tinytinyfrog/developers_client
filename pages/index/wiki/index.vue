@@ -32,13 +32,16 @@
               {{ item.label }}
             </div>
           </div>
-          <a-button
-            v-if="userInfo && userInfo.role === 'ADMIN'"
-            type="primary"
-            @click="handleWrite"
-          >
-            写wiki
-          </a-button>
+          <div class="wiki-action">
+            <a-input placeholder="请输入关键字搜索" />
+            <a-button
+              v-if="userInfo && userInfo.role === 'ADMIN'"
+              type="primary"
+              @click="handleWrite"
+            >
+              写wiki
+            </a-button>
+          </div>
         </div>
         <div v-infinite-scroll="loadData" class="home-list-box">
           <WikiItem v-for="(item, index) in wikiList" :key="index" :article="item" />
@@ -344,9 +347,10 @@ export default {
       justify-content: space-between;
       align-items: center;
       padding: 0 8px;
+      border-bottom: 1px solid #e2e8f6;
       .wiki-filter {
         height: 58px;
-        border-bottom: 1px solid #f2f2f2;
+        // border-bottom: 1px solid #f2f2f2;
         display: flex;
         flex: 1;
         .wiki-tag {
@@ -361,6 +365,11 @@ export default {
             background-color: rgba(5, 105, 204, 0.05);
           }
         }
+      }
+      .wiki-action {
+        display: flex;
+        justify-content: space-around;
+        column-gap: 16px;
       }
     }
     .active-tag {

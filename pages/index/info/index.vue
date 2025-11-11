@@ -176,7 +176,7 @@ export default {
   background: #f7f8fa;
   .info-menu {
     width: 265px;
-    height: calc(100vh - 140px);
+    height: calc(100vh - 60px);
     background: rgb(246, 246, 246);
     color: rgb(40, 40, 40);
     font-family: PingFang SC;

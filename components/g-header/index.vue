@@ -4,13 +4,11 @@
       <div class="header-left">
         <div class="header-left-nav">
           <img
-            class="logo"
-            src="~/assets/images/header/logo.png"
+            class="intro-logo"
+            src="~/assets/images/header/intro.png"
             alt=""
             @click="$router.push('/')"
           >
-          <a-divider type="vertical" class="a-divider" />
-          <img class="intro-logo" src="~/assets/images/header/intro.png" alt="">
           <InputSearch
             v-model="searchVal"
             placeholder="请输入关键字进行搜索"
@@ -30,7 +28,7 @@
             写文章
           </a-button> -->
           <div class="msg">
-            欢迎来到交付中心门户
+            欢迎来到数字化交付中心门户
           </div>
           <Avatar class="a-avatar">
             {{ userInfo.nickname[0] }}
@@ -412,7 +410,7 @@ export default {
     }
     .intro-logo {
       height: 50px;
-      width: 196px;
+      width: 325px;
       color: @g-main-color;
       font-size: @font-first;
       vertical-align: middle;

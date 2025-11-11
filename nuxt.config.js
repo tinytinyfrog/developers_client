@@ -1,6 +1,6 @@
+import CompressionPlugin from 'compression-webpack-plugin'
 import information from './seo-info'
 import globalConfig from './global'
-import CompressionPlugin from 'compression-webpack-plugin'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -8,10 +8,12 @@ console.log('NODE_ENV: ', process.env.NODE_ENV)
 
 const axiosConfig = {
   prefix: globalConfig.basePath,
-  proxy: !isProd
+  proxy: !isProd,
 }
 if (isProd) {
-  axiosConfig.baseURL = `${isProd ? globalConfig.productServer : globalConfig.developerServer}${globalConfig.basePath}`
+  axiosConfig.baseURL = `${isProd ? globalConfig.productServer : globalConfig.developerServer}${
+    globalConfig.basePath
+  }`
   delete axiosConfig.prefix
   delete axiosConfig.proxy
 }
@@ -22,23 +24,25 @@ export default {
     title: information.title,
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' },
+      {
+        name: 'viewport',
+        content:
+          'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0',
+      },
       { hid: 'keywords', name: 'keywords', content: information.keywords },
-      { hid: 'description', name: 'description', content: information.description }
+      { hid: 'description', name: 'description', content: information.description },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }
-    ],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
     script: [
       {
-        src: 'https://res.wx.qq.com/open/js/jweixin-1.6.0.js'
-      }
-    ]
+        src: 'https://res.wx.qq.com/open/js/jweixin-1.6.0.js',
+      },
+    ],
   },
 
   loading: {
     color: '#004fc4',
-    height: '1px'
+    height: '1px',
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -49,13 +53,13 @@ export default {
     'highlight.js/styles/github.css',
     'ant-design-vue/dist/antd.less',
     '@/assets/style/css/global.css',
-    '@/assets/style/less/base.less'
+    '@/assets/style/less/base.less',
   ],
 
   vue: {
     config: {
-      ignoredElements: ['wx-open-launch-weapp']
-    }
+      ignoredElements: ['wx-open-launch-weapp'],
+    },
   },
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -71,7 +75,7 @@ export default {
     '~/plugins/antd-ui.js',
     '~/plugins/dompurify-html.js',
     '~/plugins/global-config',
-    '~/plugins/api.js'
+    '~/plugins/api.js',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -81,7 +85,7 @@ export default {
   buildModules: [
     '@nuxtjs/style-resources',
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -90,14 +94,14 @@ export default {
     'cookie-universal-nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
-    '@nuxtjs/router'
+    '@nuxtjs/router',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: axiosConfig,
 
   proxy: {
-    [globalConfig.basePath]: isProd ? globalConfig.productServer : globalConfig.developerServer
+    [globalConfig.basePath]: isProd ? globalConfig.productServer : globalConfig.developerServer,
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
@@ -108,63 +112,61 @@ export default {
           javascriptEnabled: true,
           modifyVars: {
             'primary-color': '#004fc4',
-            'border-radius-base': '3px'
-          }
-        }
-      }
+            'border-radius-base': '3px',
+          },
+        },
+      },
     },
     styleResources: {
-      less: './assets/**/*.less'
+      less: './assets/**/*.less',
     },
-    transpile: ['ant-design-vue','autofit.js'],
+    transpile: ['ant-design-vue', 'autofit.js'],
     // analyze: true,
     optimization: {
-        splitChunks: {
-          chunks: 'all',
-          minSize: 50000,
-          maxSize: 200000,
-          minChunks: 2,
-          automaticNameDelimiter: '.',
-          maxAsyncRequests: 10,
-          cacheGroups: {
-            wangeditor: {
-              test: /node_modules[\\/]wangeditor/,
-              chunks: 'all',
-              priority: 20,
-              name: true
-            },
-            antdesignvue: {
-              test: /node_modules[\\/]ant-design-vue/,
-              chunks: 'all',
-              priority: 20,
-              name: true
-            }
-          }
-        }
+      splitChunks: {
+        chunks: 'all',
+        minSize: 50000,
+        maxSize: 200000,
+        minChunks: 2,
+        automaticNameDelimiter: '.',
+        maxAsyncRequests: 10,
+        cacheGroups: {
+          wangeditor: {
+            test: /node_modules[\\/]wangeditor/,
+            chunks: 'all',
+            priority: 20,
+            name: true,
+          },
+          antdesignvue: {
+            test: /node_modules[\\/]ant-design-vue/,
+            chunks: 'all',
+            priority: 20,
+            name: true,
+          },
+        },
       },
-      plugins: [
-        new CompressionPlugin({
-          test: /\.(js|css|html|svg)$/,
-          threshold: 8192,
-          minRatio: 0.8
-        })
-      ],
-      babel: {
-        plugins: [
-          ['import', { libraryName: 'ant-design-vue', style: true }]
-        ]
-      }
+    },
+    plugins: [
+      new CompressionPlugin({
+        test: /\.(js|css|html|svg)$/,
+        threshold: 8192,
+        minRatio: 0.8,
+      }),
+    ],
+    babel: {
+      plugins: [['import', { libraryName: 'ant-design-vue', style: true }]],
+    },
   },
 
   eslint: {
-    fix: true
+    fix: true,
   },
   publicRuntimeConfig: {
-    baseURL: '/'
+    baseURL: '/',
   },
   router: {
     middleware: ['user-info', 'tag-info'],
-    extendRoutes (routes) {
+    extendRoutes(routes) {
       const delComponents = (routeList) => {
         for (let i = 0, len = routeList.length; i < len; i++) {
           const route = routeList[i]
@@ -181,10 +183,10 @@ export default {
         }
       }
       delComponents(routes)
-    }
+    },
   },
   server: {
     host: '0.0.0.0', // 关键修改！允许外部访问
-    port: 3000
-  }
+    port: 3000,
+  },
 }
